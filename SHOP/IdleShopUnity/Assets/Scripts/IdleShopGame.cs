@@ -1027,7 +1027,7 @@ public sealed class IdleShopGame : MonoBehaviour
     private void BuildPortraitShell(RectTransform safe)
     {
         const float headerHeight = 112f;
-        const float navHeight = 104f;
+        const float navHeight = 118f;
         const float gap = 10f;
 
         RectTransform header = CreateHeader(safe, headerHeight, false);
@@ -1153,10 +1153,10 @@ public sealed class IdleShopGame : MonoBehaviour
         }
         else
         {
-            tabsLayoutElement.preferredHeight = 104f;
+            tabsLayoutElement.preferredHeight = 118f;
             HorizontalLayoutGroup tabsLayout = tabs.gameObject.AddComponent<HorizontalLayoutGroup>();
-            tabsLayout.padding = new RectOffset(8, 8, 8, 8);
-            tabsLayout.spacing = 8f;
+            tabsLayout.padding = new RectOffset(10, 10, 10, 10);
+            tabsLayout.spacing = 10f;
             tabsLayout.childAlignment = TextAnchor.MiddleCenter;
             tabsLayout.childControlWidth = true;
             tabsLayout.childForceExpandWidth = true;
@@ -1912,7 +1912,7 @@ public sealed class IdleShopGame : MonoBehaviour
         bool active = activeTab == tab;
         RectTransform rect = CreatePanel("NavButton", parent, active ? NavActiveColor(tab) : inactiveNav);
         LayoutElement layout = rect.gameObject.AddComponent<LayoutElement>();
-        layout.preferredHeight = vertical ? 64f : 86f;
+        layout.preferredHeight = vertical ? 64f : 98f;
         layout.flexibleWidth = 1f;
 
         Button button = rect.gameObject.AddComponent<Button>();
@@ -1922,8 +1922,8 @@ public sealed class IdleShopGame : MonoBehaviour
         ApplyButtonColor(button, active ? NavActiveColor(tab) : inactiveNav);
 
         VerticalLayoutGroup buttonLayout = rect.gameObject.AddComponent<VerticalLayoutGroup>();
-        buttonLayout.padding = vertical ? new RectOffset(7, 7, 5, 5) : new RectOffset(6, 6, 7, 7);
-        buttonLayout.spacing = vertical ? 2f : 4f;
+        buttonLayout.padding = vertical ? new RectOffset(7, 7, 5, 5) : new RectOffset(8, 8, 8, 8);
+        buttonLayout.spacing = vertical ? 2f : 0f;
         buttonLayout.childAlignment = TextAnchor.MiddleCenter;
         buttonLayout.childControlWidth = true;
         buttonLayout.childControlHeight = true;
@@ -1932,8 +1932,8 @@ public sealed class IdleShopGame : MonoBehaviour
 
         RectTransform iconFrame = CreatePanel("NavIconFrame", rect, active ? new Color(1f, 0.93f, 0.62f) : new Color(0.20f, 0.16f, 0.12f));
         LayoutElement iconLayout = iconFrame.gameObject.AddComponent<LayoutElement>();
-        iconLayout.preferredWidth = vertical ? 38f : 48f;
-        iconLayout.preferredHeight = vertical ? 30f : 42f;
+        iconLayout.preferredWidth = vertical ? 38f : 74f;
+        iconLayout.preferredHeight = vertical ? 30f : 74f;
         Sprite icon = TabIcon(tab);
         if (icon != null)
         {
@@ -1947,6 +1947,7 @@ public sealed class IdleShopGame : MonoBehaviour
         text.resizeTextMaxSize = vertical ? 21 : 26;
         text.gameObject.AddComponent<LayoutElement>().preferredHeight = vertical ? 24f : 30f;
         text.raycastTarget = false;
+        text.gameObject.SetActive(vertical);
 
         return button;
     }
