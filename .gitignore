@@ -1,0 +1,58 @@
+# Unity generated folders
+SHOP/IdleShopUnity/Library/
+SHOP/IdleShopUnity/Temp/
+SHOP/IdleShopUnity/Obj/
+SHOP/IdleShopUnity/Build/
+SHOP/IdleShopUnity/Builds/
+SHOP/IdleShopUnity/Logs/
+SHOP/IdleShopUnity/UserSettings/
+SHOP/IdleShopUnity/MemoryCaptures/
+SHOP/IdleShopUnity/Recordings/
+
+# Unity generated files
+SHOP/IdleShopUnity/*.csproj
+SHOP/IdleShopUnity/*.sln
+SHOP/IdleShopUnity/*.suo
+SHOP/IdleShopUnity/*.user
+SHOP/IdleShopUnity/*.userprefs
+SHOP/IdleShopUnity/*.pidb
+SHOP/IdleShopUnity/*.booproj
+SHOP/IdleShopUnity/*.svd
+SHOP/IdleShopUnity/*.pdb
+SHOP/IdleShopUnity/*.mdb
+SHOP/IdleShopUnity/*.opendb
+SHOP/IdleShopUnity/*.VC.db
+
+# Unity crash/debug output
+SHOP/IdleShopUnity/sysinfo.txt
+SHOP/IdleShopUnity/crashlytics-build.properties
+SHOP/IdleShopUnity/ExportedObj/
+
+# Android/Gradle generated output
+SHOP/IdleShopUnity/.gradle/
+SHOP/IdleShopUnity/gradleOut/
+SHOP/IdleShopUnity/launcher/build/
+SHOP/IdleShopUnity/unityLibrary/build/
+SHOP/IdleShopUnity/**/build/
+SHOP/IdleShopUnity/*.apk
+SHOP/IdleShopUnity/*.aab
+
+# IDE/editor cache
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS and local environment
+*.log
+*.tmp
+*.bak
+*.orig
+
+# Keep important Unity project data tracked:
+# SHOP/IdleShopUnity/Assets/
+# SHOP/IdleShopUnity/Packages/
+# SHOP/IdleShopUnity/ProjectSettings/
