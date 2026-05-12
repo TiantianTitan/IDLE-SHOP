@@ -1,0 +1,410 @@
+{
+  "languageCode": "fr-FR",
+  "languageName": "Français",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "Boutique de Poche"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "Ouverte au coin de la rue"
+    },
+    {
+      "key": "tab.shop",
+      "value": "Boutique"
+    },
+    {
+      "key": "tab.stock",
+      "value": "Stock"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "Améliorer"
+    },
+    {
+      "key": "tab.staff",
+      "value": "Équipe"
+    },
+    {
+      "key": "tab.settings",
+      "value": "Réglages"
+    },
+    {
+      "key": "stat.cash",
+      "value": "Argent"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "Réputation"
+    },
+    {
+      "key": "stat.total",
+      "value": "Gains totaux"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "Produits"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Nv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "Jour {0}\n{1} en file\n{2}/s"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "€"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "k"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "Onigiri maison"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "Un classique du matin"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "Soda au yuzu"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "Léger, frais et rentable"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "Bento chaud"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "Vedette de la pause déjeuner"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "Petit bouquet"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "Produit premium qui améliore la réputation"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "Étagères en bois"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "Augmente la capacité de stock de tous les produits"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "Enseigne lumineuse"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "Augmente le flux naturel de clients"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "Frigo fraîcheur"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "Augmente le prix de vente des produits"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "Livraison rapide"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "Réduit les coûts de réapprovisionnement"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "Caissier"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "Sert automatiquement plus de clients"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "Réassortisseur"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "Ajoute plus d'articles à chaque réassort"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "Promoteur"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "Améliore la croissance de la réputation"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "Votre boutique tourne toute seule"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "Vendre - Réassortir - Améliorer, sans détour"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "Vente auto · env. {0}/min"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "Prochaine vente auto dans {0}s"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "Vente auto toutes les {0}s"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "Réassortir pour relancer les ventes auto"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "Verrouillé"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "Art."
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "Encaisser"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "Boost manuel"
+    },
+    {
+      "key": "action.advertise",
+      "value": "Promouvoir"
+    },
+    {
+      "key": "action.restock",
+      "value": "Réassort {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "Remplir les rayons"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} articles · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "Améliorer {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "Former {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "Max."
+    },
+    {
+      "key": "action.full_stock",
+      "value": "Plein"
+    },
+    {
+      "key": "action.locked",
+      "value": "Verrouillé"
+    },
+    {
+      "key": "day.title",
+      "value": "Aujourd'hui · Jour {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "Réapprovisionner"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} articles par réassort. La livraison réduit les coûts."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · débloqué au Nv.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "Prix {0} · Coût {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "Améliorez la boutique pour débloquer"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "Stock {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "Améliorations"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "Améliore le trafic, les prix, le stock et le réassort"
+    },
+    {
+      "key": "staff.title",
+      "value": "Formation de l'équipe"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "L'équipe multiplie vos revenus inactifs"
+    },
+    {
+      "key": "level.short",
+      "value": "Nv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "Éq."
+    },
+    {
+      "key": "settings.title",
+      "value": "Réglages"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "Langue et futures extensions"
+    },
+    {
+      "key": "settings.language",
+      "value": "Langue de l'interface"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "Actuelle : {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "Pour ajouter une langue, copiez un JSON dans Resources/Localization, gardez les key et traduisez les value."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "Prêt pour les itérations"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "Gameplay, produits, équipe, visuels et langues sont séparés pour ajouter ensuite images, quêtes, succès, publicités ou achats intégrés."
+    },
+    {
+      "key": "guide.title",
+      "value": "Objectifs du jour"
+    },
+    {
+      "key": "guide.sell",
+      "value": "Vente auto"
+    },
+    {
+      "key": "guide.restock",
+      "value": "Réassort ici"
+    },
+    {
+      "key": "guide.grow",
+      "value": "Améliorer"
+    },
+    {
+      "key": "log.opening",
+      "value": "La boutique est ouverte. Commencez avec les onigiri."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "Absent {0} min. La boutique a gagné {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "Fin du jour {0}. Les habitués ont rapporté {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "Les rayons sont vides, le client est parti."
+    },
+    {
+      "key": "log.sold",
+      "value": "{0} vendu pour {1}."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "Nouveau produit débloqué : {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} est déjà au stock maximum."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "Argent insuffisant. Il manque {0}."
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0} réapprovisionné x{1}."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "{0} articles réapprovisionnés."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "Il manque {1} pour améliorer {0}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} atteint le niveau {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "Il manque {1} pour former {0}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} atteint le niveau {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "Il manque {0} pour la promotion."
+    },
+    {
+      "key": "log.advertised",
+      "value": "Les prospectus sont distribués. Les clients font la queue."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "Langue changée en {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "Outils de test"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "Efface la sauvegarde actuelle et redémarre au jour un. La langue reste inchangée."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "Réinitialiser"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "Sauvegarde réinitialisée. La boutique rouvre."
+    }
+  ]
+}

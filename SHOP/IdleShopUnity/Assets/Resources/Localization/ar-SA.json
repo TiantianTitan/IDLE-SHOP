@@ -1,0 +1,410 @@
+{
+  "languageCode": "ar-SA",
+  "languageName": "العربية",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "متجر الجيب"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "مفتوح عند الزاوية"
+    },
+    {
+      "key": "tab.shop",
+      "value": "المتجر"
+    },
+    {
+      "key": "tab.stock",
+      "value": "المخزون"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "ترقية"
+    },
+    {
+      "key": "tab.staff",
+      "value": "الفريق"
+    },
+    {
+      "key": "tab.settings",
+      "value": "الإعدادات"
+    },
+    {
+      "key": "stat.cash",
+      "value": "النقد"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "السمعة"
+    },
+    {
+      "key": "stat.total",
+      "value": "إجمالي الدخل"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "المنتجات"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} م.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "اليوم {0}\n{1} في الطابور\n{2}/ث"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "﷼"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "ألف"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "كرة أرز منزلية"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "مبيعات صباحية مستقرة"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "صودا اليوزو"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "ربح منعش وخفيف"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "صندوق غداء دافئ"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "المفضل وقت الغداء"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "باقة صغيرة"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "منتج فاخر يرفع السمعة"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "رفوف خشبية"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "ترفع حد المخزون لكل المنتجات"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "لافتة مضيئة"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "تزيد تدفق الزبائن الطبيعي"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "ثلاجة طازجة"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "ترفع أسعار بيع المنتجات"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "توصيل سريع"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "يخفض تكلفة إعادة التخزين"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "أمين الصندوق"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "يخدم المزيد من الزبائن تلقائيا"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "عامل المخزون"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "يزيد عدد السلع في كل إعادة تخزين"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "المروج"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "يحسن نمو السمعة"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "متجرك الصغير يعمل تلقائيا"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "بع - أعد التخزين - طور المتجر"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "بيع تلقائي · نحو {0}/دقيقة"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "البيع التلقائي التالي بعد {0}ث"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "بيع تلقائي كل {0}ث"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "أعد التخزين لاستئناف البيع التلقائي"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "مغلق"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "سلعة"
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "تحصيل سريع"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "تسريع يدوي"
+    },
+    {
+      "key": "action.advertise",
+      "value": "ترويج"
+    },
+    {
+      "key": "action.restock",
+      "value": "تخزين {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "املأ الرفوف"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} قطعة · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "ترقية {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "تدريب {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "الحد الأقصى"
+    },
+    {
+      "key": "action.full_stock",
+      "value": "ممتلئ"
+    },
+    {
+      "key": "action.locked",
+      "value": "مغلق"
+    },
+    {
+      "key": "day.title",
+      "value": "اليوم · اليوم {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "إعادة ملء الرفوف"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} سلع في كل إعادة تخزين. التوصيل يخفض التكلفة."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · يفتح عند م.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "السعر {0} · التكلفة {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "قم بترقية المتجر لفتح هذا المنتج"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "المخزون {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "ترقيات المتجر"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "تحسن الزبائن والأسعار والمخزون وإعادة التخزين"
+    },
+    {
+      "key": "staff.title",
+      "value": "تدريب الفريق"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "الفريق يضاعف أرباحك أثناء الخمول"
+    },
+    {
+      "key": "level.short",
+      "value": "م.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "فريق"
+    },
+    {
+      "key": "settings.title",
+      "value": "الإعدادات"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "اللغة والتوسعات القادمة"
+    },
+    {
+      "key": "settings.language",
+      "value": "لغة الواجهة"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "الحالية: {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "لإضافة لغة، انسخ ملف JSON في Resources/Localization، أبق key كما هي وترجم value."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "جاهز للتطوير"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "تم فصل اللعب والمنتجات والفريق والرسوم واللغات لإضافة الصور والمهام والإنجازات والإعلانات أو المشتريات لاحقا."
+    },
+    {
+      "key": "guide.title",
+      "value": "أهداف اليوم"
+    },
+    {
+      "key": "guide.sell",
+      "value": "بيع تلقائي"
+    },
+    {
+      "key": "guide.restock",
+      "value": "خزن من هنا"
+    },
+    {
+      "key": "guide.grow",
+      "value": "طور المتجر"
+    },
+    {
+      "key": "log.opening",
+      "value": "افتتح المتجر. ابدأ بكرات الأرز."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "كنت غائبا {0} دقيقة. ربح المتجر {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "انتهى اليوم {0}. جلب الزبائن الدائمون {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "الرفوف فارغة، غادر الزبون."
+    },
+    {
+      "key": "log.sold",
+      "value": "تم بيع {0} مقابل {1}."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "تم فتح منتج جديد: {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} ممتلئ بالفعل."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "النقد غير كاف. تحتاج إلى {0} إضافية."
+    },
+    {
+      "key": "log.restocked",
+      "value": "تمت إعادة تخزين {0} ×{1}."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "تمت إعادة تخزين {0} قطعة."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "تحتاج إلى {1} إضافية لترقية {0}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "وصل {0} إلى المستوى {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "تحتاج إلى {1} إضافية لتدريب {0}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "وصل {0} إلى المستوى {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "تحتاج إلى {0} إضافية للترويج."
+    },
+    {
+      "key": "log.advertised",
+      "value": "تم توزيع المنشورات. بدأ الزبائن بالاصطفاف."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "تم تغيير اللغة إلى {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "أدوات الاختبار"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "يمسح حفظ المتجر الحالي ويعيد البدء من اليوم الأول. تبقى إعدادات اللغة كما هي."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "إعادة ضبط الحفظ"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "تمت إعادة ضبط الحفظ. افتتح المتجر من جديد."
+    }
+  ]
+}

@@ -1,0 +1,410 @@
+{
+  "languageCode": "en-US",
+  "languageName": "English",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "Pocket Shop"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "Open on the Corner"
+    },
+    {
+      "key": "tab.shop",
+      "value": "Shop"
+    },
+    {
+      "key": "tab.stock",
+      "value": "Stock"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "Upgrade"
+    },
+    {
+      "key": "tab.staff",
+      "value": "Staff"
+    },
+    {
+      "key": "tab.settings",
+      "value": "Settings"
+    },
+    {
+      "key": "stat.cash",
+      "value": "Cash"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "Reputation"
+    },
+    {
+      "key": "stat.total",
+      "value": "Total Earned"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "Products"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Lv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "Day {0}\n{1} queued\n{2}/sec"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "$"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "K"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "Rice Ball"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "Reliable morning seller"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "Yuzu Soda"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "Light, fizzy profit"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "Lunch Box"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "Lunch rush favorite"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "Mini Bouquet"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "High-value reputation boost"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "Wooden Shelves"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "Raises stock capacity for all products"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "Lit Signboard"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "Increases natural customer traffic"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "Fresh Fridge"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "Raises product selling prices"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "Fast Delivery"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "Reduces restock costs"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "Cashier"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "Serves more customers automatically"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "Stocker"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "Adds more items per restock"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "Promoter"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "Improves reputation growth"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "Your corner shop is running itself"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "Sell - Restock - Upgrade. Keep the shop moving."
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "Auto selling · est. {0}/min"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "Next auto sale in {0}s"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "Auto sells every {0}s"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "Restock to resume auto sales"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "Locked"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "Item"
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "Checkout"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "Manual boost"
+    },
+    {
+      "key": "action.advertise",
+      "value": "Promote"
+    },
+    {
+      "key": "action.restock",
+      "value": "Restock {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "Restock shelves"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} items · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "Upgrade {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "Train {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "Maxed"
+    },
+    {
+      "key": "action.full_stock",
+      "value": "Full"
+    },
+    {
+      "key": "action.locked",
+      "value": "Locked"
+    },
+    {
+      "key": "day.title",
+      "value": "Today · Day {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "Restock Shelves"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} items per restock. Delivery upgrades lower costs."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · unlocks at Lv.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "Price {0} · Cost {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "Upgrade the shop to unlock"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "Stock {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "Shop Upgrades"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "Improve traffic, prices, capacity, and restocking"
+    },
+    {
+      "key": "staff.title",
+      "value": "Staff Training"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "Staff multiply your idle earnings over time"
+    },
+    {
+      "key": "level.short",
+      "value": "Lv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "Staff"
+    },
+    {
+      "key": "settings.title",
+      "value": "Settings"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "Language and future feature expansion"
+    },
+    {
+      "key": "settings.language",
+      "value": "UI Language"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "Current: {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "To add a language, copy a JSON file in Resources/Localization, keep the keys, and translate the values."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "Iteration Ready"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "Gameplay, products, staff, art, and language are separated so images, quests, achievements, ads, or IAP can be added gradually."
+    },
+    {
+      "key": "guide.title",
+      "value": "Today's Goals"
+    },
+    {
+      "key": "guide.sell",
+      "value": "Auto sell"
+    },
+    {
+      "key": "guide.restock",
+      "value": "Restock here"
+    },
+    {
+      "key": "guide.grow",
+      "value": "Upgrade shop"
+    },
+    {
+      "key": "log.opening",
+      "value": "The shop is open. Start with rice balls."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "Away for {0} minutes. The shop earned {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "Day {0} ended. Returning customers brought {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "Shelves are empty, so the customer left."
+    },
+    {
+      "key": "log.sold",
+      "value": "Sold {0} for {1}."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "New product unlocked: {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} is fully stocked."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "Not enough cash. Need {0} more."
+    },
+    {
+      "key": "log.restocked",
+      "value": "Restocked {0} x{1}."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "Restocked {0} items."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "Need {1} more to upgrade {0}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} reached level {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "Need {1} more to train {0}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} reached level {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "Need {0} more for promotion."
+    },
+    {
+      "key": "log.advertised",
+      "value": "Flyers went out. Customers are lining up."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "Language changed to {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "Test Tools"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "Clear the current shop save and restart from day one. Language settings stay unchanged."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "Reset Save"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "Save reset. The shop is open again."
+    }
+  ]
+}

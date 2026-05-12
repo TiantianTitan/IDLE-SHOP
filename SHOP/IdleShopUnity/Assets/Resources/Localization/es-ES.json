@@ -1,0 +1,410 @@
+{
+  "languageCode": "es-ES",
+  "languageName": "Español",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "Tienda de Bolsillo"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "Abierta en la esquina"
+    },
+    {
+      "key": "tab.shop",
+      "value": "Tienda"
+    },
+    {
+      "key": "tab.stock",
+      "value": "Stock"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "Mejoras"
+    },
+    {
+      "key": "tab.staff",
+      "value": "Equipo"
+    },
+    {
+      "key": "tab.settings",
+      "value": "Ajustes"
+    },
+    {
+      "key": "stat.cash",
+      "value": "Dinero"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "Reputación"
+    },
+    {
+      "key": "stat.total",
+      "value": "Ingresos"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "Productos"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Nv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "Día {0}\n{1} en cola\n{2}/s"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "€"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "k"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "Onigiri casero"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "Venta estable por la mañana"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "Soda de yuzu"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "Beneficio fresco y ligero"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "Bento caliente"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "Favorito de la hora de comer"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "Ramo pequeño"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "Producto premium que sube la reputación"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "Estantes de madera"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "Aumenta la capacidad de stock de todos los productos"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "Cartel luminoso"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "Aumenta el flujo natural de clientes"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "Nevera fresca"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "Aumenta el precio de venta"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "Entrega rápida"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "Reduce los costes de reposición"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "Cajero"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "Atiende más clientes automáticamente"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "Reponedor"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "Añade más artículos por reposición"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "Promotor"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "Mejora el crecimiento de reputación"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "Tu tienda de la esquina trabaja sola"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "Vende - Repón - Mejora. Mantén la tienda activa."
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "Venta automática · est. {0}/min"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "Próxima venta auto en {0}s"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "Venta auto cada {0}s"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "Repón para reanudar ventas auto"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "Bloqueado"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "Art."
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "Cobrar"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "Impulso manual"
+    },
+    {
+      "key": "action.advertise",
+      "value": "Promocionar"
+    },
+    {
+      "key": "action.restock",
+      "value": "Reponer {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "Reponer estantes"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} uds. · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "Mejorar {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "Formar {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "Máximo"
+    },
+    {
+      "key": "action.full_stock",
+      "value": "Lleno"
+    },
+    {
+      "key": "action.locked",
+      "value": "Bloqueado"
+    },
+    {
+      "key": "day.title",
+      "value": "Hoy · Día {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "Reponer estantes"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} artículos por reposición. La entrega reduce costes."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · se desbloquea en Nv.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "Precio {0} · Coste {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "Mejora la tienda para desbloquear"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "Stock {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "Mejoras de tienda"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "Mejora tráfico, precios, stock y reposición"
+    },
+    {
+      "key": "staff.title",
+      "value": "Formación del equipo"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "El equipo multiplica tus ingresos inactivos"
+    },
+    {
+      "key": "level.short",
+      "value": "Nv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "Eq."
+    },
+    {
+      "key": "settings.title",
+      "value": "Ajustes"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "Idioma y futuras ampliaciones"
+    },
+    {
+      "key": "settings.language",
+      "value": "Idioma de la UI"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "Actual: {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "Para añadir un idioma, copia un JSON en Resources/Localization, conserva las key y traduce los value."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "Listo para iterar"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "Jugabilidad, productos, equipo, arte e idiomas están separados para añadir imágenes, misiones, logros, anuncios o compras integradas."
+    },
+    {
+      "key": "guide.title",
+      "value": "Objetivos de hoy"
+    },
+    {
+      "key": "guide.sell",
+      "value": "Venta auto"
+    },
+    {
+      "key": "guide.restock",
+      "value": "Repón aquí"
+    },
+    {
+      "key": "guide.grow",
+      "value": "Mejora tienda"
+    },
+    {
+      "key": "log.opening",
+      "value": "La tienda abrió. Empieza con onigiri."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "Ausente {0} min. La tienda ganó {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "Fin del día {0}. Los clientes habituales trajeron {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "Los estantes están vacíos, el cliente se fue."
+    },
+    {
+      "key": "log.sold",
+      "value": "{0} vendido por {1}."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "Nuevo producto desbloqueado: {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} ya está lleno."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "Dinero insuficiente. Faltan {0}."
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0} repuesto x{1}."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "{0} artículos repuestos."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "Faltan {1} para mejorar {0}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} alcanzó el nivel {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "Faltan {1} para formar a {0}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} alcanzó el nivel {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "Faltan {0} para la promoción."
+    },
+    {
+      "key": "log.advertised",
+      "value": "Se repartieron folletos. Los clientes hacen cola."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "Idioma cambiado a {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "Herramientas de prueba"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "Borra la partida actual y reinicia desde el día uno. El idioma se conserva."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "Reiniciar partida"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "Partida reiniciada. La tienda vuelve a abrir."
+    }
+  ]
+}

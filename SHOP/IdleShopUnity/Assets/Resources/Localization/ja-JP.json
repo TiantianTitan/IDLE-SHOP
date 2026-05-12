@@ -1,0 +1,410 @@
+{
+  "languageCode": "ja-JP",
+  "languageName": "日本語",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "ポケットショップ"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "街角で営業中"
+    },
+    {
+      "key": "tab.shop",
+      "value": "店舗"
+    },
+    {
+      "key": "tab.stock",
+      "value": "仕入れ"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "強化"
+    },
+    {
+      "key": "tab.staff",
+      "value": "スタッフ"
+    },
+    {
+      "key": "tab.settings",
+      "value": "設定"
+    },
+    {
+      "key": "stat.cash",
+      "value": "現金"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "評判"
+    },
+    {
+      "key": "stat.total",
+      "value": "総収入"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "商品"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Lv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "{0}日目\n待ち客 {1}人\n{2}/秒"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "¥"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "万"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "手作りおにぎり"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "朝の定番商品"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "ゆずソーダ"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "軽やかに利益を出す人気商品"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "あったか弁当"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "昼どきの主力商品"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "ミニブーケ"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "評判を上げる高単価商品"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "木製棚"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "全商品の在庫上限を増やす"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "光る看板"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "自然に来る客数を増やす"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "鮮度冷蔵庫"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "商品の販売価格を上げる"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "快速配送"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "仕入れコストを下げる"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "レジ係"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "より多くの客を自動で対応する"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "品出し係"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "1回の仕入れ数を増やす"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "宣伝係"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "評判の伸びを高める"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "街角のお店が自動で営業中"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "販売 - 補充 - 強化でお店を回そう"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "自動営業中 · 目安 {0}/分"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "次の自動販売まで {0} 秒"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "{0} 秒ごとに自動販売"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "補充すると自動販売を再開"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "未解放"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "品"
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "会計"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "手動加速"
+    },
+    {
+      "key": "action.advertise",
+      "value": "宣伝"
+    },
+    {
+      "key": "action.restock",
+      "value": "仕入れ {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "棚を補充"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0}個 · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "強化 {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "育成 {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "最大"
+    },
+    {
+      "key": "action.full_stock",
+      "value": "満タン"
+    },
+    {
+      "key": "action.locked",
+      "value": "未解放"
+    },
+    {
+      "key": "day.title",
+      "value": "本日の営業 · {0}日目"
+    },
+    {
+      "key": "stock.title",
+      "value": "棚を補充"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "1回の仕入れは {0} 個。配送強化でコスト低下。"
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · Lv.{1}で解放"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "価格 {0} · 原価 {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "店舗を強化すると解放"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "在庫 {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "店舗強化"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "客数、価格、在庫、仕入れ効率を改善"
+    },
+    {
+      "key": "staff.title",
+      "value": "スタッフ育成"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "スタッフは放置収益を継続的に伸ばす"
+    },
+    {
+      "key": "level.short",
+      "value": "Lv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "員"
+    },
+    {
+      "key": "settings.title",
+      "value": "設定"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "言語と今後の機能拡張"
+    },
+    {
+      "key": "settings.language",
+      "value": "UI言語"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "現在：{0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "言語追加：Resources/Localization のJSONをコピーし、keyはそのままでvalueを翻訳します。"
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "拡張準備済み"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "ゲーム内容、商品、スタッフ、美術、言語を分離済み。画像、クエスト、実績、広告、課金を段階的に追加できます。"
+    },
+    {
+      "key": "guide.title",
+      "value": "今日の目標"
+    },
+    {
+      "key": "guide.sell",
+      "value": "自動販売"
+    },
+    {
+      "key": "guide.restock",
+      "value": "ここで補充"
+    },
+    {
+      "key": "guide.grow",
+      "value": "店を強化"
+    },
+    {
+      "key": "log.opening",
+      "value": "お店が開店しました。まずはおにぎりを売りましょう。"
+    },
+    {
+      "key": "log.offline_income",
+      "value": "{0}分離れている間に、お店が{1}を稼ぎました。"
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "{0}日目終了。常連客が{1}をもたらしました。"
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "棚が空なので、お客さんは帰ってしまいました。"
+    },
+    {
+      "key": "log.sold",
+      "value": "{0}を販売、収入 {1}。"
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "新商品 {0} が解放されました。"
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0}は在庫満タンです。"
+    },
+    {
+      "key": "log.cash_short",
+      "value": "現金不足。あと{0}必要です。"
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0}を{1}個補充しました。"
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "{0}個補充しました。"
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "{0}の強化にはあと{1}必要です。"
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0}が{1}レベルになりました。"
+    },
+    {
+      "key": "log.staff_short",
+      "value": "{0}の育成にはあと{1}必要です。"
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0}が{1}レベルになりました。"
+    },
+    {
+      "key": "log.ad_short",
+      "value": "宣伝費が足りません。あと{0}必要です。"
+    },
+    {
+      "key": "log.advertised",
+      "value": "チラシを配りました。店前に列ができ始めました。"
+    },
+    {
+      "key": "log.language_changed",
+      "value": "言語を{0}に切り替えました。"
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "テストツール"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "現在の経営データを消去して1日目からやり直します。言語設定は保持されます。"
+    },
+    {
+      "key": "action.reset_save",
+      "value": "セーブをリセット"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "セーブをリセットしました。お店が再開しました。"
+    }
+  ]
+}

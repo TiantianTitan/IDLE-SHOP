@@ -1,0 +1,410 @@
+{
+  "languageCode": "ru-RU",
+  "languageName": "Русский",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "Карманный магазин"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "Открыт на углу"
+    },
+    {
+      "key": "tab.shop",
+      "value": "Магазин"
+    },
+    {
+      "key": "tab.stock",
+      "value": "Товары"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "Улучшения"
+    },
+    {
+      "key": "tab.staff",
+      "value": "Персонал"
+    },
+    {
+      "key": "tab.settings",
+      "value": "Настройки"
+    },
+    {
+      "key": "stat.cash",
+      "value": "Деньги"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "Репутация"
+    },
+    {
+      "key": "stat.total",
+      "value": "Всего дохода"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "Товары"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Ур.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "День {0}\nв очереди {1}\n{2}/с"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "₽"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "к"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "Домашний онигири"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "Стабильные продажи утром"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "Юдзу-сода"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "Легкая и прибыльная новинка"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "Теплый бенто"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "Хит обеденного времени"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "Мини-букет"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "Дорогой товар для роста репутации"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "Деревянные полки"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "Увеличивает лимит запасов для всех товаров"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "Светящаяся вывеска"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "Увеличивает естественный поток клиентов"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "Свежий холодильник"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "Повышает цену продажи товаров"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "Быстрая доставка"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "Снижает стоимость пополнения запасов"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "Кассир"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "Автоматически обслуживает больше клиентов"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "Кладовщик"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "Добавляет больше товаров за одно пополнение"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "Промоутер"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "Ускоряет рост репутации"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "Ваш магазин на углу работает сам"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "Продавай - Пополняй - Улучшай магазин"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "Автопродажи · около {0}/мин"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "Следующая автопродажа через {0} с"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "Автопродажа каждые {0} с"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "Пополните склад для автопродаж"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "Закрыто"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "Тов."
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "Касса"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "Ручное ускорение"
+    },
+    {
+      "key": "action.advertise",
+      "value": "Реклама"
+    },
+    {
+      "key": "action.restock",
+      "value": "Пополнить {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "Заполнить полки"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} шт. · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "Улучшить {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "Обучить {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "Макс."
+    },
+    {
+      "key": "action.full_stock",
+      "value": "Полно"
+    },
+    {
+      "key": "action.locked",
+      "value": "Закрыто"
+    },
+    {
+      "key": "day.title",
+      "value": "Сегодня · День {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "Пополнить полки"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} шт. за пополнение. Доставка снижает расходы."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · откроется на Ур.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "Цена {0} · Себестоимость {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "Улучшите магазин, чтобы открыть"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "Запас {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "Улучшения магазина"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "Улучшает поток, цены, запасы и пополнение"
+    },
+    {
+      "key": "staff.title",
+      "value": "Обучение персонала"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "Персонал увеличивает пассивный доход"
+    },
+    {
+      "key": "level.short",
+      "value": "Ур.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "Пер."
+    },
+    {
+      "key": "settings.title",
+      "value": "Настройки"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "Язык и будущие расширения"
+    },
+    {
+      "key": "settings.language",
+      "value": "Язык интерфейса"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "Текущий: {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "Чтобы добавить язык, скопируйте JSON в Resources/Localization, сохраните key и переведите value."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "Готово к развитию"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "Геймплей, товары, персонал, графика и языки разделены, чтобы позже добавить изображения, задания, достижения, рекламу или покупки."
+    },
+    {
+      "key": "guide.title",
+      "value": "Цели дня"
+    },
+    {
+      "key": "guide.sell",
+      "value": "Автопродажи"
+    },
+    {
+      "key": "guide.restock",
+      "value": "Пополняй здесь"
+    },
+    {
+      "key": "guide.grow",
+      "value": "Улучшай магазин"
+    },
+    {
+      "key": "log.opening",
+      "value": "Магазин открыт. Начните с онигири."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "Вас не было {0} мин. Магазин заработал {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "День {0} завершен. Постоянные клиенты принесли {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "Полки пусты, клиент ушел."
+    },
+    {
+      "key": "log.sold",
+      "value": "{0} продано за {1}."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "Открыт новый товар: {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0}: запас уже полон."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "Недостаточно денег. Нужно еще {0}."
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0} пополнено x{1}."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "Пополнено {0} шт."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "Для улучшения {0} нужно еще {1}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} достиг уровня {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "Для обучения {0} нужно еще {1}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} достиг уровня {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "Для рекламы нужно еще {0}."
+    },
+    {
+      "key": "log.advertised",
+      "value": "Листовки розданы. Клиенты начинают вставать в очередь."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "Язык изменен на {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "Инструменты теста"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "Очищает текущее сохранение магазина и начинает с первого дня. Язык сохраняется."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "Сбросить сохранение"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "Сохранение сброшено. Магазин снова открыт."
+    }
+  ]
+}

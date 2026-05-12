@@ -1,0 +1,410 @@
+{
+  "languageCode": "it-IT",
+  "languageName": "Italiano",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "Negozio Tascabile"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "Aperto all'angolo"
+    },
+    {
+      "key": "tab.shop",
+      "value": "Negozio"
+    },
+    {
+      "key": "tab.stock",
+      "value": "Scorte"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "Migliorie"
+    },
+    {
+      "key": "tab.staff",
+      "value": "Staff"
+    },
+    {
+      "key": "tab.settings",
+      "value": "Impostazioni"
+    },
+    {
+      "key": "stat.cash",
+      "value": "Denaro"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "Reputazione"
+    },
+    {
+      "key": "stat.total",
+      "value": "Entrate totali"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "Prodotti"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Lv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "Giorno {0}\n{1} in fila\n{2}/s"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "€"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "k"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "Onigiri artigianale"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "Vendite mattutine stabili"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "Soda allo yuzu"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "Fresca, leggera e redditizia"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "Bento caldo"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "Il preferito della pausa pranzo"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "Piccolo bouquet"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "Prodotto premium che aumenta la reputazione"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "Scaffali in legno"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "Aumenta la capacità di scorta di tutti i prodotti"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "Insegna luminosa"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "Aumenta il flusso naturale di clienti"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "Frigo fresco"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "Aumenta i prezzi di vendita"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "Consegna rapida"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "Riduce i costi di rifornimento"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "Cassiere"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "Serve automaticamente più clienti"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "Addetto scorte"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "Aggiunge più articoli per rifornimento"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "Promoter"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "Migliora la crescita della reputazione"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "Il tuo negozio all'angolo lavora da solo"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "Vendi - Rifornisci - Migliora il negozio"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "Vendita automatica · circa {0}/min"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "Prossima vendita auto tra {0}s"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "Vendita auto ogni {0}s"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "Rifornisci per riprendere le vendite auto"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "Bloccato"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "Art."
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "Incassa"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "Boost manuale"
+    },
+    {
+      "key": "action.advertise",
+      "value": "Promuovi"
+    },
+    {
+      "key": "action.restock",
+      "value": "Rifornisci {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "Riempi scaffali"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} articoli · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "Migliora {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "Forma {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "Max"
+    },
+    {
+      "key": "action.full_stock",
+      "value": "Pieno"
+    },
+    {
+      "key": "action.locked",
+      "value": "Bloccato"
+    },
+    {
+      "key": "day.title",
+      "value": "Oggi · Giorno {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "Rifornisci scaffali"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} articoli per rifornimento. La consegna riduce i costi."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · si sblocca al Lv.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "Prezzo {0} · Costo {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "Migliora il negozio per sbloccare"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "Scorte {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "Migliorie negozio"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "Migliora clienti, prezzi, scorte e rifornimenti"
+    },
+    {
+      "key": "staff.title",
+      "value": "Formazione staff"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "Lo staff moltiplica i guadagni inattivi"
+    },
+    {
+      "key": "level.short",
+      "value": "Lv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "St."
+    },
+    {
+      "key": "settings.title",
+      "value": "Impostazioni"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "Lingua e future espansioni"
+    },
+    {
+      "key": "settings.language",
+      "value": "Lingua UI"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "Attuale: {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "Per aggiungere una lingua, copia un JSON in Resources/Localization, mantieni le key e traduci i value."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "Pronto per iterare"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "Gameplay, prodotti, staff, grafica e lingue sono separati per aggiungere immagini, missioni, obiettivi, annunci o acquisti in-app."
+    },
+    {
+      "key": "guide.title",
+      "value": "Obiettivi di oggi"
+    },
+    {
+      "key": "guide.sell",
+      "value": "Vendita auto"
+    },
+    {
+      "key": "guide.restock",
+      "value": "Rifornisci qui"
+    },
+    {
+      "key": "guide.grow",
+      "value": "Migliora negozio"
+    },
+    {
+      "key": "log.opening",
+      "value": "Il negozio è aperto. Inizia con gli onigiri."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "Assente per {0} min. Il negozio ha guadagnato {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "Giorno {0} concluso. I clienti abituali hanno portato {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "Gli scaffali sono vuoti, il cliente se n'è andato."
+    },
+    {
+      "key": "log.sold",
+      "value": "{0} venduto per {1}."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "Nuovo prodotto sbloccato: {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} è già al massimo delle scorte."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "Denaro insufficiente. Mancano {0}."
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0} rifornito x{1}."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "{0} articoli riforniti."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "Mancano {1} per migliorare {0}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} ha raggiunto il livello {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "Mancano {1} per formare {0}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} ha raggiunto il livello {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "Mancano {0} per la promozione."
+    },
+    {
+      "key": "log.advertised",
+      "value": "Volantini distribuiti. I clienti iniziano a fare la fila."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "Lingua cambiata in {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "Strumenti di test"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "Cancella il salvataggio attuale e riparte dal primo giorno. La lingua resta invariata."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "Reimposta salvataggio"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "Salvataggio reimpostato. Il negozio riapre."
+    }
+  ]
+}

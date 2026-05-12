@@ -1,0 +1,410 @@
+{
+  "languageCode": "pt-PT",
+  "languageName": "Português",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "Loja de Bolso"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "Aberta na esquina"
+    },
+    {
+      "key": "tab.shop",
+      "value": "Loja"
+    },
+    {
+      "key": "tab.stock",
+      "value": "Stock"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "Melhorias"
+    },
+    {
+      "key": "tab.staff",
+      "value": "Equipa"
+    },
+    {
+      "key": "tab.settings",
+      "value": "Definições"
+    },
+    {
+      "key": "stat.cash",
+      "value": "Dinheiro"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "Reputação"
+    },
+    {
+      "key": "stat.total",
+      "value": "Ganhos totais"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "Produtos"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Nv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "Dia {0}\n{1} na fila\n{2}/s"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "€"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "k"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "Onigiri caseiro"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "Venda estável pela manhã"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "Refrigerante de yuzu"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "Lucro leve e refrescante"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "Bento quente"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "Favorito da hora de almoço"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "Pequeno bouquet"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "Produto premium que melhora a reputação"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "Prateleiras de madeira"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "Aumenta a capacidade de stock de todos os produtos"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "Letreiro luminoso"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "Aumenta o fluxo natural de clientes"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "Frigorífico fresco"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "Aumenta os preços de venda"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "Entrega rápida"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "Reduz os custos de reabastecimento"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "Caixa"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "Atende automaticamente mais clientes"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "Repositor"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "Adiciona mais artigos por reabastecimento"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "Promotor"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "Melhora o crescimento da reputação"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "A tua loja da esquina trabalha sozinha"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "Venda - Reponha - Melhore a loja"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "Venda automática · aprox. {0}/min"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "Próxima venda auto em {0}s"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "Venda auto a cada {0}s"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "Reponha para retomar vendas auto"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "Bloqueado"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "Art."
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "Cobrar"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "Impulso manual"
+    },
+    {
+      "key": "action.advertise",
+      "value": "Promover"
+    },
+    {
+      "key": "action.restock",
+      "value": "Repor {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "Repor prateleiras"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} itens · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "Melhorar {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "Treinar {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "Máx."
+    },
+    {
+      "key": "action.full_stock",
+      "value": "Cheio"
+    },
+    {
+      "key": "action.locked",
+      "value": "Bloqueado"
+    },
+    {
+      "key": "day.title",
+      "value": "Hoje · Dia {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "Repor prateleiras"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} artigos por reposição. A entrega reduz custos."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · desbloqueia no Nv.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "Preço {0} · Custo {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "Melhora a loja para desbloquear"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "Stock {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "Melhorias da loja"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "Melhora clientes, preços, stock e reposição"
+    },
+    {
+      "key": "staff.title",
+      "value": "Treino da equipa"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "A equipa multiplica os teus ganhos passivos"
+    },
+    {
+      "key": "level.short",
+      "value": "Nv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "Eq."
+    },
+    {
+      "key": "settings.title",
+      "value": "Definições"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "Idioma e futuras expansões"
+    },
+    {
+      "key": "settings.language",
+      "value": "Idioma da interface"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "Atual: {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "Para adicionar um idioma, copia um JSON em Resources/Localization, mantém as key e traduz os value."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "Pronto para iterar"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "Jogabilidade, produtos, equipa, arte e idiomas estão separados para adicionar imagens, missões, conquistas, anúncios ou compras integradas."
+    },
+    {
+      "key": "guide.title",
+      "value": "Metas de hoje"
+    },
+    {
+      "key": "guide.sell",
+      "value": "Venda auto"
+    },
+    {
+      "key": "guide.restock",
+      "value": "Repor aqui"
+    },
+    {
+      "key": "guide.grow",
+      "value": "Melhore loja"
+    },
+    {
+      "key": "log.opening",
+      "value": "A loja abriu. Começa com onigiri."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "Ausente por {0} min. A loja ganhou {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "Dia {0} terminado. Clientes habituais trouxeram {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "As prateleiras estão vazias, o cliente saiu."
+    },
+    {
+      "key": "log.sold",
+      "value": "{0} vendido por {1}."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "Novo produto desbloqueado: {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} já está cheio."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "Dinheiro insuficiente. Faltam {0}."
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0} reposto x{1}."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "{0} itens repostos."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "Faltam {1} para melhorar {0}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} chegou ao nível {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "Faltam {1} para treinar {0}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} chegou ao nível {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "Faltam {0} para a promoção."
+    },
+    {
+      "key": "log.advertised",
+      "value": "Folhetos distribuídos. Os clientes começam a fazer fila."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "Idioma alterado para {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "Ferramentas de teste"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "Limpa o progresso atual e recomeça no primeiro dia. O idioma mantém-se."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "Repor gravação"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "Gravação reposta. A loja voltou a abrir."
+    }
+  ]
+}

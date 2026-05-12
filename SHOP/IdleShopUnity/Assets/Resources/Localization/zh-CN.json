@@ -1,0 +1,410 @@
+{
+  "languageCode": "zh-CN",
+  "languageName": "简体中文",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "口袋小店"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "街角营业中"
+    },
+    {
+      "key": "tab.shop",
+      "value": "店铺"
+    },
+    {
+      "key": "tab.stock",
+      "value": "进货"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "升级"
+    },
+    {
+      "key": "tab.staff",
+      "value": "员工"
+    },
+    {
+      "key": "tab.settings",
+      "value": "设置"
+    },
+    {
+      "key": "stat.cash",
+      "value": "现金"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "口碑"
+    },
+    {
+      "key": "stat.total",
+      "value": "总收入"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "新品"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Lv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "第 {0} 天\n{1} 人排队\n{2}/秒"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "¥"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "万"
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "手作饭团"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "早高峰销量稳定"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "柚子气泡水"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "利润轻快的小爆款"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "暖心便当"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "午餐时段的大单品"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "小束鲜花"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "提升口碑的高价商品"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "木质货架"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "提高所有商品库存上限"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "发光招牌"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "提高自然客流速度"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "保鲜冷柜"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "提高商品售价"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "快速配送"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "降低补货成本"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "收银员"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "自动服务更多顾客"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "补货员"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "增加单次补货数量"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "宣传员"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "提高口碑成长速度"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "街角小店正在自动营业"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "卖货 - 补货 - 升级，循环经营小店"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "自动营业中 · 预计 {0}/分钟"
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "下次自动售出 {0} 秒"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "每 {0} 秒自动卖货"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "等待补货后继续自动卖货"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "未解锁"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "货"
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "快速收银"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "手动加速"
+    },
+    {
+      "key": "action.advertise",
+      "value": "附近宣传"
+    },
+    {
+      "key": "action.restock",
+      "value": "补货 {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "一键补货"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} 件 · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "升级 {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "培养 {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "已满级"
+    },
+    {
+      "key": "action.full_stock",
+      "value": "满货"
+    },
+    {
+      "key": "action.locked",
+      "value": "未解锁"
+    },
+    {
+      "key": "day.title",
+      "value": "今日经营 · 第 {0} 天"
+    },
+    {
+      "key": "stock.title",
+      "value": "货架补货"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "单次补货 {0} 件，配送升级会降低进价"
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · Lv.{1} 解锁"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "售价 {0} · 进价 {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "等待升级店铺"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "库存 {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "店铺升级"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "改善客流、售价、库存和补货效率"
+    },
+    {
+      "key": "staff.title",
+      "value": "员工培养"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "员工会持续放大挂机收益"
+    },
+    {
+      "key": "level.short",
+      "value": "Lv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "员"
+    },
+    {
+      "key": "settings.title",
+      "value": "设置"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "语言和后续功能扩展入口"
+    },
+    {
+      "key": "settings.language",
+      "value": "界面语言"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "当前：{0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "新增语种：复制 Resources/Localization 下的 JSON，保持 key 不变并翻译 value。"
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "迭代预留"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "玩法、商品、员工、美术和语言已经拆分，后续可以逐步接入真实图片、任务、成就、广告或内购。"
+    },
+    {
+      "key": "guide.title",
+      "value": "今日目标"
+    },
+    {
+      "key": "guide.sell",
+      "value": "自动卖货"
+    },
+    {
+      "key": "guide.restock",
+      "value": "首页补货"
+    },
+    {
+      "key": "guide.grow",
+      "value": "升级扩店"
+    },
+    {
+      "key": "log.opening",
+      "value": "小店开张了，先把饭团卖起来。"
+    },
+    {
+      "key": "log.offline_income",
+      "value": "离线 {0} 分钟，自动收入 {1}"
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "第 {0} 天结算，回头客带来 {1}。"
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "货架空了，顾客只能先离开。"
+    },
+    {
+      "key": "log.sold",
+      "value": "卖出 {0}，收入 {1}。"
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "新品 {0} 解锁了。"
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} 已经满货。"
+    },
+    {
+      "key": "log.cash_short",
+      "value": "现金不足，还差 {0}。"
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0} 补货 {1} 件。"
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "已补货 {0} 件。"
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "升级 {0} 还差 {1}。"
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} 升到 {1} 级。"
+    },
+    {
+      "key": "log.staff_short",
+      "value": "培养 {0} 还差 {1}。"
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} 提升到 {1} 级。"
+    },
+    {
+      "key": "log.ad_short",
+      "value": "宣传费用不足，还差 {0}。"
+    },
+    {
+      "key": "log.advertised",
+      "value": "发了一波附近传单，门口开始排队。"
+    },
+    {
+      "key": "log.language_changed",
+      "value": "语言已切换为 {0}。"
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "测试工具"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "清空当前经营存档并从第一天重新开始，语言设置会保留。"
+    },
+    {
+      "key": "action.reset_save",
+      "value": "重置存档"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "存档已重置，小店重新开张。"
+    }
+  ]
+}

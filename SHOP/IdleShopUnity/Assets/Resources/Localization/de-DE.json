@@ -1,0 +1,410 @@
+{
+  "languageCode": "de-DE",
+  "languageName": "Deutsch",
+  "entries": [
+    {
+      "key": "app.title",
+      "value": "Taschenladen"
+    },
+    {
+      "key": "app.subtitle",
+      "value": "Geöffnet an der Ecke"
+    },
+    {
+      "key": "tab.shop",
+      "value": "Laden"
+    },
+    {
+      "key": "tab.stock",
+      "value": "Lager"
+    },
+    {
+      "key": "tab.upgrades",
+      "value": "Upgrades"
+    },
+    {
+      "key": "tab.staff",
+      "value": "Team"
+    },
+    {
+      "key": "tab.settings",
+      "value": "Einstellungen"
+    },
+    {
+      "key": "stat.cash",
+      "value": "Geld"
+    },
+    {
+      "key": "stat.reputation",
+      "value": "Ruf"
+    },
+    {
+      "key": "stat.total",
+      "value": "Gesamterlös"
+    },
+    {
+      "key": "stat.new_items",
+      "value": "Produkte"
+    },
+    {
+      "key": "header.level",
+      "value": "{0} Lv.{1}"
+    },
+    {
+      "key": "header.queue",
+      "value": "Tag {0}\n{1} warten\n{2}/s"
+    },
+    {
+      "key": "currency.symbol",
+      "value": "€"
+    },
+    {
+      "key": "number.ten_thousand",
+      "value": "Tsd."
+    },
+    {
+      "key": "product.rice_ball.name",
+      "value": "Hausgemachter Onigiri"
+    },
+    {
+      "key": "product.rice_ball.subtitle",
+      "value": "Stabile Verkäufe am Morgen"
+    },
+    {
+      "key": "product.sparkling_water.name",
+      "value": "Yuzu-Sprudel"
+    },
+    {
+      "key": "product.sparkling_water.subtitle",
+      "value": "Leicht, frisch und profitabel"
+    },
+    {
+      "key": "product.lunch_box.name",
+      "value": "Warme Bento-Box"
+    },
+    {
+      "key": "product.lunch_box.subtitle",
+      "value": "Favorit zur Mittagszeit"
+    },
+    {
+      "key": "product.flower.name",
+      "value": "Kleiner Blumenstrauß"
+    },
+    {
+      "key": "product.flower.subtitle",
+      "value": "Premiumprodukt für besseren Ruf"
+    },
+    {
+      "key": "upgrade.shelf.name",
+      "value": "Holzregale"
+    },
+    {
+      "key": "upgrade.shelf.detail",
+      "value": "Erhöht die Lagerkapazität aller Produkte"
+    },
+    {
+      "key": "upgrade.signboard.name",
+      "value": "Leuchtschild"
+    },
+    {
+      "key": "upgrade.signboard.detail",
+      "value": "Erhöht den natürlichen Kundenstrom"
+    },
+    {
+      "key": "upgrade.fridge.name",
+      "value": "Frische-Kühlschrank"
+    },
+    {
+      "key": "upgrade.fridge.detail",
+      "value": "Erhöht die Verkaufspreise der Produkte"
+    },
+    {
+      "key": "upgrade.express.name",
+      "value": "Schnelllieferung"
+    },
+    {
+      "key": "upgrade.express.detail",
+      "value": "Senkt die Kosten für Nachschub"
+    },
+    {
+      "key": "staff.cashier.name",
+      "value": "Kassierer"
+    },
+    {
+      "key": "staff.cashier.detail",
+      "value": "Bedient automatisch mehr Kunden"
+    },
+    {
+      "key": "staff.stocker.name",
+      "value": "Lagerhelfer"
+    },
+    {
+      "key": "staff.stocker.detail",
+      "value": "Erhöht die Menge pro Nachschub"
+    },
+    {
+      "key": "staff.promoter.name",
+      "value": "Promoter"
+    },
+    {
+      "key": "staff.promoter.detail",
+      "value": "Verbessert das Wachstum des Rufs"
+    },
+    {
+      "key": "shop.hero_title",
+      "value": "Dein Eckladen läuft von selbst"
+    },
+    {
+      "key": "shop.hero_meta",
+      "value": "Verkaufen - Auffüllen - Verbessern"
+    },
+    {
+      "key": "shop.idle_status",
+      "value": "Auto-Verkauf · ca. {0}/Min."
+    },
+    {
+      "key": "shop.auto_timer",
+      "value": "Nächster Auto-Verkauf in {0}s"
+    },
+    {
+      "key": "shop.auto_interval",
+      "value": "Auto-Verkauf alle {0}s"
+    },
+    {
+      "key": "shop.waiting_restock",
+      "value": "Auffüllen, um Auto-Verkauf fortzusetzen"
+    },
+    {
+      "key": "shop.unlocked_pending",
+      "value": "Gesperrt"
+    },
+    {
+      "key": "shop.stock_icon",
+      "value": "Art."
+    },
+    {
+      "key": "action.quick_checkout",
+      "value": "Kassieren"
+    },
+    {
+      "key": "action.manual_boost",
+      "value": "Manuell boosten"
+    },
+    {
+      "key": "action.advertise",
+      "value": "Werben"
+    },
+    {
+      "key": "action.restock",
+      "value": "Nachschub {0}"
+    },
+    {
+      "key": "action.restock_all",
+      "value": "Regale auffüllen"
+    },
+    {
+      "key": "action.restock_all_detail",
+      "value": "{0} Waren · {1}"
+    },
+    {
+      "key": "action.upgrade",
+      "value": "Upgrade {0}"
+    },
+    {
+      "key": "action.train",
+      "value": "Trainieren {0}"
+    },
+    {
+      "key": "action.maxed",
+      "value": "Max."
+    },
+    {
+      "key": "action.full_stock",
+      "value": "Voll"
+    },
+    {
+      "key": "action.locked",
+      "value": "Gesperrt"
+    },
+    {
+      "key": "day.title",
+      "value": "Heute · Tag {0}"
+    },
+    {
+      "key": "stock.title",
+      "value": "Regale auffüllen"
+    },
+    {
+      "key": "stock.subtitle",
+      "value": "{0} Artikel pro Nachschub. Lieferung senkt Kosten."
+    },
+    {
+      "key": "stock.unlock_at",
+      "value": "{0} · frei ab Lv.{1}"
+    },
+    {
+      "key": "stock.price_cost",
+      "value": "Preis {0} · Kosten {1}"
+    },
+    {
+      "key": "stock.wait_level",
+      "value": "Verbessere den Laden, um dies freizuschalten"
+    },
+    {
+      "key": "stock.stock_count",
+      "value": "Lager {0}/{1}"
+    },
+    {
+      "key": "upgrades.title",
+      "value": "Laden-Upgrades"
+    },
+    {
+      "key": "upgrades.subtitle",
+      "value": "Verbessert Kundenstrom, Preise, Lager und Nachschub"
+    },
+    {
+      "key": "staff.title",
+      "value": "Teamtraining"
+    },
+    {
+      "key": "staff.subtitle",
+      "value": "Das Team erhöht deine passiven Einnahmen"
+    },
+    {
+      "key": "level.short",
+      "value": "Lv.{0}/{1}"
+    },
+    {
+      "key": "staff.avatar",
+      "value": "Team"
+    },
+    {
+      "key": "settings.title",
+      "value": "Einstellungen"
+    },
+    {
+      "key": "settings.subtitle",
+      "value": "Sprache und spätere Erweiterungen"
+    },
+    {
+      "key": "settings.language",
+      "value": "UI-Sprache"
+    },
+    {
+      "key": "settings.current_language",
+      "value": "Aktuell: {0}"
+    },
+    {
+      "key": "settings.language_hint",
+      "value": "Neue Sprache: JSON in Resources/Localization kopieren, key behalten und value übersetzen."
+    },
+    {
+      "key": "settings.extensibility_title",
+      "value": "Bereit für Erweiterungen"
+    },
+    {
+      "key": "settings.extensibility_body",
+      "value": "Gameplay, Produkte, Team, Grafik und Sprachen sind getrennt, damit Bilder, Quests, Erfolge, Werbung oder In-App-Käufe später ergänzt werden können."
+    },
+    {
+      "key": "guide.title",
+      "value": "Tagesziele"
+    },
+    {
+      "key": "guide.sell",
+      "value": "Auto-Verkauf"
+    },
+    {
+      "key": "guide.restock",
+      "value": "Hier auffüllen"
+    },
+    {
+      "key": "guide.grow",
+      "value": "Laden verbessern"
+    },
+    {
+      "key": "log.opening",
+      "value": "Der Laden ist geöffnet. Beginne mit Onigiri."
+    },
+    {
+      "key": "log.offline_income",
+      "value": "Du warst {0} Min. weg. Der Laden verdiente {1}."
+    },
+    {
+      "key": "log.day_bonus",
+      "value": "Tag {0} beendet. Stammkunden brachten {1}."
+    },
+    {
+      "key": "log.empty_shelf",
+      "value": "Die Regale sind leer, der Kunde ging wieder."
+    },
+    {
+      "key": "log.sold",
+      "value": "{0} für {1} verkauft."
+    },
+    {
+      "key": "log.product_unlocked",
+      "value": "Neues Produkt freigeschaltet: {0}."
+    },
+    {
+      "key": "log.product_full",
+      "value": "{0} ist bereits voll aufgefüllt."
+    },
+    {
+      "key": "log.cash_short",
+      "value": "Nicht genug Geld. Es fehlen {0}."
+    },
+    {
+      "key": "log.restocked",
+      "value": "{0} x{1} aufgefüllt."
+    },
+    {
+      "key": "log.restocked_all",
+      "value": "{0} Waren aufgefüllt."
+    },
+    {
+      "key": "log.upgrade_short",
+      "value": "Für {0} fehlen noch {1}."
+    },
+    {
+      "key": "log.upgraded",
+      "value": "{0} erreicht Level {1}."
+    },
+    {
+      "key": "log.staff_short",
+      "value": "Für Training von {0} fehlen noch {1}."
+    },
+    {
+      "key": "log.staff_upgraded",
+      "value": "{0} erreicht Level {1}."
+    },
+    {
+      "key": "log.ad_short",
+      "value": "Für Werbung fehlen noch {0}."
+    },
+    {
+      "key": "log.advertised",
+      "value": "Flyer verteilt. Kunden stellen sich an."
+    },
+    {
+      "key": "log.language_changed",
+      "value": "Sprache geändert zu {0}."
+    },
+    {
+      "key": "settings.reset_title",
+      "value": "Testwerkzeuge"
+    },
+    {
+      "key": "settings.reset_body",
+      "value": "Löscht den aktuellen Spielstand und startet ab Tag eins neu. Die Sprache bleibt erhalten."
+    },
+    {
+      "key": "action.reset_save",
+      "value": "Spielstand zurücksetzen"
+    },
+    {
+      "key": "log.save_reset",
+      "value": "Spielstand zurückgesetzt. Der Laden ist wieder geöffnet."
+    }
+  ]
+}
