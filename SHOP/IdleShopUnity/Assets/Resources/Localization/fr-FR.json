@@ -223,6 +223,10 @@
       "value": "Plein"
     },
     {
+      "key": "action.cash_short",
+      "value": "Manque {0}"
+    },
+    {
       "key": "action.locked",
       "value": "Verrouillé"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "{0} articles par réassort. La livraison réduit les coûts."
+      "value": "Verifie stock, marge et cout. Les recharges frequentes restent sur Accueil."
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "Prix {0} · Coût {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "Marge {0}/article · Prix {1} · Cout {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "Améliorez la boutique pour débloquer"
     },
@@ -255,12 +263,20 @@
       "value": "Stock {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "Stock bas {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "Vide {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "Améliorations"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "Améliore le trafic, les prix, le stock et le réassort"
+      "value": "Vois les gains exacts. Priorite au prix et aux ventes auto."
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "L'équipe multiplie vos revenus inactifs"
+      "value": "Vois comment le personnel booste ventes auto, stock et reputation."
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "Langue et futures extensions"
+      "value": "Langue, sauvegarde et outils de test"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "Argent insuffisant. Il manque {0}."
+      "value": "Il manque {0}. Attends les ventes auto."
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "Il manque {1} pour améliorer {0}."
+      "value": "Il manque {1} pour {0}. Attends les ventes auto."
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "Il manque {1} pour former {0}."
+      "value": "Il manque {1} pour {0}. Attends les ventes auto."
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "Conseil : améliorer {0} {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "Objectif : ameliorer {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}. Il manque {1}, vends encore."
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "Stock max +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "Plus de clients, ventes auto plus rapides"
+      "value": "Environ +{0} ventes auto/min"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "Réassort moins cher"
+      "value": "Economise env. {0}/article au stock"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "Vendez 1 article maintenant et gagnez {0}"
     },
     {
+      "key": "recommend.checkout",
+      "value": "Conseil : encaisser {0}"
+    },
+    {
       "key": "stat.income",
       "value": "Revenu"
+    },
+    {
+      "key": "offline.title",
+      "value": "La boutique a continué à vendre"
+    },
+    {
+      "key": "offline.body",
+      "value": "Absent {0} min\n{1} articles vendus auto\nGain {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "Les gains hors ligne sont limités à {0} h"
+    },
+    {
+      "key": "offline.notice",
+      "value": "Gains hors ligne {0}. À récupérer."
+    },
+    {
+      "key": "offline.claimed",
+      "value": "Gains hors ligne recuperes : {0}."
+    },
+    {
+      "key": "action.claim",
+      "value": "Récupérer"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "Conseil : former {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "Objectif : former {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}. Il manque {1}, vends encore."
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "Environ +{0} ventes auto/min"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "Recharge {0} -> {1} articles"
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "Reputation +{0}, revenu idle plus stable"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "Cout {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "Les rayons sont vides. Recharge pour vendre auto."
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "Conseil : recharge {0} articles {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "Recharge {0} · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "Stock bas. Recharge avant la rupture."
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "Vendre 10 articles"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "Objectif : vendre 10 articles ({0}/10) · Récompense {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "Objectif · Jour {0}"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "Vendre 5 articles"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "Objectif : vendre 5 articles ({0}/5) · Récompense {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "Recharger une fois"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "Objectif : recharger 1 fois pour continuer à vendre · Récompense {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "Améliorer le prix"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "Objectif : améliorer le prix 1 fois · Récompense {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "Former le caissier"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "Objectif : former le caissier 1 fois · Récompense {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "Atteindre boutique Lv.3"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "Objectif : boutique Lv.3 ({0}/3) · Récompense {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "Objectifs terminés. Continuez à agrandir la boutique."
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "Objectif terminé : {0}. Récompense {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "Attendez la vente auto ou encaissez à la main pour aller plus vite."
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "Quand le stock baisse, rechargez les rayons pour ne pas arrêter les ventes."
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "Avec assez d'argent, améliorez d'abord le prix par vente."
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "Formez le caissier pour accélérer les ventes auto."
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "Continuez à vendre et améliorer pour atteindre Lv.3."
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "Objectifs terminés. Rechargez et améliorez pour gagner plus."
     }
   ]
 }

@@ -223,6 +223,10 @@
       "value": "满货"
     },
     {
+      "key": "action.cash_short",
+      "value": "还差 {0}"
+    },
+    {
       "key": "action.locked",
       "value": "未解锁"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "单次补货 {0} 件，配送升级会降低进价"
+      "value": "看库存、利润和补货成本；常用补货留在首页"
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "售价 {0} · 进价 {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "利润 {0}/件 · 售价 {1} · 进价 {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "等待升级店铺"
     },
@@ -255,12 +263,20 @@
       "value": "库存 {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "库存偏低 {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "库存空了 {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "店铺升级"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "改善客流、售价、库存和补货效率"
+      "value": "看升级后具体提升，优先提高售价和自动速度"
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "员工会持续放大挂机收益"
+      "value": "看员工如何提升自动卖货、补货和口碑"
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "语言和后续功能扩展入口"
+      "value": "语言、存档和测试工具"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "现金不足，还差 {0}。"
+      "value": "现金不足，还差 {0}，等自动卖货。"
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "升级 {0} 还差 {1}。"
+      "value": "升级 {0} 还差 {1}，等自动卖货。"
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "培养 {0} 还差 {1}。"
+      "value": "培养 {0} 还差 {1}，等自动卖货。"
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "推荐：升级{0} {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "目标：升级{0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}，还差 {1}，继续卖几单"
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "库存上限 +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "客流更快，自动卖得更勤"
+      "value": "自动卖货约 +{0} 单/分钟"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "补货更省钱"
+      "value": "每件补货约省 {0}"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "手动卖出 1 件，马上获得 {0}"
     },
     {
+      "key": "recommend.checkout",
+      "value": "推荐：快速收银 {0}"
+    },
+    {
       "key": "stat.income",
       "value": "收益"
+    },
+    {
+      "key": "offline.title",
+      "value": "小店离线营业了"
+    },
+    {
+      "key": "offline.body",
+      "value": "离线 {0} 分钟\n自动卖出 {1} 件\n获得 {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "当前最多累计 {0} 小时离线收益"
+    },
+    {
+      "key": "offline.notice",
+      "value": "离线收益 {0}，回来领取吧。"
+    },
+    {
+      "key": "offline.claimed",
+      "value": "已领取离线收益 {0}。"
+    },
+    {
+      "key": "action.claim",
+      "value": "领取"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "推荐：培养{0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "目标：培养{0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}，还差 {1}，继续卖几单"
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "自动卖货约 +{0} 单/分钟"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "单次补货 {0} → {1} 件"
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "口碑成长 +{0}，挂机更稳"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "费用 {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "货架空了，补货后继续自动卖"
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "推荐：先补 {0} 件 {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "可补 {0} 件 · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "库存偏低，补货后不断货"
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "卖出 10 件"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "目标：卖出 10 件 ({0}/10) · 奖励 {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "阶段目标 · 第 {0} 天"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "卖出 5 件"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "目标：先卖出 5 件 ({0}/5) · 奖励 {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "补货一次"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "目标：补货 1 次，让小店不断货 · 奖励 {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "升级售价"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "目标：升级售价 1 次 · 奖励 {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "培养收银员"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "目标：培养收银员 1 次 · 奖励 {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "小店升到 Lv.3"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "目标：小店升到 Lv.3 ({0}/3) · 奖励 {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "阶段目标已完成，继续扩大经营"
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "完成目标：{0}，奖励 {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "先等自动售出，也可以点手动收银加快进度。"
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "库存变少后点补满货架，自动卖货就不会停。"
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "有钱后优先升级售价，每单赚得更多。"
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "培养收银员，自动卖货速度会提升。"
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "继续卖货和升级，冲到 Lv.3 解锁更多经营空间。"
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "阶段目标完成后，继续围绕补货和升级扩大收益。"
     }
   ]
 }

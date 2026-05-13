@@ -223,6 +223,10 @@
       "value": "Voll"
     },
     {
+      "key": "action.cash_short",
+      "value": "Fehlt {0}"
+    },
+    {
       "key": "action.locked",
       "value": "Gesperrt"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "{0} Artikel pro Nachschub. Lieferung senkt Kosten."
+      "value": "Prufe Vorrat, Gewinn und Kosten. Haufiges Nachfullen bleibt auf Home."
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "Preis {0} · Kosten {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "Gewinn {0}/Ware · Preis {1} · Kosten {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "Verbessere den Laden, um dies freizuschalten"
     },
@@ -255,12 +263,20 @@
       "value": "Lager {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "Wenig Vorrat {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "Leer {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "Laden-Upgrades"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "Verbessert Kundenstrom, Preise, Lager und Nachschub"
+      "value": "Prufe genaue Gewinne. Prioritat: Preis und Auto-Verkaufe."
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "Das Team erhöht deine passiven Einnahmen"
+      "value": "Sieh, wie Personal Auto-Verkaufe, Vorrat und Ruf verbessert."
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "Sprache und spätere Erweiterungen"
+      "value": "Sprache, Spielstand und Testwerkzeuge"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "Nicht genug Geld. Es fehlen {0}."
+      "value": "Es fehlen {0}. Warte auf Auto-Verkaufe."
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "Für {0} fehlen noch {1}."
+      "value": "Fur {0} fehlen {1}. Warte auf Auto-Verkaufe."
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "Für Training von {0} fehlen noch {1}."
+      "value": "Fur {0} fehlen {1}. Warte auf Auto-Verkaufe."
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "Tipp: {0} verbessern {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "Ziel: {0} verbessern {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}. Es fehlen {1}, verkaufe noch etwas."
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "Lagerlimit +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "Mehr Kunden, schnellere Auto-Verkäufe"
+      "value": "Etwa +{0} Auto-Verkaufe/min"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "Auffüllen wird günstiger"
+      "value": "Spart ca. {0}/Ware beim Nachfullen"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "1 Artikel sofort verkaufen und {0} verdienen"
     },
     {
+      "key": "recommend.checkout",
+      "value": "Empfohlen: schnell kassieren {0}"
+    },
+    {
       "key": "stat.income",
       "value": "Erlös"
+    },
+    {
+      "key": "offline.title",
+      "value": "Dein Laden hat weiter verkauft"
+    },
+    {
+      "key": "offline.body",
+      "value": "{0} Min. offline\n{1} Artikel automatisch verkauft\nVerdient {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "Offline-Ertrag ist aktuell auf {0} Std. begrenzt"
+    },
+    {
+      "key": "offline.notice",
+      "value": "Offline-Ertrag {0}. Jetzt abholen."
+    },
+    {
+      "key": "offline.claimed",
+      "value": "Offline-Ertrag {0} abgeholt."
+    },
+    {
+      "key": "action.claim",
+      "value": "Abholen"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "Tipp: {0} ausbilden {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "Ziel: {0} trainieren {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}. Es fehlen {1}, verkaufe noch etwas."
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "Etwa +{0} Auto-Verkaufe/min"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "Nachfullen {0} -> {1} Waren"
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "Rufwachstum +{0}, stabilerer Idle-Ertrag"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "Kosten {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "Regale leer. Full nach, damit Auto-Verkaufe weiterlaufen."
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "Empfohlen: {0} Waren nachfullen {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "{0} Waren moglich · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "Wenig Vorrat. Fulle auf, bevor Regale leer sind."
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "10 Waren verkaufen"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "Ziel: 10 Waren verkaufen ({0}/10) · Belohnung {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "Etappenziel · Tag {0}"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "5 Waren verkaufen"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "Ziel: zuerst 5 Waren verkaufen ({0}/5) · Belohnung {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "Einmal auffullen"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "Ziel: einmal auffullen, damit weiter verkauft wird · Belohnung {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "Preis verbessern"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "Ziel: Preis 1-mal verbessern · Belohnung {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "Kassierer trainieren"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "Ziel: Kassierer 1-mal trainieren · Belohnung {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "Shop Lv.3 erreichen"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "Ziel: Shop Lv.3 erreichen ({0}/3) · Belohnung {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "Etappenziele abgeschlossen. Baue den Shop weiter aus."
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "Ziel abgeschlossen: {0}. Belohnung {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "Warte auf Auto-Verkaufe oder tippe Kasse fur mehr Tempo."
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "Wenn Vorrat sinkt, fulle Regale auf, damit Verkaufe weiterlaufen."
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "Mit genug Geld zuerst den Verkaufspreis verbessern."
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "Trainiere den Kassierer, damit Auto-Verkaufe schneller werden."
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "Verkaufe und verbessere weiter, um Lv.3 zu erreichen."
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "Ziele abgeschlossen. Fulle auf und verbessere fur mehr Einkommen."
     }
   ]
 }

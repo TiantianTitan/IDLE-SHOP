@@ -223,6 +223,10 @@
       "value": "가득 참"
     },
     {
+      "key": "action.cash_short",
+      "value": "{0} 부족"
+    },
+    {
       "key": "action.locked",
       "value": "잠김"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "한 번에 {0}개 입고. 배송 강화로 비용 감소."
+      "value": "재고, 이익, 보충 비용 확인. 자주 쓰는 보충은 홈에서."
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "판매가 {0} · 원가 {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "이익 {0}/개 · 판매가 {1} · 원가 {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "상점을 강화하면 해금됩니다"
     },
@@ -255,12 +263,20 @@
       "value": "재고 {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "재고 낮음 {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "재고 없음 {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "상점 강화"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "방문객, 가격, 재고, 입고 효율을 개선합니다"
+      "value": "업그레이드 효과를 확인. 가격과 자동 판매 속도를 우선."
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "직원은 방치 수익을 계속 키워 줍니다"
+      "value": "직원이 자동 판매, 보충, 평판을 어떻게 올리는지 확인."
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "언어와 향후 기능 확장"
+      "value": "언어, 저장 데이터, 테스트 도구"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "현금이 부족합니다. {0}이 더 필요합니다."
+      "value": "{0} 부족해요. 자동 판매를 기다리세요."
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "{0} 강화에 {1}이 더 필요합니다."
+      "value": "{0}까지 {1} 부족해요. 자동 판매를 기다리세요."
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "{0} 육성에 {1}이 더 필요합니다."
+      "value": "{0}까지 {1} 부족해요. 자동 판매를 기다리세요."
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "추천: {0} 업그레이드 {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "목표: {0} 업그레이드 {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}. {1} 더 필요해요, 조금 더 팔아요."
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "재고 한도 +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "손님이 늘어 자동 판매가 빨라짐"
+      "value": "자동 판매 약 +{0}개/분"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "보충 비용 절감"
+      "value": "보충 비용 약 {0}/개 절약"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "상품 1개를 바로 팔아 {0} 획득"
     },
     {
+      "key": "recommend.checkout",
+      "value": "추천: 빠른 계산 {0}"
+    },
+    {
       "key": "stat.income",
       "value": "수익"
+    },
+    {
+      "key": "offline.title",
+      "value": "가게가 계속 영업했어요"
+    },
+    {
+      "key": "offline.body",
+      "value": "{0}분 동안 오프라인\n자동 판매 {1}개\n획득 {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "현재 오프라인 수익은 최대 {0}시간까지 누적됩니다"
+    },
+    {
+      "key": "offline.notice",
+      "value": "오프라인 수익 {0}을 받을 수 있어요."
+    },
+    {
+      "key": "offline.claimed",
+      "value": "오프라인 수익 {0} 수령."
+    },
+    {
+      "key": "action.claim",
+      "value": "받기"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "추천: {0} 육성 {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "목표: {0} 훈련 {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}. {1} 더 필요해요, 조금 더 팔아요."
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "자동 판매 약 +{0}개/분"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "보충 수량 {0} → {1}개"
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "평판 성장 +{0}, 방치 수익 안정"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "비용 {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "진열대가 비었어요. 보충하면 자동 판매가 이어져요."
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "추천: 먼저 {0}개 보충 {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "{0}개 보충 가능 · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "재고가 적어요. 비기 전에 보충하세요."
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "상품 10개 판매"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "목표: 상품 10개 판매 ({0}/10) · 보상 {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "단계 목표 · {0}일"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "상품 5개 판매"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "목표: 먼저 상품 5개 판매 ({0}/5) · 보상 {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "재고 1회 보충"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "목표: 재고를 1회 보충해 판매 유지 · 보상 {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "판매가 업그레이드"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "목표: 판매가 1회 업그레이드 · 보상 {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "계산원 훈련"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "목표: 계산원 1회 훈련 · 보상 {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "상점 Lv.3 달성"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "목표: 상점 Lv.3 달성 ({0}/3) · 보상 {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "단계 목표 완료. 상점을 더 키우세요."
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "목표 완료: {0}. 보상 {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "자동 판매를 기다리거나 수동 계산으로 더 빨리 진행하세요."
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "재고가 줄면 선반을 채워 자동 판매를 이어가세요."
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "현금이 모이면 판매가를 먼저 올려 한 번에 더 벌어요."
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "계산원을 훈련하면 자동 판매가 빨라집니다."
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "판매와 업그레이드를 계속해 Lv.3을 달성하세요."
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "목표 완료. 보충과 업그레이드로 수익을 늘리세요."
     }
   ]
 }

@@ -223,6 +223,10 @@
       "value": "Cheio"
     },
     {
+      "key": "action.cash_short",
+      "value": "Faltam {0}"
+    },
+    {
       "key": "action.locked",
       "value": "Bloqueado"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "{0} artigos por reposição. A entrega reduz custos."
+      "value": "Vê stock, lucro e custo. Reposição frequente fica no Início."
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "Preço {0} · Custo {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "Lucro {0}/item · Preco {1} · Custo {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "Melhora a loja para desbloquear"
     },
@@ -255,12 +263,20 @@
       "value": "Stock {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "Stock baixo {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "Vazio {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "Melhorias da loja"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "Melhora clientes, preços, stock e reposição"
+      "value": "Vê ganhos exatos. Prioriza preço e vendas automáticas."
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "A equipa multiplica os teus ganhos passivos"
+      "value": "Vê como a equipa melhora vendas auto, reposição e reputação."
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "Idioma e futuras expansões"
+      "value": "Idioma, dados guardados e ferramentas de teste"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "Dinheiro insuficiente. Faltam {0}."
+      "value": "Faltam {0}. Aguarda vendas automaticas."
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "Faltam {1} para melhorar {0}."
+      "value": "Faltam {1} para {0}. Aguarda vendas automaticas."
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "Faltam {1} para treinar {0}."
+      "value": "Faltam {1} para {0}. Aguarda vendas automaticas."
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "Recomendado: melhorar {0} {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "Objetivo: melhorar {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}. Faltam {1}, vende mais um pouco."
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "Limite de stock +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "Mais clientes, vendas automáticas mais rápidas"
+      "value": "Cerca de +{0} vendas auto/min"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "Reabastecer fica mais barato"
+      "value": "Poupa cerca de {0}/item ao repor"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "Venda 1 item agora e ganhe {0}"
     },
     {
+      "key": "recommend.checkout",
+      "value": "Recomendado: cobrar {0}"
+    },
+    {
       "key": "stat.income",
       "value": "Receita"
+    },
+    {
+      "key": "offline.title",
+      "value": "A loja continuou a vender"
+    },
+    {
+      "key": "offline.body",
+      "value": "{0} min offline\n{1} itens vendidos automaticamente\nGanhou {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "Os ganhos offline acumulam até {0} h"
+    },
+    {
+      "key": "offline.notice",
+      "value": "Ganhos offline {0}. Recolha agora."
+    },
+    {
+      "key": "offline.claimed",
+      "value": "Ganhos offline recebidos: {0}."
+    },
+    {
+      "key": "action.claim",
+      "value": "Recolher"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "Recomendado: treinar {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "Objetivo: treinar {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}. Faltam {1}, vende mais um pouco."
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "Cerca de +{0} vendas auto/min"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "Reposicao {0} -> {1} itens"
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "Reputacao +{0}, rendimento idle mais estavel"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "Custo {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "Prateleiras vazias. Reabastece para vender auto."
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "Recomendado: repor {0} itens {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "Pode repor {0} · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "Stock baixo. Reabastece antes de esgotar."
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "Vender 10 itens"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "Objetivo: vender 10 itens ({0}/10) · Recompensa {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "Objetivo · Dia {0}"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "Vender 5 itens"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "Objetivo: vender primeiro 5 itens ({0}/5) · Recompensa {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "Reabastecer uma vez"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "Objetivo: reabastecer 1 vez para continuar a vender · Recompensa {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "Melhorar preço"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "Objetivo: melhorar o preço 1 vez · Recompensa {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "Treinar caixa"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "Objetivo: treinar o caixa 1 vez · Recompensa {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "Chegar à loja Lv.3"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "Objetivo: loja Lv.3 ({0}/3) · Recompensa {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "Objetivos concluídos. Continue a expandir a loja."
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "Objetivo concluído: {0}. Recompensa {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "Aguarde a venda automática ou toque em cobrar para acelerar."
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "Quando o stock baixar, encha as prateleiras para continuar a vender."
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "Com dinheiro, melhore primeiro o preço de venda."
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "Treine o caixa para acelerar a venda automática."
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "Continue a vender e melhorar para chegar a Lv.3."
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "Objetivos concluídos. Reabasteça e melhore para ganhar mais."
     }
   ]
 }

@@ -223,6 +223,10 @@
       "value": "Полно"
     },
     {
+      "key": "action.cash_short",
+      "value": "Нужно {0}"
+    },
+    {
       "key": "action.locked",
       "value": "Закрыто"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "{0} шт. за пополнение. Доставка снижает расходы."
+      "value": "Проверь запас, прибыль и цену пополнения. Часто пополняй с главной."
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "Цена {0} · Себестоимость {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "Прибыль {0}/шт. · Цена {1} · Себестоимость {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "Улучшите магазин, чтобы открыть"
     },
@@ -255,12 +263,20 @@
       "value": "Запас {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "Мало {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "Пусто {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "Улучшения магазина"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "Улучшает поток, цены, запасы и пополнение"
+      "value": "Смотри точный прирост. Сначала цена и автопродажи."
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "Персонал увеличивает пассивный доход"
+      "value": "Смотри, как сотрудники улучшают продажи, запас и репутацию."
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "Язык и будущие расширения"
+      "value": "Язык, сохранение и тестовые инструменты"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "Недостаточно денег. Нужно еще {0}."
+      "value": "Не хватает {0}. Дождись автопродаж."
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "Для улучшения {0} нужно еще {1}."
+      "value": "Для {0} не хватает {1}. Дождись автопродаж."
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "Для обучения {0} нужно еще {1}."
+      "value": "Для {0} не хватает {1}. Дождись автопродаж."
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "Совет: улучшить {0} {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "Цель: улучшить {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}. Нужно еще {1}, продай еще."
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "Лимит запаса +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "Больше покупателей, авто-продажи быстрее"
+      "value": "Автопродажи примерно +{0}/мин"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "Пополнение станет дешевле"
+      "value": "Экономия около {0}/шт. при пополнении"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "Продайте 1 товар сейчас и получите {0}"
     },
     {
+      "key": "recommend.checkout",
+      "value": "Совет: быстро продать {0}"
+    },
+    {
       "key": "stat.income",
       "value": "Доход"
+    },
+    {
+      "key": "offline.title",
+      "value": "Магазин продавал без вас"
+    },
+    {
+      "key": "offline.body",
+      "value": "Офлайн {0} мин\nАвто-продано {1} шт.\nПолучено {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "Офлайн-доход копится максимум {0} ч"
+    },
+    {
+      "key": "offline.notice",
+      "value": "Офлайн-доход {0}. Заберите награду."
+    },
+    {
+      "key": "offline.claimed",
+      "value": "Офлайн-доход получен: {0}."
+    },
+    {
+      "key": "action.claim",
+      "value": "Забрать"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "Совет: обучить {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "Цель: обучить {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}. Нужно еще {1}, продай еще."
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "Автопродажи примерно +{0}/мин"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "Пополнение {0} -> {1} шт."
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "Рост репутации +{0}, доход стабильнее"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "Цена {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "Полки пусты. Пополни запас для автопродаж."
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "Совет: пополнить {0} шт. {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "Можно {0} шт. · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "Запас низкий. Пополни до пустых полок."
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "Продать 10 товаров"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "Цель: продать 10 товаров ({0}/10) · Награда {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "Цель этапа · День {0}"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "Продать 5 товаров"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "Цель: сначала продать 5 товаров ({0}/5) · Награда {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "Пополнить 1 раз"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "Цель: пополнить полки 1 раз · Награда {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "Улучшить цену"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "Цель: улучшить цену 1 раз · Награда {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "Обучить кассира"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "Цель: обучить кассира 1 раз · Награда {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "Достичь магазина Lv.3"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "Цель: магазин Lv.3 ({0}/3) · Награда {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "Этапные цели выполнены. Развивай магазин дальше."
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "Цель выполнена: {0}. Награда {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "Жди автопродажи или нажми кассу, чтобы ускориться."
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "Когда запас падает, пополни полки, чтобы продажи не остановились."
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "Когда будут деньги, сначала улучшай цену продажи."
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "Обучи кассира, чтобы автопродажи стали быстрее."
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "Продолжай продавать и улучшать, чтобы достичь Lv.3."
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "Цели выполнены. Пополняй и улучшай магазин для роста дохода."
     }
   ]
 }

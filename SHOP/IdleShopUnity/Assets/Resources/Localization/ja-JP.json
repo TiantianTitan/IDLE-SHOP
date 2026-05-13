@@ -223,6 +223,10 @@
       "value": "満タン"
     },
     {
+      "key": "action.cash_short",
+      "value": "あと {0}"
+    },
+    {
       "key": "action.locked",
       "value": "未解放"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "1回の仕入れは {0} 個。配送強化でコスト低下。"
+      "value": "在庫、利益、補充コストを確認。よく使う補充はホームで。"
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "価格 {0} · 原価 {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "利益 {0}/個 · 売価 {1} · 原価 {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "店舗を強化すると解放"
     },
@@ -255,12 +263,20 @@
       "value": "在庫 {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "在庫少 {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "在庫切れ {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "店舗強化"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "客数、価格、在庫、仕入れ効率を改善"
+      "value": "強化後の効果を確認。まず売価と自動販売速度を優先。"
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "スタッフは放置収益を継続的に伸ばす"
+      "value": "スタッフが自動販売、補充、評判をどう伸ばすか確認。"
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "言語と今後の機能拡張"
+      "value": "言語、セーブ、テストツール"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "現金不足。あと{0}必要です。"
+      "value": "あと {0} 必要です。自動販売を待とう。"
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "{0}の強化にはあと{1}必要です。"
+      "value": "{0} まであと {1}。自動販売を待とう。"
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "{0}の育成にはあと{1}必要です。"
+      "value": "{0} まであと {1}。自動販売を待とう。"
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "おすすめ：{0}を強化 {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "目標：{0} を強化 {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}。あと {1}、もう少し売ろう。"
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "在庫上限 +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "客足が増えて自動販売が速くなる"
+      "value": "自動販売 約 +{0} 件/分"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "補充コストを節約"
+      "value": "補貨コスト 約 {0}/個 節約"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "1個手売りしてすぐに {0} 獲得"
     },
     {
+      "key": "recommend.checkout",
+      "value": "おすすめ：すぐ会計 {0}"
+    },
+    {
       "key": "stat.income",
       "value": "収益"
+    },
+    {
+      "key": "offline.title",
+      "value": "留守中も営業しました"
+    },
+    {
+      "key": "offline.body",
+      "value": "{0} 分オフライン\n自動販売 {1} 個\n獲得 {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "現在のオフライン収益上限は {0} 時間です"
+    },
+    {
+      "key": "offline.notice",
+      "value": "オフライン収益 {0} を受け取れます。"
+    },
+    {
+      "key": "offline.claimed",
+      "value": "オフライン報酬 {0} を受け取りました。"
+    },
+    {
+      "key": "action.claim",
+      "value": "受け取る"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "おすすめ：{0}を育成 {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "目標：{0} を育成 {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}。あと {1}、もう少し売ろう。"
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "自動販売 約 +{0} 件/分"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "補貨量 {0} → {1} 個"
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "評判成長 +{0}、放置収益が安定"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "費用 {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "棚が空です。補貨すると自動販売が続きます。"
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "おすすめ：まず {0} 個補貨 {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "{0} 個補貨可 · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "在庫が少なめです。空になる前に補充しよう。"
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "10個売る"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "目標：10個売る ({0}/10) · 報酬 {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "段階目標 · {0}日目"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "5個売る"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "目標：まず5個売る ({0}/5) · 報酬 {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "1回補充"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "目標：1回補充して販売を止めない · 報酬 {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "販売価格を強化"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "目標：販売価格を1回強化 · 報酬 {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "レジ係を育成"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "目標：レジ係を1回育成 · 報酬 {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "店をLv.3へ"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "目標：店をLv.3にする ({0}/3) · 報酬 {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "段階目標は完了です。さらに店を広げましょう。"
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "目標達成：{0}。報酬 {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "自動販売を待つか、手動会計で早めましょう。"
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "在庫が減ったら棚を補充して、自動販売を続けましょう。"
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "資金が貯まったら販売価格を優先強化しましょう。"
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "レジ係を育成すると自動販売が速くなります。"
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "販売と強化を続けてLv.3を目指しましょう。"
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "目標完了。補充と強化で収益を伸ばしましょう。"
     }
   ]
 }

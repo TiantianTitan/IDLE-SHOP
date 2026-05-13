@@ -223,6 +223,10 @@
       "value": "Full"
     },
     {
+      "key": "action.cash_short",
+      "value": "Need {0}"
+    },
+    {
       "key": "action.locked",
       "value": "Locked"
     },
@@ -236,7 +240,7 @@
     },
     {
       "key": "stock.subtitle",
-      "value": "{0} items per restock. Delivery upgrades lower costs."
+      "value": "Check stock, profit, and restock cost. Use Home for frequent restocks."
     },
     {
       "key": "stock.unlock_at",
@@ -247,6 +251,10 @@
       "value": "Price {0} · Cost {1}"
     },
     {
+      "key": "stock.profit_line",
+      "value": "Profit {0}/item · Price {1} · Cost {2}"
+    },
+    {
       "key": "stock.wait_level",
       "value": "Upgrade the shop to unlock"
     },
@@ -255,12 +263,20 @@
       "value": "Stock {0}/{1}"
     },
     {
+      "key": "stock.low_count",
+      "value": "Low stock {0}/{1}"
+    },
+    {
+      "key": "stock.empty_count",
+      "value": "Empty {0}/{1}"
+    },
+    {
       "key": "upgrades.title",
       "value": "Shop Upgrades"
     },
     {
       "key": "upgrades.subtitle",
-      "value": "Improve traffic, prices, capacity, and restocking"
+      "value": "Check exact gains. Prioritize price and auto-sale speed."
     },
     {
       "key": "staff.title",
@@ -268,7 +284,7 @@
     },
     {
       "key": "staff.subtitle",
-      "value": "Staff multiply your idle earnings over time"
+      "value": "See how staff improve auto sales, restocking, and reputation."
     },
     {
       "key": "level.short",
@@ -284,7 +300,7 @@
     },
     {
       "key": "settings.subtitle",
-      "value": "Language and future feature expansion"
+      "value": "Language, save data, and test tools"
     },
     {
       "key": "settings.language",
@@ -352,7 +368,7 @@
     },
     {
       "key": "log.cash_short",
-      "value": "Not enough cash. Need {0} more."
+      "value": "Need {0} more. Wait for auto sales."
     },
     {
       "key": "log.restocked",
@@ -364,7 +380,7 @@
     },
     {
       "key": "log.upgrade_short",
-      "value": "Need {1} more to upgrade {0}."
+      "value": "Need {1} more for {0}. Wait for auto sales."
     },
     {
       "key": "log.upgraded",
@@ -372,7 +388,7 @@
     },
     {
       "key": "log.staff_short",
-      "value": "Need {1} more to train {0}."
+      "value": "Need {1} more for {0}. Wait for auto sales."
     },
     {
       "key": "log.staff_upgraded",
@@ -419,12 +435,20 @@
       "value": "Recommended: upgrade {0} {1}"
     },
     {
+      "key": "recommend.upgrade_goal",
+      "value": "Goal: upgrade {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_goal_detail",
+      "value": "{0}. Need {1} more, sell a few more."
+    },
+    {
       "key": "recommend.upgrade_stock",
       "value": "Stock cap +{0}"
     },
     {
       "key": "recommend.upgrade_speed",
-      "value": "More traffic, faster auto sales"
+      "value": "About +{0} auto sales/min"
     },
     {
       "key": "recommend.upgrade_price",
@@ -432,15 +456,171 @@
     },
     {
       "key": "recommend.upgrade_cost",
-      "value": "Restocking gets cheaper"
+      "value": "Save about {0}/item on restock"
     },
     {
       "key": "recommend.checkout_detail",
       "value": "Sell 1 item now and earn {0}"
     },
     {
+      "key": "recommend.checkout",
+      "value": "Recommended: checkout {0}"
+    },
+    {
       "key": "stat.income",
       "value": "Income"
+    },
+    {
+      "key": "offline.title",
+      "value": "Your shop kept selling"
+    },
+    {
+      "key": "offline.body",
+      "value": "Away for {0} min\nAuto-sold {1} items\nEarned {2}"
+    },
+    {
+      "key": "offline.cap",
+      "value": "Offline earnings currently cap at {0} hours"
+    },
+    {
+      "key": "offline.notice",
+      "value": "Offline earnings {0}. Claim them now."
+    },
+    {
+      "key": "offline.claimed",
+      "value": "Claimed offline earnings {0}."
+    },
+    {
+      "key": "action.claim",
+      "value": "Claim"
+    },
+    {
+      "key": "recommend.staff",
+      "value": "Recommended: train {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal",
+      "value": "Goal: train {0} {1}"
+    },
+    {
+      "key": "recommend.staff_goal_detail",
+      "value": "{0}. Need {1} more, sell a few more."
+    },
+    {
+      "key": "staff.cashier.automation",
+      "value": "About +{0} auto sales/min"
+    },
+    {
+      "key": "staff.stocker.automation",
+      "value": "Restock per tap {0} -> {1}"
+    },
+    {
+      "key": "staff.promoter.automation",
+      "value": "Reputation growth +{0}, steadier idle income"
+    },
+    {
+      "key": "upgrades.next_cost",
+      "value": "Cost {0}"
+    },
+    {
+      "key": "shop.empty_stage_hint",
+      "value": "Shelves are empty. Restock to keep auto selling."
+    },
+    {
+      "key": "recommend.restock_partial",
+      "value": "Recommended: restock {0} items {1}"
+    },
+    {
+      "key": "action.restock_affordable_detail",
+      "value": "Can restock {0} · {1}"
+    },
+    {
+      "key": "shop.low_stock_stage_hint",
+      "value": "Stock is low. Restock before shelves empty."
+    },
+    {
+      "key": "milestone.sell_10.name",
+      "value": "Sell 10 items"
+    },
+    {
+      "key": "milestone.sell_10",
+      "value": "Goal: sell 10 items ({0}/10) · Reward {1}"
+    },
+    {
+      "key": "milestone.panel_title",
+      "value": "Stage Goal · Day {0}"
+    },
+    {
+      "key": "milestone.sell_5.name",
+      "value": "Sell 5 items"
+    },
+    {
+      "key": "milestone.sell_5",
+      "value": "Goal: sell 5 items first ({0}/5) · Reward {1}"
+    },
+    {
+      "key": "milestone.restock_once.name",
+      "value": "Restock once"
+    },
+    {
+      "key": "milestone.restock_once",
+      "value": "Goal: restock once to keep selling · Reward {0}"
+    },
+    {
+      "key": "milestone.price_upgrade.name",
+      "value": "Upgrade price"
+    },
+    {
+      "key": "milestone.price_upgrade",
+      "value": "Goal: upgrade price once · Reward {0}"
+    },
+    {
+      "key": "milestone.cashier.name",
+      "value": "Train cashier"
+    },
+    {
+      "key": "milestone.cashier",
+      "value": "Goal: train cashier once · Reward {0}"
+    },
+    {
+      "key": "milestone.level_3.name",
+      "value": "Reach shop Lv.3"
+    },
+    {
+      "key": "milestone.level_3",
+      "value": "Goal: reach shop Lv.3 ({0}/3) · Reward {1}"
+    },
+    {
+      "key": "milestone.all_done",
+      "value": "Stage goals complete. Keep growing the shop."
+    },
+    {
+      "key": "milestone.claimed",
+      "value": "Goal complete: {0}. Reward {1}"
+    },
+    {
+      "key": "milestone.hint.sell",
+      "value": "Wait for auto sales, or tap checkout to speed it up."
+    },
+    {
+      "key": "milestone.hint.restock",
+      "value": "When stock gets low, fill the shelves so auto selling keeps going."
+    },
+    {
+      "key": "milestone.hint.upgrade",
+      "value": "Once you have cash, upgrade price first to earn more per sale."
+    },
+    {
+      "key": "milestone.hint.cashier",
+      "value": "Train the cashier to make auto selling faster."
+    },
+    {
+      "key": "milestone.hint.level_3",
+      "value": "Keep selling and upgrading to reach Lv.3."
+    },
+    {
+      "key": "milestone.hint.all_done",
+      "value": "Goals are complete. Keep restocking and upgrading for more income."
     }
   ]
 }
