@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "存档已重置，小店重新开张。"
+    },
+    {
+      "key": "recommend.restock",
+      "value": "推荐：补满货架 {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "库存快空了，补货后继续自动赚钱"
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "推荐：升级{0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "库存上限 +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "客流更快，自动卖得更勤"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "单价 +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "补货更省钱"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "手动卖出 1 件，马上获得 {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "收益"
     }
   ]
 }

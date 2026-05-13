@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "セーブをリセットしました。お店が再開しました。"
+    },
+    {
+      "key": "recommend.restock",
+      "value": "おすすめ：棚を満タン {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "在庫が少なめです。補充して自動販売を続けましょう。"
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "おすすめ：{0}を強化 {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "在庫上限 +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "客足が増えて自動販売が速くなる"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "単価 +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "補充コストを節約"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "1個手売りしてすぐに {0} 獲得"
+    },
+    {
+      "key": "stat.income",
+      "value": "収益"
     }
   ]
 }

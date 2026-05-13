@@ -71,20 +71,22 @@ public sealed class SafeAreaFitter : MonoBehaviour
 
 public sealed class UIButtonFeedback : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
 {
-    private RectTransform rect = null!;
-    private Vector3 baseScale;
-    private Vector3 targetScale;
+    private Image image = null!;
+    private Color restColor;
+    private Color targetColor;
 
     private void Awake()
     {
-        rect = GetComponent<RectTransform>();
-        baseScale = rect.localScale;
-        targetScale = baseScale;
+        image = GetComponent<Image>();
+        SyncRestColor();
     }
 
     private void Update()
     {
-        rect.localScale = Vector3.Lerp(rect.localScale, targetScale, Time.unscaledDeltaTime * 18f);
+        if (image != null)
+        {
+            image.color = Color.Lerp(image.color, targetColor, Time.unscaledDeltaTime * 18f);
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -95,51 +97,104 @@ public sealed class UIButtonFeedback : MonoBehaviour, IPointerDownHandler, IPoin
             return;
         }
 
-        targetScale = baseScale * 0.96f;
+        if (image != null)
+        {
+            restColor = image.color;
+            targetColor = Color.Lerp(restColor, Color.black, 0.10f);
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        targetScale = baseScale;
+        targetColor = restColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        targetScale = baseScale;
+        targetColor = restColor;
+    }
+
+    public void SyncRestColor()
+    {
+        restColor = image != null ? image.color : Color.white;
+        targetColor = restColor;
     }
 }
 
 public sealed class UIAppearAnimator : MonoBehaviour
 {
     private CanvasGroup group = null!;
-    private RectTransform rect = null!;
-    private float age;
-    private Vector3 targetScale;
 
     private void Awake()
     {
-        rect = GetComponent<RectTransform>();
         group = gameObject.GetComponent<CanvasGroup>();
         if (group == null)
         {
             group = gameObject.AddComponent<CanvasGroup>();
         }
 
-        targetScale = rect.localScale;
-        rect.localScale = targetScale * 0.985f;
-        group.alpha = 0f;
+        group.alpha = 1f;
     }
 
     private void Update()
     {
-        age += Time.unscaledDeltaTime;
-        float t = Mathf.Clamp01(age * 7.5f);
-        float eased = 1f - Mathf.Pow(1f - t, 3f);
-        group.alpha = eased;
-        rect.localScale = Vector3.LerpUnclamped(targetScale * 0.985f, targetScale, eased);
+        if (group != null)
+        {
+            group.alpha = 1f;
+        }
 
+        Destroy(this);
+    }
+}
+
+public sealed class UIFlashTint : MonoBehaviour
+{
+    private Image image = null!;
+    private Color baseColor;
+    private Color flashColor;
+    private float age;
+    private float duration = 0.55f;
+
+    public void Configure(Color color, float seconds)
+    {
+        image = GetComponent<Image>();
+        if (image == null)
+        {
+            Destroy(this);
+            return;
+        }
+
+        baseColor = image.color;
+        flashColor = color;
+        duration = Mathf.Max(0.05f, seconds);
+        image.color = Color.Lerp(baseColor, flashColor, 0.36f);
+    }
+
+    private void Awake()
+    {
+        if (image == null)
+        {
+            image = GetComponent<Image>();
+            baseColor = image != null ? image.color : Color.white;
+            flashColor = baseColor;
+        }
+    }
+
+    private void Update()
+    {
+        if (image == null)
+        {
+            Destroy(this);
+            return;
+        }
+
+        age += Time.unscaledDeltaTime;
+        float t = Mathf.Clamp01(age / duration);
+        float eased = 1f - Mathf.Pow(1f - t, 2f);
+        image.color = Color.Lerp(Color.Lerp(baseColor, flashColor, 0.36f), baseColor, eased);
         if (t >= 1f)
         {
+            image.color = baseColor;
             Destroy(this);
         }
     }

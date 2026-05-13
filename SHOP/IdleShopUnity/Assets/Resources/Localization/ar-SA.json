@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "تمت إعادة ضبط الحفظ. افتتح المتجر من جديد."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "مقترح: ملء الرفوف {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "المخزون منخفض. أعد التعبئة لاستمرار البيع التلقائي."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "مقترح: ترقية {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "حد المخزون +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "زبائن أكثر وبيع تلقائي أسرع"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "سعر الوحدة +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "إعادة التخزين تصبح أرخص"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "بع سلعة واحدة الآن واربح {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "الدخل"
     }
   ]
 }

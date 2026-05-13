@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "Save reset. The shop is open again."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "Recommended: fill shelves {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "Stock is low. Restock to keep earning automatically."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "Recommended: upgrade {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "Stock cap +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "More traffic, faster auto sales"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "Unit price +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "Restocking gets cheaper"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "Sell 1 item now and earn {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "Income"
     }
   ]
 }

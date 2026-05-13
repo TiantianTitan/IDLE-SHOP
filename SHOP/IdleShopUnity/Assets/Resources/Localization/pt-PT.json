@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "Gravação reposta. A loja voltou a abrir."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "Recomendado: encher prateleiras {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "O stock está baixo. Reabasteça para continuar a vender automaticamente."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "Recomendado: melhorar {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "Limite de stock +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "Mais clientes, vendas automáticas mais rápidas"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "Preço unitário +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "Reabastecer fica mais barato"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "Venda 1 item agora e ganhe {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "Receita"
     }
   ]
 }

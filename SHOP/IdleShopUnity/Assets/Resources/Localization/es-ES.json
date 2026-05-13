@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "Partida reiniciada. La tienda vuelve a abrir."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "Recomendado: llenar estantes {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "Queda poco stock. Repón para seguir vendiendo en automático."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "Recomendado: mejorar {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "Límite de stock +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "Más clientes y ventas automáticas más rápidas"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "Precio unitario +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "Reponer cuesta menos"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "Vende 1 artículo ahora y gana {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "Ingresos"
     }
   ]
 }

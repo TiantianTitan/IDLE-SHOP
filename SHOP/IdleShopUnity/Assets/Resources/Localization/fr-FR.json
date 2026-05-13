@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "Sauvegarde réinitialisée. La boutique rouvre."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "Conseil : remplir les rayons {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "Le stock baisse. Réapprovisionnez pour continuer les ventes auto."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "Conseil : améliorer {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "Stock max +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "Plus de clients, ventes auto plus rapides"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "Prix unitaire +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "Réassort moins cher"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "Vendez 1 article maintenant et gagnez {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "Revenu"
     }
   ]
 }

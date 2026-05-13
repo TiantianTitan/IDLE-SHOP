@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "Сохранение сброшено. Магазин снова открыт."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "Совет: заполнить полки {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "Запас заканчивается. Пополните полки, чтобы авто-продажи продолжались."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "Совет: улучшить {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "Лимит запаса +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "Больше покупателей, авто-продажи быстрее"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "Цена за штуку +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "Пополнение станет дешевле"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "Продайте 1 товар сейчас и получите {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "Доход"
     }
   ]
 }

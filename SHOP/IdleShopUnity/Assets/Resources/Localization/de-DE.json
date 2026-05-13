@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "Spielstand zurückgesetzt. Der Laden ist wieder geöffnet."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "Tipp: Regale füllen {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "Der Vorrat wird knapp. Auffüllen hält den Auto-Verkauf am Laufen."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "Tipp: {0} verbessern {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "Lagerlimit +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "Mehr Kunden, schnellere Auto-Verkäufe"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "Stückpreis +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "Auffüllen wird günstiger"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "1 Artikel sofort verkaufen und {0} verdienen"
+    },
+    {
+      "key": "stat.income",
+      "value": "Erlös"
     }
   ]
 }

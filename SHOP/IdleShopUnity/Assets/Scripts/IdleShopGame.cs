@@ -155,18 +155,31 @@ public sealed class IdleShopGame : MonoBehaviour
     private Text totalText = null!;
     private Text newItemsText = null!;
     private Text queueText = null!;
+    private Text stageCashText = null!;
+    private Text stageReputationText = null!;
+    private Text stageIncomeText = null!;
     private Text autoSaleText = null!;
     private Text autoIntervalText = null!;
+    private Text salePopText = null!;
     private RectTransform autoSaleFill = null!;
+    private RectTransform headerAutoFill = null!;
+    private RectTransform salePopRectTransform = null!;
+    private RectTransform sceneProductMotion = null!;
+    private Image sceneCashierGlow = null!;
+    private Image sceneCustomerGlow = null!;
     private Text offlineText = null!;
     private LayoutElement offlineLayout = null!;
     private readonly Dictionary<Tab, Button> tabButtons = new Dictionary<Tab, Button>();
     private float renderTimer;
     private float saveTimer;
-    private bool contentDirty;
     private bool wideLayout;
     private Vector2Int layoutScreenSize;
     private string offlineNotice = string.Empty;
+    private string salePopMessage = string.Empty;
+    private float salePopTimer;
+    private float restockPulseTimer;
+    private float upgradePulseTimer;
+    private float displayedAutoSaleProgress;
 
     public void ConfigureArt(Sprite shopFront, Sprite shelf, Sprite counter, Sprite coin, Sprite reputation, Sprite customer, Sprite upgrade, Sprite[] productsArt, Sprite[] staffArt, Font defaultUiFont, Font rtlFont)
     {
@@ -185,6 +198,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private void Awake()
     {
+        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
         try
         {
@@ -210,17 +224,28 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         Simulate(Time.deltaTime, false);
+        if (salePopTimer > 0f)
+        {
+            salePopTimer = Mathf.Max(0f, salePopTimer - Time.deltaTime);
+        }
+
+        if (restockPulseTimer > 0f)
+        {
+            restockPulseTimer = Mathf.Max(0f, restockPulseTimer - Time.deltaTime);
+        }
+
+        if (upgradePulseTimer > 0f)
+        {
+            upgradePulseTimer = Mathf.Max(0f, upgradePulseTimer - Time.deltaTime);
+        }
+
+        UpdateAutoSaleVisuals();
         renderTimer += Time.deltaTime;
         saveTimer += Time.deltaTime;
 
-        if (renderTimer >= 0.35f)
+        if (renderTimer >= 0.12f)
         {
             RenderHeader();
-            if (contentDirty && activeTab == Tab.Shop)
-            {
-                RenderTab();
-                contentDirty = false;
-            }
 
             renderTimer = 0f;
         }
@@ -263,6 +288,13 @@ public sealed class IdleShopGame : MonoBehaviour
         int width = Mathf.Max(Screen.width, 1);
         int height = Mathf.Max(Screen.height, 1);
         return width / (float)height >= 0.72f;
+    }
+
+    private static bool IsShortPortraitScreen()
+    {
+        int width = Mathf.Max(Screen.width, 1);
+        int height = Mathf.Max(Screen.height, 1);
+        return width < height && height / (float)width < 1.9f;
     }
 
     private void Load()
@@ -438,6 +470,8 @@ public sealed class IdleShopGame : MonoBehaviour
         data.soldToday += 1;
         data.xp += 12f + Mathf.Floor(earned / 10f);
         data.reputation += 0.018f * (1f + data.staff[2] * 0.16f);
+        salePopMessage = $"+{Money(earned)}";
+        salePopTimer = manual ? 1.15f : 0.8f;
 
         if (manual || UnityEngine.Random.value < 0.14f)
         {
@@ -458,7 +492,6 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
-        contentDirty = true;
         return true;
     }
 
@@ -706,6 +739,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
         data.cash -= cost;
         data.stock[productIndex] += amount;
+        restockPulseTimer = 0.65f;
         AddLog(F("log.restocked", ProductName(productIndex), amount));
         RenderAll();
     }
@@ -740,6 +774,7 @@ public sealed class IdleShopGame : MonoBehaviour
             return;
         }
 
+        restockPulseTimer = 0.65f;
         AddLog(F("log.restocked_all", bought));
         RenderAll();
     }
@@ -761,6 +796,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
         data.cash -= cost;
         data.upgrades[upgradeIndex] += 1;
+        upgradePulseTimer = 0.75f;
         AddLog(F("log.upgraded", UpgradeName(upgradeIndex), data.upgrades[upgradeIndex]));
         RenderAll();
     }
@@ -806,7 +842,6 @@ public sealed class IdleShopGame : MonoBehaviour
     private void AddLog(string message)
     {
         log.Insert(0, message);
-        contentDirty = true;
         while (log.Count > 5)
         {
             log.RemoveAt(log.Count - 1);
@@ -841,6 +876,27 @@ public sealed class IdleShopGame : MonoBehaviour
     private string UpgradeDetail(int index)
     {
         return T(upgrades[index].DetailKey);
+    }
+
+    private string UpgradeImpactText(int upgradeIndex, int productIndex)
+    {
+        switch (upgradeIndex)
+        {
+            case 0:
+                return F("recommend.upgrade_stock", 5);
+            case 1:
+                return T("recommend.upgrade_speed");
+            case 2:
+            {
+                int currentPrice = SalePrice(productIndex);
+                int nextPrice = Mathf.FloorToInt(products[productIndex].Price * (1f + (data.upgrades[2] + 1) * 0.065f));
+                return F("recommend.upgrade_price", Money(Mathf.Max(1, nextPrice - currentPrice)));
+            }
+            case 3:
+                return T("recommend.upgrade_cost");
+            default:
+                return UpgradeDetail(upgradeIndex);
+        }
     }
 
     private string StaffName(int index)
@@ -964,7 +1020,8 @@ public sealed class IdleShopGame : MonoBehaviour
         safe.anchorMax = Vector2.one;
         safe.offsetMin = Vector2.zero;
         safe.offsetMax = Vector2.zero;
-        safe.gameObject.AddComponent<SafeAreaFitter>().SetPadding(wideLayout ? 16f : 18f, wideLayout ? 16f : 18f, 10f, 12f);
+        bool shortPortrait = IsShortPortraitScreen();
+        safe.gameObject.AddComponent<SafeAreaFitter>().SetPadding(wideLayout ? 16f : shortPortrait ? 14f : 18f, wideLayout ? 16f : shortPortrait ? 14f : 18f, wideLayout ? 10f : 12f, wideLayout ? 12f : shortPortrait ? 8f : 12f);
 
         if (wideLayout)
         {
@@ -1026,18 +1083,16 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private void BuildPortraitShell(RectTransform safe)
     {
-        const float headerHeight = 112f;
-        const float navHeight = 118f;
-        const float gap = 10f;
+        bool shortPortrait = IsShortPortraitScreen();
+        float headerHeight = shortPortrait ? 176f : 194f;
+        float navHeight = shortPortrait ? 128f : 136f;
+        const float gap = 8f;
 
         RectTransform header = CreateHeader(safe, headerHeight, false);
         AnchorTop(header, 0f, headerHeight);
 
-        RectTransform stats = CreateStats(safe, false);
-        stats.gameObject.SetActive(false);
-
         RectTransform offline = CreateOfflineNotice(safe);
-        AnchorTop(offline, headerHeight + gap, 44f);
+        AnchorTop(offline, headerHeight + gap, 38f);
 
         RectTransform nav = CreateNavigation(safe, false);
         AnchorBottom(nav, 0f, navHeight);
@@ -1049,9 +1104,9 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private void BuildWideShell(RectTransform safe)
     {
-        const float navWidth = 132f;
-        const float gap = 10f;
-        const float headerHeight = 76f;
+        const float navWidth = 120f;
+        const float gap = 8f;
+        const float headerHeight = 136f;
 
         RectTransform nav = CreateNavigation(safe, true);
         AnchorLeft(nav, 0f, navWidth);
@@ -1062,11 +1117,8 @@ public sealed class IdleShopGame : MonoBehaviour
         RectTransform header = CreateHeader(main, headerHeight, true);
         AnchorTop(header, 0f, headerHeight);
 
-        RectTransform stats = CreateStats(main, true);
-        stats.gameObject.SetActive(false);
-
         RectTransform offline = CreateOfflineNotice(main);
-        AnchorTop(offline, headerHeight + gap, 36f);
+        AnchorTop(offline, headerHeight + gap, 34f);
 
         ScrollRect scroll = CreateScroll(main);
         AnchorFill(scroll.GetComponent<RectTransform>(), 0f, 0f, headerHeight + gap, 0f);
@@ -1077,24 +1129,82 @@ public sealed class IdleShopGame : MonoBehaviour
     {
         RectTransform top = CreatePanel("Top", parent, pine);
         top.gameObject.AddComponent<LayoutElement>().preferredHeight = height;
-        HorizontalLayoutGroup topLayout = top.gameObject.AddComponent<HorizontalLayoutGroup>();
-        topLayout.padding = compact ? new RectOffset(18, 18, 10, 10) : new RectOffset(24, 24, 14, 14);
-        topLayout.spacing = compact ? 14f : 18f;
+        VerticalLayoutGroup topLayout = top.gameObject.AddComponent<VerticalLayoutGroup>();
+        topLayout.padding = compact ? new RectOffset(14, 14, 8, 8) : new RectOffset(16, 16, 12, 12);
+        topLayout.spacing = compact ? 8f : 10f;
         topLayout.childAlignment = TextAnchor.MiddleCenter;
         topLayout.childControlWidth = true;
+        topLayout.childControlHeight = true;
         topLayout.childForceExpandWidth = true;
+        topLayout.childForceExpandHeight = false;
 
-        RectTransform titleGroup = CreateRect("TitleGroup", top);
-        titleGroup.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
-        VerticalLayoutGroup titleLayout = titleGroup.gameObject.AddComponent<VerticalLayoutGroup>();
-        titleLayout.childControlHeight = true;
-        titleLayout.childForceExpandHeight = false;
-        titleText = CreateText("Title", titleGroup, T("app.title"), compact ? 36 : 50, FontStyle.Bold, panel, TextAnchor.MiddleLeft);
-        CreateText("Subtitle", titleGroup, T("app.subtitle"), compact ? 20 : 28, FontStyle.Bold, new Color(0.76f, 0.90f, 0.80f), TextAnchor.MiddleLeft);
+        titleText = CreateText("HiddenTitle", top, T("app.title"), 1, FontStyle.Normal, panel, TextAnchor.MiddleLeft);
+        titleText.gameObject.SetActive(false);
 
-        queueText = CreateText("Queue", top, "", compact ? 26 : 34, FontStyle.Bold, panel, TextAnchor.MiddleRight);
-        queueText.gameObject.AddComponent<LayoutElement>().preferredWidth = compact ? 240f : 300f;
+        RectTransform metricRow = CreateRect("MetricRow", top);
+        metricRow.gameObject.AddComponent<LayoutElement>().preferredHeight = compact ? 54f : 74f;
+        HorizontalLayoutGroup metricLayout = metricRow.gameObject.AddComponent<HorizontalLayoutGroup>();
+        metricLayout.spacing = compact ? 8f : 10f;
+        metricLayout.childAlignment = TextAnchor.MiddleCenter;
+        metricLayout.childControlWidth = true;
+        metricLayout.childControlHeight = true;
+        metricLayout.childForceExpandWidth = true;
+        metricLayout.childForceExpandHeight = true;
+
+        cashText = CreateHeaderChip(metricRow, "HeaderCash", coinSprite, honey, compact ? 210f : 300f, compact ? 25 : 34);
+        newItemsText = CreateHeaderChip(metricRow, "HeaderStock", shelfSprite != null ? shelfSprite : counterSprite, blue, compact ? 190f : 260f, compact ? 22 : 29);
+        totalText = CreateHeaderChip(metricRow, "HeaderIncome", customerSprite, coral, compact ? 210f : 300f, compact ? 22 : 29);
+
+        RectTransform timerRow = CreatePanel("HeaderTimer", top, new Color(0.08f, 0.18f, 0.15f, 0.96f));
+        timerRow.gameObject.AddComponent<LayoutElement>().preferredHeight = compact ? 58f : 76f;
+        HorizontalLayoutGroup timerLayout = timerRow.gameObject.AddComponent<HorizontalLayoutGroup>();
+        timerLayout.padding = compact ? new RectOffset(12, 12, 9, 9) : new RectOffset(14, 14, 12, 12);
+        timerLayout.spacing = compact ? 12f : 16f;
+        timerLayout.childAlignment = TextAnchor.MiddleCenter;
+        timerLayout.childControlWidth = true;
+        timerLayout.childControlHeight = true;
+        timerLayout.childForceExpandWidth = false;
+
+        queueText = CreateText("AutoTimer", timerRow, "", compact ? 28 : 38, FontStyle.Bold, coral, TextAnchor.MiddleLeft);
+        LayoutElement timerTextLayout = queueText.gameObject.AddComponent<LayoutElement>();
+        timerTextLayout.preferredWidth = compact ? 330f : 470f;
+        timerTextLayout.flexibleWidth = 0f;
+        queueText.resizeTextForBestFit = true;
+        queueText.resizeTextMinSize = compact ? 18 : 25;
+        queueText.resizeTextMaxSize = compact ? 28 : 38;
+        headerAutoFill = CreateProgress(timerRow, 0f, coral, compact ? 26f : 34f);
+        LayoutElement progressLayout = headerAutoFill.parent.GetComponent<LayoutElement>();
+        progressLayout.flexibleWidth = 1f;
         return top;
+    }
+
+    private Text CreateHeaderChip(RectTransform parent, string name, Sprite icon, Color accent, float width, int fontSize)
+    {
+        RectTransform chip = CreatePanel(name, parent, new Color(0.08f, 0.18f, 0.15f, 0.96f));
+        LayoutElement chipLayout = chip.gameObject.AddComponent<LayoutElement>();
+        chipLayout.preferredWidth = width;
+        chipLayout.flexibleWidth = 1f;
+        HorizontalLayoutGroup layout = chip.gameObject.AddComponent<HorizontalLayoutGroup>();
+        layout.padding = new RectOffset(10, 10, 7, 7);
+        layout.spacing = 8f;
+        layout.childAlignment = TextAnchor.MiddleLeft;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = false;
+
+        RectTransform iconBox = CreatePanel("HeaderIcon", chip, accent);
+        iconBox.gameObject.AddComponent<LayoutElement>().preferredWidth = fontSize + 22f;
+        if (icon != null)
+        {
+            CreateImage("Icon", iconBox, icon, true);
+        }
+
+        Text text = CreateText("Value", chip, "", fontSize, FontStyle.Bold, panel, TextAnchor.MiddleLeft);
+        text.resizeTextForBestFit = true;
+        text.resizeTextMinSize = Mathf.Max(16, fontSize - 8);
+        text.resizeTextMaxSize = fontSize;
+        text.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
+        return text;
     }
 
     private RectTransform CreateStats(RectTransform parent, bool compact)
@@ -1153,10 +1263,10 @@ public sealed class IdleShopGame : MonoBehaviour
         }
         else
         {
-            tabsLayoutElement.preferredHeight = 118f;
+            tabsLayoutElement.preferredHeight = 136f;
             HorizontalLayoutGroup tabsLayout = tabs.gameObject.AddComponent<HorizontalLayoutGroup>();
-            tabsLayout.padding = new RectOffset(10, 10, 10, 10);
-            tabsLayout.spacing = 10f;
+            tabsLayout.padding = new RectOffset(8, 8, 8, 8);
+            tabsLayout.spacing = 8f;
             tabsLayout.childAlignment = TextAnchor.MiddleCenter;
             tabsLayout.childControlWidth = true;
             tabsLayout.childForceExpandWidth = true;
@@ -1174,63 +1284,184 @@ public sealed class IdleShopGame : MonoBehaviour
     {
         RenderHeader();
         RenderTab();
-        contentDirty = false;
+        UpdateTabButtons();
     }
 
     private void RenderHeader()
     {
-        int unlockedCount = 0;
-        for (int i = 0; i < data.unlocked.Length; i++)
+        int primaryIndex = PrimaryProductIndex();
+        int autoIncomePerMinute = Mathf.FloorToInt(TrafficPerSecond() * 60f * SalePrice(primaryIndex));
+        SetTextIfChanged(titleText, F("header.level", T("app.title"), data.level));
+        SetTextIfChanged(cashText, $"{T("stat.cash")} {Money(data.cash)}");
+        SetTextIfChanged(reputationText, $"{T("stat.reputation")}\n{Compact(data.reputation)}");
+        SetTextIfChanged(totalText, $"{T("stat.income")} {Money(autoIncomePerMinute)}/min");
+        SetTextIfChanged(newItemsText, F("stock.stock_count", Mathf.FloorToInt(data.stock[primaryIndex]), MaxStock(primaryIndex)));
+        SetTextIfChanged(queueText, HasSellableStock() ? F("shop.auto_timer", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : T("shop.waiting_restock"));
+        if (stageCashText != null)
         {
-            if (data.unlocked[i])
-            {
-                unlockedCount++;
-            }
+            SetTextIfChanged(stageCashText, $"{T("stat.cash")}\n{Money(data.cash)}");
         }
 
-        titleText.text = F("header.level", T("app.title"), data.level);
-        cashText.text = $"{T("stat.cash")}\n{Money(data.cash)}";
-        reputationText.text = $"{T("stat.reputation")}\n{Compact(data.reputation)}";
-        totalText.text = $"{T("stat.total")}\n{Money(data.totalEarned)}";
-        newItemsText.text = $"{T("stat.new_items")}\n{unlockedCount}/{products.Length}";
-        queueText.text = $"{T("stat.cash")}\n{Money(data.cash)}";
-        offlineText.text = offlineNotice;
+        if (stageReputationText != null)
+        {
+            SetTextIfChanged(stageReputationText, $"{T("stat.reputation")}\n{Compact(data.reputation)}");
+        }
+
+        if (stageIncomeText != null)
+        {
+            SetTextIfChanged(stageIncomeText, $"{T("guide.sell")}\n{Money(autoIncomePerMinute)}/min");
+        }
+
+        SetTextIfChanged(offlineText, offlineNotice);
         bool hasOfflineNotice = !string.IsNullOrEmpty(offlineNotice);
         offlineText.gameObject.SetActive(hasOfflineNotice);
         offlineLayout.preferredHeight = hasOfflineNotice ? 42f : 0f;
-        UpdateAutoSaleIndicator();
-        UpdateTabButtons();
+        UpdateAutoSaleText();
     }
 
-    private void UpdateAutoSaleIndicator()
+    private void UpdateAutoSaleVisuals()
     {
-        if (autoSaleText == null || autoSaleFill == null)
+        if (autoSaleFill == null && headerAutoFill == null)
+        {
+            UpdateSceneMotion();
+            UpdateSalePopVisual();
+            return;
+        }
+
+        float targetProgress = HasSellableStock() ? Mathf.Clamp01(data.queue) : 0f;
+        if (targetProgress < displayedAutoSaleProgress - 0.35f)
+        {
+            displayedAutoSaleProgress = targetProgress;
+        }
+        else
+        {
+            float speed = targetProgress > displayedAutoSaleProgress ? 3.6f : 7.0f;
+            displayedAutoSaleProgress = Mathf.MoveTowards(displayedAutoSaleProgress, targetProgress, Time.deltaTime * speed);
+        }
+
+        if (autoSaleFill != null)
+        {
+            autoSaleFill.anchorMax = new Vector2(displayedAutoSaleProgress, 1f);
+            autoSaleFill.offsetMin = Vector2.zero;
+            autoSaleFill.offsetMax = Vector2.zero;
+        }
+
+        if (headerAutoFill != null)
+        {
+            headerAutoFill.anchorMax = new Vector2(displayedAutoSaleProgress, 1f);
+            headerAutoFill.offsetMin = Vector2.zero;
+            headerAutoFill.offsetMax = Vector2.zero;
+        }
+
+        UpdateSceneMotion();
+        UpdateSalePopVisual();
+    }
+
+    private void UpdateSceneMotion()
+    {
+        float time = Time.unscaledTime;
+        float saleBurst = Mathf.Clamp01(salePopTimer / 0.45f);
+        float restockBurst = Mathf.Clamp01(restockPulseTimer / 0.65f);
+        float upgradeBurst = Mathf.Clamp01(upgradePulseTimer / 0.75f);
+        if (sceneProductMotion != null)
+        {
+            float idlePulse = 1f + Mathf.Sin(time * 3.2f) * 0.012f;
+            float salePulse = 1f + saleBurst * 0.10f + restockBurst * 0.14f + upgradeBurst * 0.05f;
+            sceneProductMotion.localScale = Vector3.one * idlePulse * salePulse;
+        }
+
+        if (sceneCashierGlow != null)
+        {
+            float alpha = 0.18f + Mathf.Sin(time * 5.0f) * 0.06f + saleBurst * 0.28f + upgradeBurst * 0.14f;
+            Color color = sceneCashierGlow.color;
+            color.a = Mathf.Clamp01(alpha);
+            sceneCashierGlow.color = color;
+        }
+
+        if (sceneCustomerGlow != null)
+        {
+            float alpha = 0.14f + Mathf.Sin(time * 4.1f + 1.3f) * 0.05f + saleBurst * 0.22f + restockBurst * 0.16f;
+            Color color = sceneCustomerGlow.color;
+            color.a = Mathf.Clamp01(alpha);
+            sceneCustomerGlow.color = color;
+        }
+    }
+
+    private void UpdateAutoSaleText()
+    {
+        if (autoSaleText == null)
         {
             return;
         }
 
         if (!HasSellableStock())
         {
-            autoSaleText.text = T("shop.waiting_restock");
-            autoSaleFill.anchorMax = new Vector2(0f, 1f);
+            SetTextIfChanged(autoSaleText, T("shop.waiting_restock"));
         }
         else
         {
             string seconds = NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture);
-            autoSaleText.text = F("shop.auto_timer", seconds);
-            autoSaleFill.anchorMax = new Vector2(Mathf.Clamp01(data.queue), 1f);
+            SetTextIfChanged(autoSaleText, F("shop.auto_timer", seconds));
         }
 
-        autoSaleFill.offsetMin = Vector2.zero;
-        autoSaleFill.offsetMax = Vector2.zero;
         if (autoIntervalText != null)
         {
-            autoIntervalText.text = F("shop.auto_interval", AutoSaleInterval().ToString("0.0", CultureInfo.InvariantCulture));
+            int primaryIndex = PrimaryProductIndex();
+            int autoIncomePerMinute = Mathf.FloorToInt(TrafficPerSecond() * 60f * SalePrice(primaryIndex));
+            SetTextIfChanged(autoIntervalText, $"{Money(autoIncomePerMinute)}/min · {F("stock.stock_count", Mathf.FloorToInt(data.stock[primaryIndex]), MaxStock(primaryIndex))}");
+        }
+    }
+
+    private void UpdateSalePopVisual()
+    {
+        if (salePopText == null)
+        {
+            return;
+        }
+
+        bool showSalePop = salePopTimer > 0f && !string.IsNullOrEmpty(salePopMessage);
+        if (salePopText.gameObject.activeSelf != showSalePop)
+        {
+            salePopText.gameObject.SetActive(showSalePop);
+        }
+
+        if (!showSalePop)
+        {
+            return;
+        }
+
+        float alpha = Mathf.Clamp01(salePopTimer / 1.15f);
+        float rise = (1f - alpha) * (wideLayout ? 18f : 28f);
+        SetTextIfChanged(salePopText, salePopMessage);
+        salePopText.color = new Color(honey.r, honey.g, honey.b, alpha);
+        if (salePopRectTransform != null)
+        {
+            salePopRectTransform.offsetMin = new Vector2(0f, rise);
+            salePopRectTransform.offsetMax = new Vector2(0f, rise);
+        }
+    }
+
+    private static void SetTextIfChanged(Text text, string value)
+    {
+        if (text != null && text.text != value)
+        {
+            text.text = value;
         }
     }
 
     private void RenderTab()
     {
+        stageCashText = null!;
+        stageReputationText = null!;
+        stageIncomeText = null!;
+        autoSaleText = null!;
+        autoIntervalText = null!;
+        salePopText = null!;
+        autoSaleFill = null!;
+        salePopRectTransform = null!;
+        sceneProductMotion = null!;
+        sceneCashierGlow = null!;
+        sceneCustomerGlow = null!;
         Clear(contentRoot);
         if (activeTab == Tab.Shop)
         {
@@ -1268,9 +1499,10 @@ public sealed class IdleShopGame : MonoBehaviour
         int cheapestRestockCost = CheapestRestockCost();
         int autoIncomePerMinute = Mathf.FloorToInt(TrafficPerSecond() * 60f * SalePrice(primaryIndex));
         int upgradeCost = upgradeIndex >= 0 ? UpgradeCost(upgradeIndex) : 0;
+        bool shortPortrait = IsShortPortraitScreen();
 
         RectTransform stage = CreatePanel("GameStage", contentRoot, new Color(0.16f, 0.36f, 0.32f));
-        stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 600f : 780f;
+        stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 540f : shortPortrait ? 660f : 720f;
 
         RectTransform stageArt = CreateImagePanel("ShopFront", stage, shopFrontSprite, new Color(0.18f, 0.32f, 0.30f), false);
         AnchorFill(stageArt, 0f, 0f, 0f, 0f);
@@ -1278,54 +1510,11 @@ public sealed class IdleShopGame : MonoBehaviour
         RectTransform shade = CreatePanel("StageShade", stage, new Color(0.02f, 0.08f, 0.07f, 0.36f));
         AnchorFill(shade, 0f, 0f, 0f, 0f);
 
-        RectTransform resourceRow = CreateRect("StageResources", stage);
-        resourceRow.anchorMin = new Vector2(0f, 1f);
-        resourceRow.anchorMax = new Vector2(1f, 1f);
-        resourceRow.pivot = new Vector2(0.5f, 1f);
-        resourceRow.offsetMin = new Vector2(wideLayout ? 18f : 20f, wideLayout ? -84f : -104f);
-        resourceRow.offsetMax = new Vector2(wideLayout ? -100f : -118f, wideLayout ? -16f : -20f);
-        HorizontalLayoutGroup resourceLayout = resourceRow.gameObject.AddComponent<HorizontalLayoutGroup>();
-        resourceLayout.spacing = wideLayout ? 10f : 12f;
-        resourceLayout.childControlWidth = true;
-        resourceLayout.childControlHeight = true;
-        resourceLayout.childForceExpandWidth = true;
-        resourceLayout.childForceExpandHeight = true;
-        CreateResourceChip(resourceRow, T("stat.cash"), Money(data.cash), coinSprite, honey);
-        CreateResourceChip(resourceRow, T("stat.reputation"), Compact(data.reputation), reputationSprite, coral);
-        CreateResourceChip(resourceRow, T("stat.total"), Money(autoIncomePerMinute), customerSprite, blue);
-
-        RectTransform rightRail = CreateRect("StageRail", stage);
-        rightRail.anchorMin = new Vector2(1f, 0.36f);
-        rightRail.anchorMax = new Vector2(1f, 0.82f);
-        rightRail.pivot = new Vector2(1f, 0.5f);
-        rightRail.offsetMin = new Vector2(wideLayout ? -94f : -108f, 0f);
-        rightRail.offsetMax = new Vector2(wideLayout ? -18f : -20f, 0f);
-        VerticalLayoutGroup railLayout = rightRail.gameObject.AddComponent<VerticalLayoutGroup>();
-        railLayout.spacing = wideLayout ? 10f : 12f;
-        railLayout.childControlWidth = true;
-        railLayout.childControlHeight = true;
-        railLayout.childForceExpandWidth = true;
-        railLayout.childForceExpandHeight = true;
-        CreateRoundShortcut(rightRail, coinSprite, coral, () =>
-        {
-            SellOne(true);
-            RenderAll();
-        }).interactable = data.stock[primaryIndex] >= 1f;
-        CreateRoundShortcut(rightRail, shelfSprite != null ? shelfSprite : upgradeSprite, blue, BuyRestockAll).interactable = restockIndex >= 0 && restockAllAmount > 0 && cheapestRestockCost > 0 && data.cash >= cheapestRestockCost;
-        CreateRoundShortcut(rightRail, upgradeSprite, honey, () =>
-        {
-            if (upgradeIndex >= 0)
-            {
-                BuyUpgrade(upgradeIndex);
-            }
-        }).interactable = upgradeIndex >= 0 && data.cash >= upgradeCost;
-        CreateRoundShortcut(rightRail, reputationSprite, pine, Advertise);
-
         if (shelfSprite != null || counterSprite != null)
         {
             RectTransform overlay = CreateRect("ShopOverlay", stage);
-            overlay.anchorMin = new Vector2(0.05f, 0.20f);
-            overlay.anchorMax = new Vector2(0.84f, 0.48f);
+            overlay.anchorMin = new Vector2(0.05f, 0.36f);
+            overlay.anchorMax = new Vector2(0.95f, 0.84f);
             overlay.offsetMin = Vector2.zero;
             overlay.offsetMax = Vector2.zero;
             HorizontalLayoutGroup overlayLayout = overlay.gameObject.AddComponent<HorizontalLayoutGroup>();
@@ -1338,94 +1527,178 @@ public sealed class IdleShopGame : MonoBehaviour
             CreateImagePanel("CounterArt", overlay, counterSprite, new Color(0.22f, 0.38f, 0.34f, 0.32f));
         }
 
-        RectTransform focus = CreatePanel("FocusProduct", stage, new Color(1.0f, 0.94f, 0.82f, 0.94f));
-        focus.anchorMin = new Vector2(0.04f, 0.04f);
-        focus.anchorMax = new Vector2(0.96f, 0.22f);
-        focus.offsetMin = Vector2.zero;
-        focus.offsetMax = Vector2.zero;
-        HorizontalLayoutGroup focusLayout = focus.gameObject.AddComponent<HorizontalLayoutGroup>();
-        focusLayout.padding = wideLayout ? new RectOffset(16, 16, 14, 14) : new RectOffset(20, 20, 18, 18);
-        focusLayout.spacing = wideLayout ? 16f : 20f;
-        focusLayout.childAlignment = TextAnchor.MiddleCenter;
-        focusLayout.childControlWidth = true;
-        focusLayout.childControlHeight = true;
+        RectTransform customerPoint = CreatePanel("CustomerPulse", stage, new Color(0.95f, 0.78f, 0.32f, 0.16f));
+        customerPoint.anchorMin = new Vector2(0.08f, 0.20f);
+        customerPoint.anchorMax = new Vector2(0.20f, 0.36f);
+        customerPoint.offsetMin = Vector2.zero;
+        customerPoint.offsetMax = Vector2.zero;
+        sceneCustomerGlow = customerPoint.GetComponent<Image>();
 
-        RectTransform productIcon = CreatePanel("FocusIcon", focus, products[primaryIndex].Accent);
-        productIcon.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 110f : 130f;
+        RectTransform cashierPoint = CreatePanel("CashierPulse", stage, new Color(0.94f, 0.65f, 0.20f, 0.18f));
+        cashierPoint.anchorMin = new Vector2(0.74f, 0.24f);
+        cashierPoint.anchorMax = new Vector2(0.90f, 0.44f);
+        cashierPoint.offsetMin = Vector2.zero;
+        cashierPoint.offsetMax = Vector2.zero;
+        sceneCashierGlow = cashierPoint.GetComponent<Image>();
+
+        RectTransform productIcon = CreatePanel("SceneProduct", stage, products[primaryIndex].Accent);
+        productIcon.anchorMin = new Vector2(0.10f, 0.07f);
+        productIcon.anchorMax = new Vector2(0.28f, 0.31f);
+        productIcon.offsetMin = Vector2.zero;
+        productIcon.offsetMax = Vector2.zero;
+        sceneProductMotion = productIcon;
+        Image productImage = productIcon.GetComponent<Image>();
+        if (productImage != null && !HasSellableStock())
+        {
+            productImage.color = new Color(products[primaryIndex].Accent.r * 0.55f, products[primaryIndex].Accent.g * 0.55f, products[primaryIndex].Accent.b * 0.55f, 0.72f);
+        }
         if (ProductSprite(primaryIndex) != null)
         {
-            CreateImage("FocusProductArt", productIcon, ProductSprite(primaryIndex), true);
+            Image productArt = CreateImage("ProductArt", productIcon, ProductSprite(primaryIndex), true);
+            if (!HasSellableStock())
+            {
+                productArt.color = new Color(0.82f, 0.82f, 0.82f, 0.70f);
+            }
         }
 
-        RectTransform focusInfo = CreateRect("FocusInfo", focus);
-        focusInfo.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
-        VerticalLayoutGroup focusInfoLayout = focusInfo.gameObject.AddComponent<VerticalLayoutGroup>();
-        focusInfoLayout.spacing = wideLayout ? 8f : 10f;
-        CreateText("FocusName", focusInfo, $"{ProductName(primaryIndex)}  Lv.{data.level}", wideLayout ? 36 : 44, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
-        autoSaleText = CreateText("AutoSaleTimer", focusInfo, HasSellableStock() ? F("shop.auto_timer", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : T("shop.waiting_restock"), wideLayout ? 29 : 35, FontStyle.Bold, coral, TextAnchor.MiddleLeft);
-        autoSaleFill = CreateProgress(focusInfo, HasSellableStock() ? Mathf.Clamp01(data.queue) : 0f, products[primaryIndex].Accent);
-        autoIntervalText = CreateText("AutoSaleInterval", focusInfo, $"{F("shop.auto_interval", AutoSaleInterval().ToString("0.0", CultureInfo.InvariantCulture))} · {F("stock.stock_count", Mathf.FloorToInt(data.stock[primaryIndex]), MaxStock(primaryIndex))}", wideLayout ? 22 : 27, FontStyle.Bold, ink, TextAnchor.MiddleLeft);
+        displayedAutoSaleProgress = HasSellableStock() ? Mathf.Clamp01(data.queue) : 0f;
+        salePopText = CreateText("SalePop", stage, salePopMessage, wideLayout ? 42 : shortPortrait ? 48 : 54, FontStyle.Bold, honey, TextAnchor.MiddleRight);
+        LayoutElement salePopLayout = salePopText.gameObject.AddComponent<LayoutElement>();
+        salePopLayout.ignoreLayout = true;
+        salePopRectTransform = salePopText.GetComponent<RectTransform>();
+        salePopRectTransform.anchorMin = new Vector2(0.50f, 0.50f);
+        salePopRectTransform.anchorMax = new Vector2(0.96f, 0.78f);
+        salePopRectTransform.offsetMin = Vector2.zero;
+        salePopRectTransform.offsetMax = Vector2.zero;
+        salePopText.gameObject.SetActive(salePopTimer > 0f && !string.IsNullOrEmpty(salePopMessage));
 
         RectTransform management = CreatePanel("ManagementPanel", contentRoot, new Color(0.36f, 0.23f, 0.14f));
-        management.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 500f : 610f;
+        management.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 380f : shortPortrait ? 500f : 540f;
         VerticalLayoutGroup managementLayout = management.gameObject.AddComponent<VerticalLayoutGroup>();
-        managementLayout.padding = wideLayout ? new RectOffset(18, 18, 18, 18) : new RectOffset(22, 22, 22, 22);
-        managementLayout.spacing = wideLayout ? 12f : 14f;
+        managementLayout.padding = wideLayout ? new RectOffset(16, 16, 16, 16) : new RectOffset(20, 20, 20, 20);
+        managementLayout.spacing = wideLayout ? 12f : 16f;
 
-        RectTransform tabStrip = CreatePanel("SheetTabs", management, new Color(0.22f, 0.13f, 0.08f));
-        tabStrip.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 70f : 84f;
-        HorizontalLayoutGroup tabLayout = tabStrip.gameObject.AddComponent<HorizontalLayoutGroup>();
-        tabLayout.padding = new RectOffset(8, 8, 8, 8);
-        tabLayout.spacing = 8f;
-        tabLayout.childControlWidth = true;
-        tabLayout.childControlHeight = true;
-        tabLayout.childForceExpandWidth = true;
-        tabLayout.childForceExpandHeight = true;
-        CreateSheetTab(tabStrip, T("guide.sell"), true);
-        CreateSheetTab(tabStrip, T("guide.restock"), false);
-        CreateSheetTab(tabStrip, T("guide.grow"), false);
-
-        RectTransform cards = CreateRect("HomeCards", management);
-        cards.gameObject.AddComponent<LayoutElement>().flexibleHeight = 1f;
-        VerticalLayoutGroup cardLayout = cards.gameObject.AddComponent<VerticalLayoutGroup>();
-        cardLayout.spacing = wideLayout ? 12f : 14f;
-        cardLayout.childControlWidth = true;
-        cardLayout.childControlHeight = true;
-        cardLayout.childForceExpandWidth = true;
-        cardLayout.childForceExpandHeight = true;
-
-        Button checkoutButton = CreateHomeActionCard(cards, T("action.manual_boost"), $"+{Money(SalePrice(primaryIndex))} · {ProductName(primaryIndex)}", coinSprite, coral, () =>
+        string primaryTitle = T("action.quick_checkout");
+        string primaryDetail = F("recommend.checkout_detail", Money(SalePrice(primaryIndex)));
+        string primaryCta = data.stock[primaryIndex] >= 1f ? $"+{Money(SalePrice(primaryIndex))}" : T("log.empty_shelf");
+        Sprite primaryIcon = coinSprite;
+        Color primaryColor = coral;
+        UnityEngine.Events.UnityAction primaryAction = () =>
         {
             SellOne(true);
             RenderAll();
-        });
-        checkoutButton.interactable = data.stock[primaryIndex] >= 1f;
+        };
+        string primaryUnavailable = data.stock[primaryIndex] >= 1f ? string.Empty : T("log.empty_shelf");
 
-        Button restockButton = CreateHomeActionCard(cards, restockIndex >= 0 ? T("action.restock_all") : T("action.full_stock"), restockIndex >= 0 ? F("action.restock_all_detail", restockAllAmount, Money(restockAllCost)) : T("action.full_stock"), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>
+        bool shouldRecommendRestock = restockIndex >= 0 && (!HasSellableStock() || data.stock[primaryIndex] <= Mathf.Max(2, MaxStock(primaryIndex) / 4));
+        if (shouldRecommendRestock)
         {
-            BuyRestockAll();
-        });
-        restockButton.interactable = restockIndex >= 0 && restockAllAmount > 0 && cheapestRestockCost > 0 && data.cash >= cheapestRestockCost;
-
-        Button upgradeButton = CreateHomeActionCard(cards, upgradeIndex >= 0 ? UpgradeName(upgradeIndex) : T("action.maxed"), upgradeIndex >= 0 ? F("action.upgrade", Money(upgradeCost)) : T("action.maxed"), upgradeSprite, honey, () =>
+            primaryTitle = F("recommend.restock", Money(restockAllCost));
+            primaryDetail = restockIndex < 0 ? T("action.full_stock") : data.cash < cheapestRestockCost ? F("log.cash_short", Money(cheapestRestockCost - data.cash)) : T("recommend.restock_detail");
+            primaryCta = restockIndex < 0 || restockAllAmount <= 0 ? T("action.full_stock") : data.cash < cheapestRestockCost ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : T("guide.restock");
+            primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
+            primaryColor = blue;
+            primaryAction = BuyRestockAll;
+            primaryUnavailable = restockIndex < 0 || restockAllAmount <= 0 ? T("action.full_stock") : cheapestRestockCost <= 0 || data.cash < cheapestRestockCost ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : string.Empty;
+        }
+        else if (upgradeIndex >= 0 && data.cash >= upgradeCost)
         {
-            if (upgradeIndex >= 0)
+            primaryTitle = F("recommend.upgrade", UpgradeName(upgradeIndex), Money(upgradeCost));
+            primaryDetail = UpgradeImpactText(upgradeIndex, primaryIndex);
+            primaryCta = F("action.upgrade", Money(upgradeCost));
+            primaryIcon = upgradeSprite;
+            primaryColor = honey;
+            primaryAction = () =>
             {
                 BuyUpgrade(upgradeIndex);
+            };
+            primaryUnavailable = string.Empty;
+        }
+
+        CreateFeaturedActionCard(management, primaryTitle, primaryDetail, primaryCta, primaryIcon, primaryColor, () =>
+        {
+            if (!string.IsNullOrEmpty(primaryUnavailable))
+            {
+                AddLog(primaryUnavailable);
+                RenderAll();
+                return;
             }
+
+            primaryAction();
         });
-        upgradeButton.interactable = upgradeIndex >= 0 && data.cash >= upgradeCost;
+
+        RectTransform quickActions = CreateRect("QuickActions", management);
+        quickActions.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 132f : shortPortrait ? 180f : 200f;
+        HorizontalLayoutGroup quickLayout = quickActions.gameObject.AddComponent<HorizontalLayoutGroup>();
+        quickLayout.spacing = wideLayout ? 10f : 12f;
+        quickLayout.childAlignment = TextAnchor.MiddleCenter;
+        quickLayout.childControlWidth = true;
+        quickLayout.childControlHeight = true;
+        quickLayout.childForceExpandWidth = true;
+        quickLayout.childForceExpandHeight = true;
+
+        CreateQuickActionButton(quickActions, T("action.quick_checkout"), data.stock[primaryIndex] >= 1f ? $"+{Money(SalePrice(primaryIndex))}" : T("log.empty_shelf"), coinSprite, coral, () =>
+        {
+            if (data.stock[primaryIndex] < 1f)
+            {
+                AddLog(T("log.empty_shelf"));
+                RenderAll();
+                return;
+            }
+
+            SellOne(true);
+            RenderAll();
+        });
+
+        CreateQuickActionButton(quickActions, T("action.restock_all"), RestockAllButtonDetail(restockIndex, restockAllAmount, restockAllCost, cheapestRestockCost), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>
+        {
+            if (restockIndex < 0 || restockAllAmount <= 0)
+            {
+                AddLog(T("action.full_stock"));
+                RenderAll();
+                return;
+            }
+
+            if (cheapestRestockCost <= 0 || data.cash < cheapestRestockCost)
+            {
+                AddLog(F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))));
+                RenderAll();
+                return;
+            }
+
+            BuyRestockAll();
+        });
+
+        CreateQuickActionButton(quickActions, upgradeIndex >= 0 ? T("tab.upgrades") : T("action.maxed"), UpgradeButtonDetail(upgradeIndex, upgradeCost), upgradeSprite, honey, () =>
+        {
+            if (upgradeIndex < 0)
+            {
+                AddLog(T("action.maxed"));
+                RenderAll();
+                return;
+            }
+
+            if (data.cash < upgradeCost)
+            {
+                AddLog(F("log.upgrade_short", UpgradeName(upgradeIndex), Money(upgradeCost - data.cash)));
+                RenderAll();
+                return;
+            }
+
+            BuyUpgrade(upgradeIndex);
+        });
 
         RectTransform day = CreatePanel("Day", contentRoot, panel);
-        day.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 180f : 210f;
+        day.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 124f : shortPortrait ? 136f : 160f;
         VerticalLayoutGroup dayLayout = day.gameObject.AddComponent<VerticalLayoutGroup>();
         dayLayout.padding = wideLayout ? new RectOffset(18, 18, 12, 12) : new RectOffset(22, 22, 16, 16);
         dayLayout.spacing = wideLayout ? 8f : 10f;
-        CreateText("DayTitle", day, F("day.title", data.day), wideLayout ? 32 : 38, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+        CreateText("DayTitle", day, F("day.title", data.day), wideLayout ? 30 : shortPortrait ? 32 : 36, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
         CreateProgress(day, data.dayProgress, honey);
-        foreach (string item in log)
+        int logCount = Mathf.Min(log.Count, 2);
+        for (int i = 0; i < logCount; i++)
         {
-            CreateText("Log", day, item, wideLayout ? 25 : 30, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
+            CreateText("Log", day, log[i], wideLayout ? 23 : shortPortrait ? 24 : 27, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
         }
     }
 
@@ -1478,22 +1751,103 @@ public sealed class IdleShopGame : MonoBehaviour
         text.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
     }
 
+    private string RestockAllButtonDetail(int restockIndex, int amount, int totalCost, int cheapestCost)
+    {
+        if (restockIndex < 0 || amount <= 0)
+        {
+            return T("action.full_stock");
+        }
+
+        if (cheapestCost <= 0 || data.cash < cheapestCost)
+        {
+            return F("log.cash_short", Money(Mathf.Max(0f, cheapestCost - data.cash)));
+        }
+
+        return F("action.restock_all_detail", amount, Money(totalCost));
+    }
+
+    private string StockButtonLabel(int productIndex, bool locked, int amount, int cost)
+    {
+        if (locked)
+        {
+            return F("stock.unlock_at", ProductName(productIndex), products[productIndex].UnlockLevel);
+        }
+
+        if (amount <= 0)
+        {
+            return T("action.full_stock");
+        }
+
+        if (data.cash < cost)
+        {
+            return F("log.cash_short", Money(cost - data.cash));
+        }
+
+        return F("action.restock", Money(cost));
+    }
+
+    private string UpgradeButtonDetail(int upgradeIndex, int cost)
+    {
+        if (upgradeIndex < 0)
+        {
+            return T("action.maxed");
+        }
+
+        if (data.cash < cost)
+        {
+            return F("log.cash_short", Money(cost - data.cash));
+        }
+
+        return Money(cost);
+    }
+
+    private string UpgradeButtonLabel(int upgradeIndex, bool maxed, int cost)
+    {
+        if (maxed)
+        {
+            return T("action.maxed");
+        }
+
+        if (data.cash < cost)
+        {
+            return F("log.cash_short", Money(cost - data.cash));
+        }
+
+        return F("action.upgrade", Money(cost));
+    }
+
+    private string StaffButtonLabel(bool maxed, int cost)
+    {
+        if (maxed)
+        {
+            return T("action.maxed");
+        }
+
+        if (data.cash < cost)
+        {
+            return F("log.cash_short", Money(cost - data.cash));
+        }
+
+        return F("action.train", Money(cost));
+    }
+
     private void RenderStock()
     {
         CreateSectionTitle(T("stock.title"), F("stock.subtitle", RestockPack()));
+        bool shortPortrait = IsShortPortraitScreen();
         for (int i = 0; i < products.Length; i++)
         {
             int index = i;
             ProductDef product = products[i];
             bool locked = !data.unlocked[i];
             RectTransform row = CreatePanel("Product", contentRoot, locked ? new Color(0.88f, 0.86f, 0.82f) : panel);
-            row.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 172f : 198f;
+            row.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 164f : shortPortrait ? 182f : 198f;
             HorizontalLayoutGroup layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = wideLayout ? new RectOffset(18, 18, 14, 14) : new RectOffset(20, 20, 16, 16);
-            layout.spacing = wideLayout ? 16f : 18f;
+            layout.padding = wideLayout ? new RectOffset(18, 18, 14, 14) : shortPortrait ? new RectOffset(18, 18, 14, 14) : new RectOffset(20, 20, 16, 16);
+            layout.spacing = wideLayout ? 16f : shortPortrait ? 14f : 18f;
 
             RectTransform swatch = CreatePanel("Swatch", row, locked ? Color.gray : product.Accent);
-            swatch.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 108f : 124f;
+            swatch.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 108f : shortPortrait ? 110f : 124f;
             if (!locked && ProductSprite(i) != null)
             {
                 CreateImage("ProductIcon", swatch, ProductSprite(i), true);
@@ -1506,23 +1860,47 @@ public sealed class IdleShopGame : MonoBehaviour
             RectTransform info = CreateRect("Info", row);
             info.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
             VerticalLayoutGroup infoLayout = info.gameObject.AddComponent<VerticalLayoutGroup>();
-            infoLayout.spacing = wideLayout ? 7f : 9f;
-            CreateText("Name", info, locked ? F("stock.unlock_at", ProductName(i), product.UnlockLevel) : ProductName(i), wideLayout ? 30 : 36, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
-            CreateText("Meta", info, locked ? ProductSubtitle(i) : F("stock.price_cost", Money(SalePrice(i)), Money(UnitCost(i))), wideLayout ? 23 : 27, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
-            CreateProgress(info, locked ? 0f : data.stock[i] / MaxStock(i), product.Accent);
-            CreateText("Stock", info, locked ? T("stock.wait_level") : F("stock.stock_count", Mathf.FloorToInt(data.stock[i]), MaxStock(i)), wideLayout ? 22 : 26, FontStyle.Bold, ink, TextAnchor.MiddleLeft);
+            infoLayout.spacing = wideLayout ? 7f : shortPortrait ? 7f : 9f;
+            CreateText("Name", info, locked ? F("stock.unlock_at", ProductName(i), product.UnlockLevel) : ProductName(i), wideLayout ? 30 : shortPortrait ? 32 : 36, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+            CreateText("Stock", info, locked ? T("stock.wait_level") : F("stock.stock_count", Mathf.FloorToInt(data.stock[i]), MaxStock(i)), wideLayout ? 26 : shortPortrait ? 29 : 32, FontStyle.Bold, locked ? ink : product.Accent, TextAnchor.MiddleLeft);
+            CreateProgress(info, locked ? 0f : data.stock[i] / MaxStock(i), locked ? Color.gray : product.Accent, wideLayout ? 16f : shortPortrait ? 18f : 20f);
+            CreateText("Meta", info, locked ? ProductSubtitle(i) : F("stock.price_cost", Money(SalePrice(i)), Money(UnitCost(i))), wideLayout ? 22 : shortPortrait ? 24 : 27, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
 
             int amount = Mathf.Min(MaxStock(i) - Mathf.FloorToInt(data.stock[i]), RestockPack());
             int cost = amount * UnitCost(i);
-            Button button = CreateButton(row, locked ? T("action.locked") : amount <= 0 ? T("action.full_stock") : F("action.restock", Money(cost)), pine, () => BuyStock(index));
-            button.interactable = !locked && amount > 0 && data.cash >= cost;
-            button.gameObject.GetComponent<LayoutElement>().preferredWidth = wideLayout ? 210f : 250f;
+            Button button = CreateButton(row, StockButtonLabel(index, locked, amount, cost), pine, () =>
+            {
+                if (locked)
+                {
+                    AddLog(F("stock.unlock_at", ProductName(index), product.UnlockLevel));
+                    RenderAll();
+                    return;
+                }
+
+                if (amount <= 0)
+                {
+                    AddLog(T("action.full_stock"));
+                    RenderAll();
+                    return;
+                }
+
+                if (data.cash < cost)
+                {
+                    AddLog(F("log.cash_short", Money(cost - data.cash)));
+                    RenderAll();
+                    return;
+                }
+
+                BuyStock(index);
+            });
+            button.gameObject.GetComponent<LayoutElement>().preferredWidth = wideLayout ? 210f : shortPortrait ? 218f : 250f;
         }
     }
 
     private void RenderUpgrades()
     {
         CreateSectionTitle(T("upgrades.title"), T("upgrades.subtitle"));
+        bool shortPortrait = IsShortPortraitScreen();
         for (int i = 0; i < upgrades.Length; i++)
         {
             int index = i;
@@ -1531,27 +1909,45 @@ public sealed class IdleShopGame : MonoBehaviour
             int cost = UpgradeCost(i);
             bool maxed = level >= upgrade.MaxLevel;
             RectTransform row = CreatePanel("Upgrade", contentRoot, panel);
-            row.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 164f : 188f;
+            row.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 174f : shortPortrait ? 194f : 214f;
             HorizontalLayoutGroup layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = wideLayout ? new RectOffset(18, 18, 14, 14) : new RectOffset(20, 20, 16, 16);
-            layout.spacing = wideLayout ? 18f : 20f;
+            layout.padding = wideLayout ? new RectOffset(18, 18, 14, 14) : shortPortrait ? new RectOffset(18, 18, 14, 14) : new RectOffset(20, 20, 16, 16);
+            layout.spacing = wideLayout ? 18f : shortPortrait ? 16f : 20f;
 
             RectTransform info = CreateRect("Info", row);
             info.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
             VerticalLayoutGroup infoLayout = info.gameObject.AddComponent<VerticalLayoutGroup>();
-            infoLayout.spacing = wideLayout ? 7f : 10f;
-            CreateText("Name", info, $"{UpgradeName(i)}  {F("level.short", level, upgrade.MaxLevel)}", wideLayout ? 31 : 37, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
-            CreateText("Detail", info, UpgradeDetail(i), wideLayout ? 24 : 28, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
+            infoLayout.spacing = wideLayout ? 8f : shortPortrait ? 9f : 11f;
+            CreateText("Name", info, $"{UpgradeName(i)}  {F("level.short", level, upgrade.MaxLevel)}", wideLayout ? 31 : shortPortrait ? 34 : 38, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+            CreateText("Detail", info, UpgradeDetail(i), wideLayout ? 29 : shortPortrait ? 32 : 35, FontStyle.Bold, honey, TextAnchor.MiddleLeft);
+            CreateText("Meta", info, maxed ? T("action.maxed") : F("action.upgrade", Money(cost)), wideLayout ? 22 : shortPortrait ? 24 : 27, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
 
-            Button button = CreateButton(row, maxed ? T("action.maxed") : F("action.upgrade", Money(cost)), honey, () => BuyUpgrade(index));
-            button.interactable = !maxed && data.cash >= cost;
-            button.gameObject.GetComponent<LayoutElement>().preferredWidth = wideLayout ? 240f : 280f;
+            Button button = CreateButton(row, UpgradeButtonLabel(index, maxed, cost), honey, () =>
+            {
+                if (maxed)
+                {
+                    AddLog(T("action.maxed"));
+                    RenderAll();
+                    return;
+                }
+
+                if (data.cash < cost)
+                {
+                    AddLog(F("log.upgrade_short", UpgradeName(index), Money(cost - data.cash)));
+                    RenderAll();
+                    return;
+                }
+
+                BuyUpgrade(index);
+            });
+            button.gameObject.GetComponent<LayoutElement>().preferredWidth = wideLayout ? 240f : shortPortrait ? 250f : 280f;
         }
     }
 
     private void RenderStaff()
     {
         CreateSectionTitle(T("staff.title"), T("staff.subtitle"));
+        bool shortPortrait = IsShortPortraitScreen();
         for (int i = 0; i < staffDefs.Length; i++)
         {
             int index = i;
@@ -1560,13 +1956,13 @@ public sealed class IdleShopGame : MonoBehaviour
             int cost = StaffCost(i);
             bool maxed = level >= person.MaxLevel;
             RectTransform row = CreatePanel("Staff", contentRoot, panel);
-            row.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 176f : 202f;
+            row.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 182f : shortPortrait ? 204f : 226f;
             HorizontalLayoutGroup layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.padding = wideLayout ? new RectOffset(18, 18, 14, 14) : new RectOffset(20, 20, 16, 16);
-            layout.spacing = wideLayout ? 18f : 20f;
+            layout.padding = wideLayout ? new RectOffset(18, 18, 14, 14) : shortPortrait ? new RectOffset(18, 18, 14, 14) : new RectOffset(20, 20, 16, 16);
+            layout.spacing = wideLayout ? 18f : shortPortrait ? 16f : 20f;
 
-            RectTransform avatar = CreatePanel("Avatar", row, i == 0 ? coral : i == 1 ? blue : honey);
-            avatar.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 126f : 142f;
+            RectTransform avatar = CreatePanel("Avatar", row, i == 0 ? pine : i == 1 ? new Color(0.16f, 0.36f, 0.27f) : new Color(0.28f, 0.43f, 0.22f));
+            avatar.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 126f : shortPortrait ? 126f : 142f;
             if (StaffSprite(i) != null)
             {
                 CreateImage("AvatarArt", avatar, StaffSprite(i), true);
@@ -1579,13 +1975,30 @@ public sealed class IdleShopGame : MonoBehaviour
             RectTransform info = CreateRect("Info", row);
             info.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
             VerticalLayoutGroup infoLayout = info.gameObject.AddComponent<VerticalLayoutGroup>();
-            infoLayout.spacing = wideLayout ? 7f : 10f;
-            CreateText("Name", info, $"{StaffName(i)}  {F("level.short", level, person.MaxLevel)}", wideLayout ? 31 : 37, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
-            CreateText("Detail", info, StaffDetail(i), wideLayout ? 24 : 28, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
+            infoLayout.spacing = wideLayout ? 8f : shortPortrait ? 9f : 11f;
+            CreateText("Name", info, $"{StaffName(i)}  {F("level.short", level, person.MaxLevel)}", wideLayout ? 31 : shortPortrait ? 34 : 38, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+            CreateText("Detail", info, StaffDetail(i), wideLayout ? 29 : shortPortrait ? 32 : 35, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+            CreateText("Meta", info, maxed ? T("action.maxed") : F("action.train", Money(cost)), wideLayout ? 22 : shortPortrait ? 24 : 27, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
 
-            Button button = CreateButton(row, maxed ? T("action.maxed") : F("action.train", Money(cost)), pine, () => HireStaff(index));
-            button.interactable = !maxed && data.cash >= cost;
-            button.gameObject.GetComponent<LayoutElement>().preferredWidth = wideLayout ? 240f : 280f;
+            Button button = CreateButton(row, StaffButtonLabel(maxed, cost), pine, () =>
+            {
+                if (maxed)
+                {
+                    AddLog(T("action.maxed"));
+                    RenderAll();
+                    return;
+                }
+
+                if (data.cash < cost)
+                {
+                    AddLog(F("log.staff_short", StaffName(index), Money(cost - data.cash)));
+                    RenderAll();
+                    return;
+                }
+
+                HireStaff(index);
+            });
+            button.gameObject.GetComponent<LayoutElement>().preferredWidth = wideLayout ? 240f : shortPortrait ? 250f : 280f;
         }
     }
 
@@ -1613,8 +2026,18 @@ public sealed class IdleShopGame : MonoBehaviour
         for (int i = 0; i < languages.Count; i++)
         {
             LocalizationManager.LanguageInfo language = languages[i];
-            Button button = CreateButton(languageButtons, language.Name, language.Code == LocalizationManager.CurrentLanguage ? coral : pine, () => ChangeLanguage(language.Code, language.Name));
-            button.interactable = language.Code != LocalizationManager.CurrentLanguage;
+            string languageLabel = language.Code == LocalizationManager.CurrentLanguage ? F("settings.current_language", language.Name) : language.Name;
+            CreateButton(languageButtons, languageLabel, language.Code == LocalizationManager.CurrentLanguage ? coral : pine, () =>
+            {
+                if (language.Code == LocalizationManager.CurrentLanguage)
+                {
+                    AddLog(F("settings.current_language", language.Name));
+                    RenderAll();
+                    return;
+                }
+
+                ChangeLanguage(language.Code, language.Name);
+            });
         }
 
         CreateText("LanguageHint", languagePanel, T("settings.language_hint"), wideLayout ? 22 : 25, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
@@ -1694,7 +2117,7 @@ public sealed class IdleShopGame : MonoBehaviour
         CreateText("Subtitle", header, subtitle, wideLayout ? 23 : 27, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
     }
 
-    private void CreateResourceChip(RectTransform parent, string label, string value, Sprite icon, Color accent)
+    private Text CreateResourceChip(RectTransform parent, string label, string value, Sprite icon, Color accent)
     {
         RectTransform chip = CreatePanel("ResourceChip", parent, new Color(0.10f, 0.07f, 0.05f, 0.84f));
         chip.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
@@ -1717,6 +2140,7 @@ public sealed class IdleShopGame : MonoBehaviour
         text.resizeTextMinSize = wideLayout ? 12 : 15;
         text.resizeTextMaxSize = wideLayout ? 20 : 24;
         text.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
+        return text;
     }
 
     private Button CreateRoundShortcut(RectTransform parent, Sprite icon, Color color, UnityEngine.Events.UnityAction action)
@@ -1747,6 +2171,131 @@ public sealed class IdleShopGame : MonoBehaviour
         RectTransform tab = CreatePanel("SheetTab", parent, active ? panel : new Color(0.50f, 0.32f, 0.18f));
         tab.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
         CreateText("Label", tab, label, wideLayout ? 26 : 31, FontStyle.Bold, active ? pine : Color.white, TextAnchor.MiddleCenter);
+    }
+
+    private Button CreateFeaturedActionCard(RectTransform parent, string title, string detail, string cta, Sprite icon, Color color, UnityEngine.Events.UnityAction action)
+    {
+        bool shortPortrait = IsShortPortraitScreen();
+        RectTransform card = CreatePanel("FeaturedActionCard", parent, panel);
+        if (upgradePulseTimer > 0f)
+        {
+            card.gameObject.AddComponent<UIFlashTint>().Configure(honey, upgradePulseTimer);
+        }
+        else if (restockPulseTimer > 0f)
+        {
+            card.gameObject.AddComponent<UIFlashTint>().Configure(blue, restockPulseTimer);
+        }
+
+        card.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 170f : shortPortrait ? 220f : 240f;
+        HorizontalLayoutGroup layout = card.gameObject.AddComponent<HorizontalLayoutGroup>();
+        layout.padding = wideLayout ? new RectOffset(16, 16, 14, 14) : shortPortrait ? new RectOffset(18, 18, 16, 16) : new RectOffset(20, 20, 18, 18);
+        layout.spacing = wideLayout ? 14f : 18f;
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+
+        RectTransform iconBox = CreatePanel("HomeCardIcon", card, color);
+        iconBox.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 110f : shortPortrait ? 138f : 150f;
+        if (icon != null)
+        {
+            CreateImage("Icon", iconBox, icon, true);
+        }
+
+        RectTransform textGroup = CreateRect("FeaturedActionText", card);
+        textGroup.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
+        VerticalLayoutGroup textLayout = textGroup.gameObject.AddComponent<VerticalLayoutGroup>();
+        textLayout.spacing = wideLayout ? 8f : 10f;
+        textLayout.childControlHeight = true;
+        textLayout.childControlWidth = true;
+        textLayout.childForceExpandHeight = false;
+        textLayout.childForceExpandWidth = true;
+
+        Text titleText = CreateText("Title", textGroup, title, wideLayout ? 32 : shortPortrait ? 37 : 40, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+        titleText.resizeTextForBestFit = true;
+        titleText.resizeTextMinSize = wideLayout ? 22 : 27;
+        titleText.resizeTextMaxSize = wideLayout ? 32 : shortPortrait ? 37 : 40;
+        LayoutElement titleLayout = titleText.gameObject.AddComponent<LayoutElement>();
+        titleLayout.minHeight = wideLayout ? 46f : shortPortrait ? 58f : 64f;
+        titleLayout.preferredHeight = wideLayout ? 46f : shortPortrait ? 58f : 64f;
+        titleLayout.flexibleHeight = 0f;
+
+        Text detailText = CreateText("Detail", textGroup, detail, wideLayout ? 23 : shortPortrait ? 27 : 29, FontStyle.Bold, ink, TextAnchor.MiddleLeft);
+        detailText.resizeTextForBestFit = true;
+        detailText.resizeTextMinSize = wideLayout ? 16 : 20;
+        detailText.resizeTextMaxSize = wideLayout ? 23 : shortPortrait ? 27 : 29;
+        LayoutElement detailLayout = detailText.gameObject.AddComponent<LayoutElement>();
+        detailLayout.minHeight = wideLayout ? 70f : shortPortrait ? 92f : 104f;
+        detailLayout.preferredHeight = wideLayout ? 70f : shortPortrait ? 92f : 104f;
+        detailLayout.flexibleHeight = 0f;
+
+        RectTransform buttonBox = CreatePanel("HomeCardButton", card, color);
+        LayoutElement buttonBoxLayout = buttonBox.gameObject.AddComponent<LayoutElement>();
+        buttonBoxLayout.minWidth = wideLayout ? 160f : shortPortrait ? 184f : 204f;
+        buttonBoxLayout.preferredWidth = wideLayout ? 160f : shortPortrait ? 184f : 204f;
+        buttonBoxLayout.flexibleWidth = 0f;
+        Text buttonText = CreateText("ButtonLabel", buttonBox, cta, wideLayout ? 25 : shortPortrait ? 29 : 31, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
+        buttonText.resizeTextForBestFit = true;
+        buttonText.resizeTextMinSize = wideLayout ? 17 : 21;
+        buttonText.resizeTextMaxSize = wideLayout ? 25 : shortPortrait ? 29 : 31;
+
+        Button button = card.gameObject.AddComponent<Button>();
+        card.gameObject.AddComponent<UIButtonFeedback>();
+        button.targetGraphic = card.GetComponent<Image>();
+        button.onClick.AddListener(action);
+        ApplyButtonColor(button, panel);
+        return button;
+    }
+
+    private Button CreateQuickActionButton(RectTransform parent, string title, string detail, Sprite icon, Color color, UnityEngine.Events.UnityAction action)
+    {
+        bool shortPortrait = IsShortPortraitScreen();
+        RectTransform card = CreatePanel("QuickActionButton", parent, color);
+        LayoutElement cardLayout = card.gameObject.AddComponent<LayoutElement>();
+        cardLayout.flexibleWidth = 1f;
+        cardLayout.flexibleHeight = 0f;
+        VerticalLayoutGroup layout = card.gameObject.AddComponent<VerticalLayoutGroup>();
+        layout.padding = wideLayout ? new RectOffset(9, 9, 8, 8) : shortPortrait ? new RectOffset(10, 10, 9, 9) : new RectOffset(11, 11, 10, 10);
+        layout.spacing = wideLayout ? 4f : 5f;
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = true;
+        layout.childForceExpandHeight = false;
+
+        RectTransform iconBox = CreatePanel("QuickActionIcon", card, new Color(1f, 0.95f, 0.80f, 0.22f));
+        LayoutElement iconLayout = iconBox.gameObject.AddComponent<LayoutElement>();
+        iconLayout.minHeight = wideLayout ? 42f : shortPortrait ? 48f : 56f;
+        iconLayout.preferredHeight = wideLayout ? 42f : shortPortrait ? 48f : 56f;
+        iconLayout.flexibleHeight = 0f;
+        if (icon != null)
+        {
+            CreateImage("Icon", iconBox, icon, true);
+        }
+
+        Text titleText = CreateText("Title", card, title, wideLayout ? 22 : shortPortrait ? 25 : 27, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
+        titleText.resizeTextForBestFit = true;
+        titleText.resizeTextMinSize = wideLayout ? 15 : 18;
+        titleText.resizeTextMaxSize = wideLayout ? 22 : shortPortrait ? 25 : 27;
+        LayoutElement titleLayout = titleText.gameObject.AddComponent<LayoutElement>();
+        titleLayout.minHeight = wideLayout ? 28f : shortPortrait ? 32f : 36f;
+        titleLayout.preferredHeight = wideLayout ? 28f : shortPortrait ? 32f : 36f;
+        titleLayout.flexibleHeight = 0f;
+
+        Text detailText = CreateText("Detail", card, detail, wideLayout ? 18 : shortPortrait ? 21 : 23, FontStyle.Bold, new Color(1f, 0.92f, 0.74f), TextAnchor.MiddleCenter);
+        detailText.resizeTextForBestFit = true;
+        detailText.resizeTextMinSize = wideLayout ? 13 : 16;
+        detailText.resizeTextMaxSize = wideLayout ? 18 : shortPortrait ? 21 : 23;
+        LayoutElement detailLayout = detailText.gameObject.AddComponent<LayoutElement>();
+        detailLayout.minHeight = wideLayout ? 24f : shortPortrait ? 28f : 32f;
+        detailLayout.preferredHeight = wideLayout ? 24f : shortPortrait ? 28f : 32f;
+        detailLayout.flexibleHeight = 0f;
+
+        Button button = card.gameObject.AddComponent<Button>();
+        card.gameObject.AddComponent<UIButtonFeedback>();
+        button.targetGraphic = card.GetComponent<Image>();
+        button.onClick.AddListener(action);
+        ApplyButtonColor(button, color);
+        return button;
     }
 
     private Button CreateHomeActionCard(RectTransform parent, string title, string detail, Sprite icon, Color color, UnityEngine.Events.UnityAction action)
@@ -1830,6 +2379,8 @@ public sealed class IdleShopGame : MonoBehaviour
         scroll.horizontal = false;
         scroll.movementType = ScrollRect.MovementType.Clamped;
         scroll.inertia = true;
+        scroll.decelerationRate = 0.08f;
+        scroll.scrollSensitivity = wideLayout ? 32f : 42f;
 
         RectTransform mask = CreateRect("Viewport", viewport);
         mask.anchorMin = Vector2.zero;
@@ -1912,7 +2463,7 @@ public sealed class IdleShopGame : MonoBehaviour
         bool active = activeTab == tab;
         RectTransform rect = CreatePanel("NavButton", parent, active ? NavActiveColor(tab) : inactiveNav);
         LayoutElement layout = rect.gameObject.AddComponent<LayoutElement>();
-        layout.preferredHeight = vertical ? 64f : 98f;
+        layout.preferredHeight = vertical ? 64f : 116f;
         layout.flexibleWidth = 1f;
 
         Button button = rect.gameObject.AddComponent<Button>();
@@ -1922,7 +2473,7 @@ public sealed class IdleShopGame : MonoBehaviour
         ApplyButtonColor(button, active ? NavActiveColor(tab) : inactiveNav);
 
         VerticalLayoutGroup buttonLayout = rect.gameObject.AddComponent<VerticalLayoutGroup>();
-        buttonLayout.padding = vertical ? new RectOffset(7, 7, 5, 5) : new RectOffset(8, 8, 8, 8);
+        buttonLayout.padding = vertical ? new RectOffset(7, 7, 5, 5) : new RectOffset(6, 6, 6, 6);
         buttonLayout.spacing = vertical ? 2f : 0f;
         buttonLayout.childAlignment = TextAnchor.MiddleCenter;
         buttonLayout.childControlWidth = true;
@@ -1932,8 +2483,8 @@ public sealed class IdleShopGame : MonoBehaviour
 
         RectTransform iconFrame = CreatePanel("NavIconFrame", rect, active ? new Color(1f, 0.93f, 0.62f) : new Color(0.20f, 0.16f, 0.12f));
         LayoutElement iconLayout = iconFrame.gameObject.AddComponent<LayoutElement>();
-        iconLayout.preferredWidth = vertical ? 38f : 74f;
-        iconLayout.preferredHeight = vertical ? 30f : 74f;
+        iconLayout.preferredWidth = vertical ? 38f : 84f;
+        iconLayout.preferredHeight = vertical ? 30f : 78f;
         Sprite icon = TabIcon(tab);
         if (icon != null)
         {
@@ -1941,13 +2492,12 @@ public sealed class IdleShopGame : MonoBehaviour
             iconImage.color = active ? Color.white : new Color(1f, 0.92f, 0.72f);
         }
 
-        Text text = CreateText("NavLabel", rect, label, vertical ? 21 : 26, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
+        Text text = CreateText("NavLabel", rect, label, vertical ? 21 : 22, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
         text.resizeTextForBestFit = true;
-        text.resizeTextMinSize = vertical ? 13 : 16;
-        text.resizeTextMaxSize = vertical ? 21 : 26;
-        text.gameObject.AddComponent<LayoutElement>().preferredHeight = vertical ? 24f : 30f;
+        text.resizeTextMinSize = vertical ? 13 : 12;
+        text.resizeTextMaxSize = vertical ? 21 : 22;
+        text.gameObject.AddComponent<LayoutElement>().preferredHeight = vertical ? 24f : 24f;
         text.raycastTarget = false;
-        text.gameObject.SetActive(vertical);
 
         return button;
     }
@@ -1982,7 +2532,7 @@ public sealed class IdleShopGame : MonoBehaviour
             case Tab.Upgrades:
                 return honey;
             case Tab.Staff:
-                return coral;
+                return pine;
             case Tab.Settings:
                 return new Color(0.34f, 0.42f, 0.30f);
             default:
@@ -2052,19 +2602,31 @@ public sealed class IdleShopGame : MonoBehaviour
             image.color = color;
         }
 
+        button.transition = Selectable.Transition.None;
         ColorBlock colors = button.colors;
         colors.normalColor = color;
-        colors.highlightedColor = Color.Lerp(color, Color.white, 0.08f);
-        colors.pressedColor = Color.Lerp(color, Color.black, 0.15f);
+        colors.highlightedColor = color;
+        colors.pressedColor = color;
         colors.selectedColor = color;
-        colors.disabledColor = new Color(color.r, color.g, color.b, 0.38f);
+        colors.disabledColor = color;
         button.colors = colors;
+
+        UIButtonFeedback feedback = button.GetComponent<UIButtonFeedback>();
+        if (feedback != null)
+        {
+            feedback.SyncRestColor();
+        }
     }
 
     private RectTransform CreateProgress(RectTransform parent, float value, Color color)
     {
+        return CreateProgress(parent, value, color, 16f);
+    }
+
+    private RectTransform CreateProgress(RectTransform parent, float value, Color color, float height)
+    {
         RectTransform track = CreatePanel("Progress", parent, new Color(0.12f, 0.20f, 0.17f, 0.14f));
-        track.gameObject.AddComponent<LayoutElement>().preferredHeight = 16f;
+        track.gameObject.AddComponent<LayoutElement>().preferredHeight = height;
         RectTransform fill = CreatePanel("Fill", track, color);
         fill.anchorMin = new Vector2(0f, 0f);
         fill.anchorMax = new Vector2(Mathf.Clamp01(value), 1f);
@@ -2161,22 +2723,20 @@ public sealed class IdleShopGame : MonoBehaviour
         return name == "Top" ||
                name == "Tabs" ||
                name == "GameStage" ||
-               name == "ResourceChip" ||
-               name == "ResourceIcon" ||
                name == "RoundShortcut" ||
                name == "ManagementPanel" ||
                name == "SheetTabs" ||
                name == "SheetTab" ||
                name == "HomeActionCard" ||
+               name == "FeaturedActionCard" ||
+               name == "QuickActionButton" ||
+               name == "QuickActionIcon" ||
                name == "HomeCardIcon" ||
                name == "HomeCardButton" ||
                name == "ShopHero" ||
                name == "ShopFront" ||
-               name == "FocusProduct" ||
-               name == "FocusIcon" ||
                name == "GuidePanel" ||
                name == "GuideItem" ||
-               name == "Day" ||
                name == "Product" ||
                name == "Upgrade" ||
                name == "Staff" ||

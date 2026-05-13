@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "저장이 초기화되었습니다. 상점이 다시 문을 열었습니다."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "추천: 진열대 채우기 {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "재고가 부족합니다. 보충하면 자동 판매가 이어집니다."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "추천: {0} 업그레이드 {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "재고 한도 +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "손님이 늘어 자동 판매가 빨라짐"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "개당 가격 +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "보충 비용 절감"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "상품 1개를 바로 팔아 {0} 획득"
+    },
+    {
+      "key": "stat.income",
+      "value": "수익"
     }
   ]
 }

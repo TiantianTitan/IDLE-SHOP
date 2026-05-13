@@ -405,6 +405,42 @@
     {
       "key": "log.save_reset",
       "value": "Salvataggio reimpostato. Il negozio riapre."
+    },
+    {
+      "key": "recommend.restock",
+      "value": "Consiglio: riempi scaffali {0}"
+    },
+    {
+      "key": "recommend.restock_detail",
+      "value": "Le scorte stanno finendo. Rifornisci per continuare a vendere in automatico."
+    },
+    {
+      "key": "recommend.upgrade",
+      "value": "Consiglio: potenzia {0} {1}"
+    },
+    {
+      "key": "recommend.upgrade_stock",
+      "value": "Limite scorte +{0}"
+    },
+    {
+      "key": "recommend.upgrade_speed",
+      "value": "Più clienti, vendite automatiche più rapide"
+    },
+    {
+      "key": "recommend.upgrade_price",
+      "value": "Prezzo unitario +{0}"
+    },
+    {
+      "key": "recommend.upgrade_cost",
+      "value": "Rifornire costa meno"
+    },
+    {
+      "key": "recommend.checkout_detail",
+      "value": "Vendi 1 articolo ora e guadagna {0}"
+    },
+    {
+      "key": "stat.income",
+      "value": "Incasso"
     }
   ]
 }
