@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "입고 후 자동 판매 재개"
+      "value": "현재 주문 재고 부족"
     },
     {
       "key": "shop.unlocked_pending",
@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "빠른 계산"
+      "value": "수동 계산"
     },
     {
       "key": "action.manual_boost",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "진열대 채우기"
+      "value": "재고 채우기"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0}개 · {1}"
+      "value": "진열대 {0}개 채우기 · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "여기서 입고"
+      "value": "보충"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "추천: 진열대 채우기 {0}"
+      "value": "추천: 재고 채우기 {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "재고가 부족합니다. 보충하면 자동 판매가 이어집니다."
+      "value": "재고가 적어요. 보충하면 계산이 계속됩니다."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "상품 1개를 바로 팔아 {0} 획득"
+      "value": "수동 계산으로 이 주문 즉시 완료: {0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "추천: 빠른 계산 {0}"
+      "value": "추천: 현재 주문 완료 {0}"
     },
     {
       "key": "stat.income",
@@ -532,7 +532,7 @@
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "{0}개 보충 가능 · {1}"
+      "value": "현금 내에서 {0}개 보충 · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "Need {1} more {0}"
+      "value": "현재 주문에 {0} {1}개 부족"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "Order value {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "주문 재고 보충"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "이 주문 부족분 보충 · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "현금 내에서 {0}개 보충 · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "추천: 주문 재고 보충 {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}. 보충해야 계산이 이어집니다."
     }
   ]
 }

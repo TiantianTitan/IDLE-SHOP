@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "أعد التخزين لاستئناف البيع التلقائي"
+      "value": "الطلب الحالي يحتاج مخزونًا"
     },
     {
       "key": "shop.unlocked_pending",
@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "تحصيل سريع"
+      "value": "تحصيل يدوي"
     },
     {
       "key": "action.manual_boost",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "املأ الرفوف"
+      "value": "ملء المخزون"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0} قطعة · {1}"
+      "value": "املأ الرفوف: {0} قطعة · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "خزن من هنا"
+      "value": "تزويد"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "مقترح: ملء الرفوف {0}"
+      "value": "مقترح: ملء المخزون {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "المخزون منخفض. أعد التعبئة لاستمرار البيع التلقائي."
+      "value": "المخزون منخفض. زوّد الرفوف ليستمر التحصيل."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "بع سلعة واحدة الآن واربح {0}"
+      "value": "التحصيل اليدوي ينهي هذا الطلب الآن: {0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "مقترح: تحصيل سريع {0}"
+      "value": "مقترح: إنهاء الطلب الحالي {0}"
     },
     {
       "key": "stat.income",
@@ -528,11 +528,11 @@
     },
     {
       "key": "recommend.restock_partial",
-      "value": "مقترح: خزن {0} عناصر {1}"
+      "value": "مقترح: اشترِ {0} قطع {1}"
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "يمكن تخزين {0} · {1}"
+      "value": "النقد يكفي لـ {0} قطعة · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "Need {1} more {0}"
+      "value": "الطلب الحالي يحتاج {0}، ينقص {1}"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "Order value {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "تزويد الطلب"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "أكمل نقص هذا الطلب · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "النقد يكفي لـ {0} قطعة · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "مقترح: تزويد الطلب {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}. أكمل المخزون قبل التحصيل."
     }
   ]
 }

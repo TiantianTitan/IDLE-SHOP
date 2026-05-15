@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "Réassortir pour relancer les ventes auto"
+      "value": "Commande bloquée par le stock"
     },
     {
       "key": "shop.unlocked_pending",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "Remplir les rayons"
+      "value": "Remplir stock"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0} articles · {1}"
+      "value": "Remplir {0} articles · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "Réassort ici"
+      "value": "Réassort"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "Conseil : remplir les rayons {0}"
+      "value": "Conseil : remplir stock {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Le stock baisse. Réapprovisionnez pour continuer les ventes auto."
+      "value": "Stock bas. Réassortis pour continuer les encaissements."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "Vendez 1 article maintenant et gagnez {0}"
+      "value": "L’encaissement manuel termine cette commande : {0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "Conseil : encaisser {0}"
+      "value": "Conseil : terminer la commande {0}"
     },
     {
       "key": "stat.income",
@@ -528,11 +528,11 @@
     },
     {
       "key": "recommend.restock_partial",
-      "value": "Conseil : recharge {0} articles {1}"
+      "value": "Conseil : acheter {0} articles {1}"
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "Recharge {0} · {1}"
+      "value": "Budget limité : {0} articles · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "Need {1} more {0}"
+      "value": "Commande actuelle : {0} manque de {1}"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "Order value {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "Stock commande"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "Compléter cette commande · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "Budget limité : {0} articles · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "Conseil : stock commande {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}. Complète le stock pour encaisser."
     }
   ]
 }

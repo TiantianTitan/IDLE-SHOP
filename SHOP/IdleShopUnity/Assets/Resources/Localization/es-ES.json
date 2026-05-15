@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "Repón para reanudar ventas auto"
+      "value": "Pedido actual sin stock"
     },
     {
       "key": "shop.unlocked_pending",
@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Cobrar"
+      "value": "Cobrar manual"
     },
     {
       "key": "action.manual_boost",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "Reponer estantes"
+      "value": "Llenar stock"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0} uds. · {1}"
+      "value": "Llenar estantes: {0} uds · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "Repón aquí"
+      "value": "Reponer"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "Recomendado: llenar estantes {0}"
+      "value": "Recomendado: llenar stock {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Queda poco stock. Repón para seguir vendiendo en automático."
+      "value": "Stock bajo. Repón para seguir cobrando pedidos."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "Vende 1 artículo ahora y gana {0}"
+      "value": "El cobro manual termina este pedido: {0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "Recomendado: cobrar {0}"
+      "value": "Recomendado: terminar pedido {0}"
     },
     {
       "key": "stat.income",
@@ -528,11 +528,11 @@
     },
     {
       "key": "recommend.restock_partial",
-      "value": "Recomendado: repone {0} uds. {1}"
+      "value": "Recomendado: comprar {0} uds {1}"
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "Puedes reponer {0} · {1}"
+      "value": "Dinero limitado: {0} uds · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "Need {1} more {0}"
+      "value": "El pedido actual necesita {0}, faltan {1}"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "Order value {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "Reponer pedido"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "Completar este pedido · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "Dinero limitado: {0} uds · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "Recomendado: reponer pedido {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}. Repón antes de cobrar."
     }
   ]
 }

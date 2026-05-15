@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "Auffüllen, um Auto-Verkauf fortzusetzen"
+      "value": "Aktueller Auftrag braucht Ware"
     },
     {
       "key": "shop.unlocked_pending",
@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Kassieren"
+      "value": "Manuell kassieren"
     },
     {
       "key": "action.manual_boost",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "Regale auffüllen"
+      "value": "Lager auffüllen"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0} Waren · {1}"
+      "value": "Regal auffüllen: {0} Stück · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "Hier auffüllen"
+      "value": "Auffüllen"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "Tipp: Regale füllen {0}"
+      "value": "Empfohlen: Lager auffüllen {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Der Vorrat wird knapp. Auffüllen hält den Auto-Verkauf am Laufen."
+      "value": "Lager wird knapp. Auffüllen hält Kassen am Laufen."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "1 Artikel sofort verkaufen und {0} verdienen"
+      "value": "Manuelles Kassieren erledigt diesen Auftrag: {0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "Empfohlen: schnell kassieren {0}"
+      "value": "Empfohlen: Auftrag abschließen {0}"
     },
     {
       "key": "stat.income",
@@ -528,11 +528,11 @@
     },
     {
       "key": "recommend.restock_partial",
-      "value": "Empfohlen: {0} Waren nachfullen {1}"
+      "value": "Empfohlen: {0} Stück kaufen {1}"
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "{0} Waren moglich · {1}"
+      "value": "Budget reicht für {0} Stück · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "Need {1} more {0}"
+      "value": "Aktueller Auftrag braucht {0}, es fehlen {1}"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "Order value {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "Auftrag auffüllen"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "Fehlware für Auftrag · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "Budget reicht für {0} Stück · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "Empfohlen: Auftrag auffüllen {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}. Erst auffüllen, dann kassieren."
     }
   ]
 }

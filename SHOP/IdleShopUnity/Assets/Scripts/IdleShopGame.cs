@@ -80,7 +80,7 @@ public sealed class IdleShopGame : MonoBehaviour
     [Serializable]
     private sealed class SaveData
     {
-        public int saveVersion = 2;
+        public int saveVersion = 3;
         public float cash = 80f;
         public float reputation;
         public float xp;
@@ -106,7 +106,7 @@ public sealed class IdleShopGame : MonoBehaviour
     }
 
     private const string SaveKey = "PocketShop.Unity.Save.V1";
-    private const int CurrentSaveVersion = 2;
+    private const int CurrentSaveVersion = 3;
     private const float DayLength = 90f;
     private const float OfflineCapSeconds = 2f * 60f * 60f;
     private const float LowStockRatio = 0.20f;
@@ -2308,6 +2308,8 @@ public sealed class IdleShopGame : MonoBehaviour
         int staffCost = staffIndex >= 0 ? StaffCost(staffIndex) : 0;
         bool shortPortrait = IsShortPortraitScreen();
         bool hasSellableStock = HasSellableStock();
+        bool orderBlocked = !hasSellableStock;
+        int orderMissingCost = orderBlocked ? CurrentOrderMissingCost() : 0;
         bool lowStock = hasSellableStock && LowestUnlockedStockRatio() <= LowStockRatio;
 
         RectTransform stage = CreatePanel("GameStage", contentRoot, new Color(0.16f, 0.36f, 0.32f));
@@ -2432,7 +2434,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
         string primaryTitle = F("recommend.checkout", Money(CurrentOrderValue()));
         string primaryDetail = F("recommend.checkout_detail", CurrentOrderSummary());
-        string primaryCta = CanFulfillCurrentOrder() ? T("action.quick_checkout") : CurrentOrderShortageText();
+        string primaryCta = CanFulfillCurrentOrder() ? T("action.quick_checkout") : T("action.restock_order");
         Sprite primaryIcon = coinSprite;
         Color primaryColor = coral;
         UnityEngine.Events.UnityAction primaryAction = () =>
@@ -2446,9 +2448,18 @@ public sealed class IdleShopGame : MonoBehaviour
         {
             bool canRestockNow = affordableRestockAmount > 0;
             bool partialRestock = canRestockNow && affordableRestockAmount < restockAllAmount;
-            primaryTitle = partialRestock ? F("recommend.restock_partial", affordableRestockAmount, Money(affordableRestockCost)) : F("recommend.restock", Money(restockAllCost));
-            primaryDetail = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(cheapestRestockCost - data.cash)) : T("recommend.restock_detail");
-            primaryCta = restockIndex < 0 || restockAllAmount <= 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : T("guide.restock");
+            if (orderBlocked && orderMissingCost > 0)
+            {
+                primaryTitle = F("recommend.restock_order", Money(orderMissingCost));
+                primaryDetail = F("recommend.restock_order_detail", CurrentOrderShortageText());
+                primaryCta = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("action.restock_order");
+            }
+            else
+            {
+                primaryTitle = partialRestock ? F("recommend.restock_partial", affordableRestockAmount, Money(affordableRestockCost)) : F("recommend.restock", Money(restockAllCost));
+                primaryDetail = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(cheapestRestockCost - data.cash)) : T("recommend.restock_detail");
+                primaryCta = restockIndex < 0 || restockAllAmount <= 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : T("guide.restock");
+            }
             primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
             primaryColor = blue;
             primaryAction = BuyRestockAll;
@@ -2523,8 +2534,8 @@ public sealed class IdleShopGame : MonoBehaviour
             bool canRestockNow = restockIndex >= 0 && affordableRestockAmount > 0;
             bool partialRestock = canRestockNow && affordableRestockAmount < restockAllAmount;
             primaryTitle = CurrentMilestoneText();
-            primaryDetail = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : T("recommend.restock_detail");
-            primaryCta = restockIndex < 0 ? T("action.full_stock") : canRestockNow ? (partialRestock ? F("action.restock_affordable_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("guide.restock")) : hasSellableStock ? T("action.quick_checkout") : ShortCashShort(cheapestRestockCost - data.cash);
+            primaryDetail = orderBlocked && orderMissingCost > 0 ? F("recommend.restock_order_detail", CurrentOrderShortageText()) : restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : T("recommend.restock_detail");
+            primaryCta = restockIndex < 0 ? T("action.full_stock") : canRestockNow ? (orderBlocked ? (data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("action.restock_order")) : partialRestock ? F("action.restock_affordable_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("guide.restock")) : hasSellableStock ? T("action.quick_checkout") : ShortCashShort(cheapestRestockCost - data.cash);
             primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
             primaryColor = blue;
             if (canRestockNow)
@@ -2629,7 +2640,7 @@ public sealed class IdleShopGame : MonoBehaviour
             CompleteOrderManualAndRender();
         });
 
-        CreateQuickActionButton(quickActions, T("action.restock_all"), RestockAllButtonDetail(restockIndex, restockAllAmount, restockAllCost, cheapestRestockCost, affordableRestockAmount, affordableRestockCost), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>
+        CreateQuickActionButton(quickActions, orderBlocked ? T("action.restock_order") : T("action.restock_all"), RestockAllButtonDetail(restockIndex, restockAllAmount, restockAllCost, cheapestRestockCost, affordableRestockAmount, affordableRestockCost), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>
         {
             if (restockIndex < 0 || restockAllAmount <= 0)
             {
@@ -2743,6 +2754,17 @@ public sealed class IdleShopGame : MonoBehaviour
         if (cheapestCost <= 0 || affordableAmount <= 0)
         {
             return ShortCashShort(cheapestCost - data.cash);
+        }
+
+        int missingOrderCost = CurrentOrderMissingCost();
+        if (!CanFulfillCurrentOrder() && missingOrderCost > 0)
+        {
+            if (data.cash < missingOrderCost)
+            {
+                return F("action.restock_order_partial_detail", affordableAmount, Money(affordableCost));
+            }
+
+            return F("action.restock_order_detail", Money(missingOrderCost));
         }
 
         if (affordableAmount < amount)

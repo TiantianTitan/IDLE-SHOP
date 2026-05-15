@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "Restock to resume auto sales"
+      "value": "Current order needs stock"
     },
     {
       "key": "shop.unlocked_pending",
@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Checkout"
+      "value": "Manual checkout"
     },
     {
       "key": "action.manual_boost",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "Restock shelves"
+      "value": "Fill stock"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0} items · {1}"
+      "value": "Fill shelves: {0} items · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "Restock here"
+      "value": "Restock"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "Recommended: fill shelves {0}"
+      "value": "Recommended: fill stock {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Stock is low. Restock to keep earning automatically."
+      "value": "Stock is low. Restock so orders keep checking out."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "Sell 1 item now and earn {0}"
+      "value": "Manual checkout finishes this order now: {0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "Recommended: checkout {0}"
+      "value": "Recommended: finish current order {0}"
     },
     {
       "key": "stat.income",
@@ -528,11 +528,11 @@
     },
     {
       "key": "recommend.restock_partial",
-      "value": "Recommended: restock {0} items {1}"
+      "value": "Recommended: buy {0} items {1}"
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "Can restock {0} · {1}"
+      "value": "Cash is limited: buy {0} · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "Need {1} more {0}"
+      "value": "Current order needs {0}, short {1}"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "Order value {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "Restock order"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "Fill this order · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "Cash is limited: buy {0} · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "Recommended: restock order {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}. Fill it before checkout can continue."
     }
   ]
 }

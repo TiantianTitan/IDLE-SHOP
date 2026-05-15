@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "Rifornisci per riprendere le vendite auto"
+      "value": "Ordine attuale senza scorte"
     },
     {
       "key": "shop.unlocked_pending",
@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Incassa"
+      "value": "Incassa manuale"
     },
     {
       "key": "action.manual_boost",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "Riempi scaffali"
+      "value": "Riempi scorte"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0} articoli · {1}"
+      "value": "Riempi scaffali: {0} pezzi · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "Rifornisci qui"
+      "value": "Rifornisci"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "Consiglio: riempi scaffali {0}"
+      "value": "Consiglio: riempi scorte {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Le scorte stanno finendo. Rifornisci per continuare a vendere in automatico."
+      "value": "Scorte basse. Rifornisci per continuare a incassare."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "Vendi 1 articolo ora e guadagna {0}"
+      "value": "L’incasso manuale chiude questo ordine: {0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "Consiglio: incassa {0}"
+      "value": "Consiglio: chiudi ordine {0}"
     },
     {
       "key": "stat.income",
@@ -528,11 +528,11 @@
     },
     {
       "key": "recommend.restock_partial",
-      "value": "Consiglio: rifornisci {0} pezzi {1}"
+      "value": "Consiglio: compra {0} pezzi {1}"
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "Puoi rifornire {0} · {1}"
+      "value": "Budget per {0} pezzi · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "Need {1} more {0}"
+      "value": "Ordine attuale: serve {0}, mancano {1}"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "Order value {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "Rifornisci ordine"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "Completa questo ordine · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "Budget per {0} pezzi · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "Consiglio: rifornisci ordine {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}. Rifornisci prima di incassare."
     }
   ]
 }

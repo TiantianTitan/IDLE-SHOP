@@ -172,7 +172,7 @@
     },
     {
       "key": "shop.waiting_restock",
-      "value": "等待补货后继续自动卖货"
+      "value": "当前订单缺货，等待补库存"
     },
     {
       "key": "shop.unlocked_pending",
@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "快速收银"
+      "value": "手动结账"
     },
     {
       "key": "action.manual_boost",
@@ -200,11 +200,11 @@
     },
     {
       "key": "action.restock_all",
-      "value": "一键补货"
+      "value": "补满库存"
     },
     {
       "key": "action.restock_all_detail",
-      "value": "{0} 件 · {1}"
+      "value": "补满货架 {0} 件 · {1}"
     },
     {
       "key": "action.upgrade",
@@ -332,7 +332,7 @@
     },
     {
       "key": "guide.restock",
-      "value": "首页补货"
+      "value": "补库存"
     },
     {
       "key": "guide.grow",
@@ -424,11 +424,11 @@
     },
     {
       "key": "recommend.restock",
-      "value": "推荐：补满货架 {0}"
+      "value": "推荐：补满库存 {0}"
     },
     {
       "key": "recommend.restock_detail",
-      "value": "库存快空了，补货后继续自动赚钱"
+      "value": "库存偏低，补货后自动结账不断档"
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "手动卖出 1 件，马上获得 {0}"
+      "value": "手动结账会立刻完成这单：{0}"
     },
     {
       "key": "recommend.checkout",
-      "value": "推荐：快速收银 {0}"
+      "value": "推荐：完成当前订单 {0}"
     },
     {
       "key": "stat.income",
@@ -532,7 +532,7 @@
     },
     {
       "key": "action.restock_affordable_detail",
-      "value": "可补 {0} 件 · {1}"
+      "value": "现金有限，先补 {0} 件 · {1}"
     },
     {
       "key": "shop.low_stock_stage_hint",
@@ -724,7 +724,7 @@
     },
     {
       "key": "order.shortage",
-      "value": "{0} 不够，还差 {1} 件"
+      "value": "当前订单缺 {0}，还差 {1} 件"
     },
     {
       "key": "log.order_completed",
@@ -749,6 +749,26 @@
     {
       "key": "staff.manager.automation",
       "value": "订单收益 {0}% → {1}%"
+    },
+    {
+      "key": "action.restock_order",
+      "value": "补当前订单"
+    },
+    {
+      "key": "action.restock_order_detail",
+      "value": "补齐这单缺货 · {0}"
+    },
+    {
+      "key": "action.restock_order_partial_detail",
+      "value": "现金有限，先补 {0} 件 · {1}"
+    },
+    {
+      "key": "recommend.restock_order",
+      "value": "推荐：补当前订单 {0}"
+    },
+    {
+      "key": "recommend.restock_order_detail",
+      "value": "{0}，补齐后这单才能结账"
     }
   ]
 }
