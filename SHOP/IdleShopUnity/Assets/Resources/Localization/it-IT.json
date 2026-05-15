@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Incassa manuale"
+      "value": "Vendi 1"
     },
     {
       "key": "action.manual_boost",
@@ -356,7 +356,7 @@
     },
     {
       "key": "log.sold",
-      "value": "{0} venduto per {1}."
+      "value": "Venduto 1 {0}, guadagno {1}."
     },
     {
       "key": "log.product_unlocked",
@@ -428,7 +428,7 @@
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Scorte basse. Rifornisci per continuare a incassare."
+      "value": "Rifornisce un articolo prioritario senza spendere tutta la cassa."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "L’incasso manuale chiude questo ordine: {0}"
+      "value": "{0}. Un tocco vende solo 1 pezzo."
     },
     {
       "key": "recommend.checkout",
-      "value": "Consiglio: chiudi ordine {0}"
+      "value": "Consiglio: vendi articolo {0}"
     },
     {
       "key": "stat.income",
@@ -712,11 +712,11 @@
     },
     {
       "key": "order.checkout_state",
-      "value": "Checking out, done in {0}s"
+      "value": "Prossimo articolo tra {0}s"
     },
     {
       "key": "order.timer",
-      "value": "Cassa ordine {0}s"
+      "value": "Prossimo articolo {0}s"
     },
     {
       "key": "order.waiting",
@@ -728,7 +728,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "Order complete: {0}, earned {1}"
+      "value": "Ordine completato: {0}, ultimo incasso {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -769,6 +769,22 @@
     {
       "key": "recommend.restock_order_detail",
       "value": "{0}. Rifornisci prima di incassare."
+    },
+    {
+      "key": "action.checkout_one_detail",
+      "value": "{0} · +{1}"
+    },
+    {
+      "key": "action.restock_product_detail",
+      "value": "Rifornisci {0} x{1} · {2}"
+    },
+    {
+      "key": "order.focus",
+      "value": "In corso: {0} x{1} · scorte {2}"
+    },
+    {
+      "key": "order.focus_blocked",
+      "value": "Rifornisci prima: {0} manca di {1}"
     }
   ]
 }

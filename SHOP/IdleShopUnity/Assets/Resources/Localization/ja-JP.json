@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "手動会計"
+      "value": "1個会計"
     },
     {
       "key": "action.manual_boost",
@@ -356,7 +356,7 @@
     },
     {
       "key": "log.sold",
-      "value": "{0}を販売、収入 {1}。"
+      "value": "{0} を1個販売、{1} 獲得。"
     },
     {
       "key": "log.product_unlocked",
@@ -428,7 +428,7 @@
     },
     {
       "key": "recommend.restock_detail",
-      "value": "在庫が少なめ。補充すると会計が止まりません。"
+      "value": "資金を使い切らず、重要な商品を1種類だけ補充します。"
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "手動会計でこの注文をすぐ完了：{0}"
+      "value": "{0}。1回タップで1個だけ売ります。"
     },
     {
       "key": "recommend.checkout",
-      "value": "おすすめ：現在の注文を完了 {0}"
+      "value": "おすすめ：今の商品を会計 {0}"
     },
     {
       "key": "stat.income",
@@ -712,11 +712,11 @@
     },
     {
       "key": "order.checkout_state",
-      "value": "Checking out, done in {0}s"
+      "value": "次の商品は {0} 秒後に会計"
     },
     {
       "key": "order.timer",
-      "value": "注文会計 {0}秒"
+      "value": "次の商品 {0} 秒"
     },
     {
       "key": "order.waiting",
@@ -728,7 +728,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "Order complete: {0}, earned {1}"
+      "value": "注文完了：{0}、最後の商品収入 {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -769,6 +769,22 @@
     {
       "key": "recommend.restock_order_detail",
       "value": "{0}。補充すると会計できます。"
+    },
+    {
+      "key": "action.checkout_one_detail",
+      "value": "{0} · +{1}"
+    },
+    {
+      "key": "action.restock_product_detail",
+      "value": "{0} x{1} 補充 · {2}"
+    },
+    {
+      "key": "order.focus",
+      "value": "処理中：{0} x{1} · 在庫 {2}"
+    },
+    {
+      "key": "order.focus_blocked",
+      "value": "先に補充：{0} が {1} 個不足"
     }
   ]
 }

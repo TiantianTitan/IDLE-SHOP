@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "수동 계산"
+      "value": "1개 계산"
     },
     {
       "key": "action.manual_boost",
@@ -356,7 +356,7 @@
     },
     {
       "key": "log.sold",
-      "value": "{0} 판매, 수입 {1}."
+      "value": "{0} 1개 판매, {1} 획득."
     },
     {
       "key": "log.product_unlocked",
@@ -428,7 +428,7 @@
     },
     {
       "key": "recommend.restock_detail",
-      "value": "재고가 적어요. 보충하면 계산이 계속됩니다."
+      "value": "현금을 모두 쓰지 않고 우선 상품 1종만 보충합니다."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "수동 계산으로 이 주문 즉시 완료: {0}"
+      "value": "{0}. 한 번 누르면 1개만 판매합니다."
     },
     {
       "key": "recommend.checkout",
-      "value": "추천: 현재 주문 완료 {0}"
+      "value": "추천: 현재 상품 계산 {0}"
     },
     {
       "key": "stat.income",
@@ -712,11 +712,11 @@
     },
     {
       "key": "order.checkout_state",
-      "value": "Checking out, done in {0}s"
+      "value": "다음 상품 {0}초 후 계산"
     },
     {
       "key": "order.timer",
-      "value": "주문 계산 {0}초"
+      "value": "다음 상품 {0}초"
     },
     {
       "key": "order.waiting",
@@ -728,7 +728,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "Order complete: {0}, earned {1}"
+      "value": "주문 완료: {0}, 마지막 수익 {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -769,6 +769,22 @@
     {
       "key": "recommend.restock_order_detail",
       "value": "{0}. 보충해야 계산이 이어집니다."
+    },
+    {
+      "key": "action.checkout_one_detail",
+      "value": "{0} · +{1}"
+    },
+    {
+      "key": "action.restock_product_detail",
+      "value": "{0} x{1} 보충 · {2}"
+    },
+    {
+      "key": "order.focus",
+      "value": "처리 중: {0} x{1} · 재고 {2}"
+    },
+    {
+      "key": "order.focus_blocked",
+      "value": "먼저 보충: {0} {1}개 부족"
     }
   ]
 }

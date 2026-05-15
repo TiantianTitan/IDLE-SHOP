@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "تحصيل يدوي"
+      "value": "بع قطعة"
     },
     {
       "key": "action.manual_boost",
@@ -356,7 +356,7 @@
     },
     {
       "key": "log.sold",
-      "value": "تم بيع {0} مقابل {1}."
+      "value": "تم بيع 1 {0}، الربح {1}."
     },
     {
       "key": "log.product_unlocked",
@@ -428,7 +428,7 @@
     },
     {
       "key": "recommend.restock_detail",
-      "value": "المخزون منخفض. زوّد الرفوف ليستمر التحصيل."
+      "value": "يزوّد سلعة مهمة واحدة بدل إنفاق كل النقد."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "التحصيل اليدوي ينهي هذا الطلب الآن: {0}"
+      "value": "{0}. كل ضغطة تبيع قطعة واحدة فقط."
     },
     {
       "key": "recommend.checkout",
-      "value": "مقترح: إنهاء الطلب الحالي {0}"
+      "value": "مقترح: بيع السلعة الحالية {0}"
     },
     {
       "key": "stat.income",
@@ -712,11 +712,11 @@
     },
     {
       "key": "order.checkout_state",
-      "value": "Checking out, done in {0}s"
+      "value": "القطعة التالية خلال {0}ث"
     },
     {
       "key": "order.timer",
-      "value": "تحصيل الطلب {0}ث"
+      "value": "القطعة التالية {0}ث"
     },
     {
       "key": "order.waiting",
@@ -728,7 +728,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "Order complete: {0}, earned {1}"
+      "value": "اكتمل الطلب: {0}، ربح آخر قطعة {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -769,6 +769,22 @@
     {
       "key": "recommend.restock_order_detail",
       "value": "{0}. أكمل المخزون قبل التحصيل."
+    },
+    {
+      "key": "action.checkout_one_detail",
+      "value": "{0} · +{1}"
+    },
+    {
+      "key": "action.restock_product_detail",
+      "value": "زوّد {0} x{1} · {2}"
+    },
+    {
+      "key": "order.focus",
+      "value": "قيد المعالجة: {0} x{1} · المخزون {2}"
+    },
+    {
+      "key": "order.focus_blocked",
+      "value": "زوّد أولًا: {0} ينقص {1}"
     }
   ]
 }

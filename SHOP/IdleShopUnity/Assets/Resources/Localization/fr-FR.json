@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Encaisser"
+      "value": "Vendre 1"
     },
     {
       "key": "action.manual_boost",
@@ -356,7 +356,7 @@
     },
     {
       "key": "log.sold",
-      "value": "{0} vendu pour {1}."
+      "value": "1 {0} vendu, gain {1}."
     },
     {
       "key": "log.product_unlocked",
@@ -428,7 +428,7 @@
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Stock bas. Réassortis pour continuer les encaissements."
+      "value": "Réassortit un article prioritaire sans vider toute la caisse."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "L’encaissement manuel termine cette commande : {0}"
+      "value": "{0}. Un appui vend seulement 1 article."
     },
     {
       "key": "recommend.checkout",
-      "value": "Conseil : terminer la commande {0}"
+      "value": "Conseil : vendre l’article {0}"
     },
     {
       "key": "stat.income",
@@ -712,11 +712,11 @@
     },
     {
       "key": "order.checkout_state",
-      "value": "Checking out, done in {0}s"
+      "value": "Prochain article encaissé dans {0}s"
     },
     {
       "key": "order.timer",
-      "value": "Encaissement {0}s"
+      "value": "Prochain article {0}s"
     },
     {
       "key": "order.waiting",
@@ -728,7 +728,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "Order complete: {0}, earned {1}"
+      "value": "Commande terminée : {0}, dernier gain {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -769,6 +769,22 @@
     {
       "key": "recommend.restock_order_detail",
       "value": "{0}. Complète le stock pour encaisser."
+    },
+    {
+      "key": "action.checkout_one_detail",
+      "value": "{0} · +{1}"
+    },
+    {
+      "key": "action.restock_product_detail",
+      "value": "Réassort {0} x{1} · {2}"
+    },
+    {
+      "key": "order.focus",
+      "value": "En cours : {0} x{1} · stock {2}"
+    },
+    {
+      "key": "order.focus_blocked",
+      "value": "Réassort d’abord : {0} manque de {1}"
     }
   ]
 }

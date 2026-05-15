@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Ручная касса"
+      "value": "Продать 1"
     },
     {
       "key": "action.manual_boost",
@@ -356,7 +356,7 @@
     },
     {
       "key": "log.sold",
-      "value": "{0} продано за {1}."
+      "value": "Продано 1 {0}, доход {1}."
     },
     {
       "key": "log.product_unlocked",
@@ -428,7 +428,7 @@
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Запас низкий. Пополните, чтобы касса не стояла."
+      "value": "Пополняет один важный товар, не тратя всю кассу."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "Ручная касса сразу завершит заказ: {0}"
+      "value": "{0}. Одно нажатие продаёт только 1 шт."
     },
     {
       "key": "recommend.checkout",
-      "value": "Совет: завершить заказ {0}"
+      "value": "Совет: продать товар {0}"
     },
     {
       "key": "stat.income",
@@ -712,11 +712,11 @@
     },
     {
       "key": "order.checkout_state",
-      "value": "Checking out, done in {0}s"
+      "value": "Следующий товар через {0}с"
     },
     {
       "key": "order.timer",
-      "value": "Касса заказа {0}с"
+      "value": "Следующий товар {0}с"
     },
     {
       "key": "order.waiting",
@@ -728,7 +728,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "Order complete: {0}, earned {1}"
+      "value": "Заказ выполнен: {0}, последний доход {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -769,6 +769,22 @@
     {
       "key": "recommend.restock_order_detail",
       "value": "{0}. Сначала пополните, потом касса продолжит."
+    },
+    {
+      "key": "action.checkout_one_detail",
+      "value": "{0} · +{1}"
+    },
+    {
+      "key": "action.restock_product_detail",
+      "value": "Пополнить {0} x{1} · {2}"
+    },
+    {
+      "key": "order.focus",
+      "value": "В работе: {0} x{1} · запас {2}"
+    },
+    {
+      "key": "order.focus_blocked",
+      "value": "Сначала пополните: {0}, не хватает {1}"
     }
   ]
 }

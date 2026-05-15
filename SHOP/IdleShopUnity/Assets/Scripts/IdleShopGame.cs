@@ -718,7 +718,8 @@ public sealed class IdleShopGame : MonoBehaviour
     private bool CompleteCurrentOrder(bool manual)
     {
         EnsureCurrentOrder();
-        if (!CanFulfillCurrentOrder())
+        int productIndex = CurrentOrderServeIndex();
+        if (productIndex < 0)
         {
             if (manual)
             {
@@ -730,33 +731,32 @@ public sealed class IdleShopGame : MonoBehaviour
             return false;
         }
 
-        int earned = CurrentOrderValue();
-        int itemCount = CurrentOrderItemCount();
         string orderText = CurrentOrderSummary();
-        for (int i = 0; i < products.Length; i++)
-        {
-            int quantity = CurrentOrderQuantity(i);
-            if (quantity <= 0)
-            {
-                continue;
-            }
-
-            data.stock[i] -= quantity;
-            data.sold[i] += quantity;
-        }
+        int earned = CurrentOrderItemValue(productIndex);
+        data.currentOrder[productIndex] = Mathf.Max(0, data.currentOrder[productIndex] - 1);
+        data.stock[productIndex] -= 1f;
+        data.sold[productIndex] += 1;
 
         data.cash += earned;
         data.totalEarned += earned;
-        data.completedOrders += 1;
-        data.soldToday += itemCount;
-        data.xp += 18f + itemCount * 7f + Mathf.Floor(earned / 12f);
+        data.soldToday += 1;
+        data.xp += 10f + Mathf.Floor(earned / 14f);
         data.reputation += 0.026f * (1f + StaffLevel(2) * 0.12f + StaffLevel(5) * 0.05f);
         salePopMessage = $"+{Money(earned)}";
         salePopTimer = manual ? 1.15f : 0.8f;
 
+        bool orderDone = CurrentOrderItemCount() <= 0;
         if (manual || UnityEngine.Random.value < 0.14f)
         {
+            AddLog(F("log.sold", ProductName(productIndex), Money(earned)));
+        }
+
+        if (orderDone)
+        {
+            data.completedOrders += 1;
+            data.xp += 12f + Mathf.Floor(earned / 16f);
             AddLog(F("log.order_completed", orderText, Money(earned)));
+            GenerateCurrentOrder();
         }
 
         while (data.xp >= XpNeeded())
@@ -773,7 +773,6 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
-        GenerateCurrentOrder();
         return true;
     }
 
@@ -954,6 +953,16 @@ public sealed class IdleShopGame : MonoBehaviour
         return Mathf.FloorToInt(value * OrderValueMultiplier());
     }
 
+    private int CurrentOrderItemValue(int productIndex)
+    {
+        return productIndex >= 0 && productIndex < products.Length ? Mathf.FloorToInt(SalePrice(productIndex) * OrderValueMultiplier()) : 0;
+    }
+
+    private int CurrentOrderNextItemValue()
+    {
+        return CurrentOrderItemValue(CurrentOrderDisplayProductIndex());
+    }
+
     private bool CanFulfillCurrentOrder()
     {
         EnsureCurrentOrder();
@@ -999,6 +1008,74 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         return T("log.empty_shelf");
+    }
+
+    private string CurrentOrderFocusText()
+    {
+        EnsureCurrentOrder();
+        int productIndex = CurrentOrderDisplayProductIndex();
+        int quantity = CurrentOrderQuantity(productIndex);
+        if (productIndex < 0 || quantity <= 0)
+        {
+            return T("order.waiting");
+        }
+
+        int stock = Mathf.FloorToInt(data.stock[productIndex]);
+        if (stock <= 0)
+        {
+            return F("order.focus_blocked", ProductName(productIndex), quantity);
+        }
+
+        return F("order.focus", ProductName(productIndex), quantity, stock);
+    }
+
+    private int CurrentOrderServeIndex()
+    {
+        EnsureCurrentOrder();
+        for (int i = 0; i < products.Length; i++)
+        {
+            if (CurrentOrderQuantity(i) > 0 && data.stock[i] >= 1f)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private int CurrentOrderDisplayProductIndex()
+    {
+        int serveIndex = CurrentOrderServeIndex();
+        if (serveIndex >= 0)
+        {
+            return serveIndex;
+        }
+
+        int missingIndex = BestMissingOrderProductIndex(data.stock);
+        if (missingIndex >= 0)
+        {
+            return missingIndex;
+        }
+
+        for (int i = 0; i < products.Length; i++)
+        {
+            if (CurrentOrderQuantity(i) > 0)
+            {
+                return i;
+            }
+        }
+
+        return FirstUnlockedProductIndex();
+    }
+
+    private int CurrentOrderMissingAmount(int productIndex)
+    {
+        if (productIndex < 0 || productIndex >= products.Length)
+        {
+            return 0;
+        }
+
+        return Mathf.Max(0, CurrentOrderQuantity(productIndex) - Mathf.FloorToInt(data.stock[productIndex]));
     }
 
     private int CurrentOrderMissingCost()
@@ -1049,7 +1126,12 @@ public sealed class IdleShopGame : MonoBehaviour
     private int EstimatedIncomePerMinute()
     {
         EnsureCurrentOrder();
-        return Mathf.FloorToInt(OrderProgressPerSecond() * 60f * Mathf.Max(1, CurrentOrderValue()));
+        if (CurrentOrderServeIndex() < 0)
+        {
+            return 0;
+        }
+
+        return Mathf.FloorToInt(OrderProgressPerSecond() * 60f * Mathf.Max(1, CurrentOrderNextItemValue()));
     }
 
     private int StaffLevel(int index)
@@ -1079,12 +1161,12 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private bool HasSellableStock()
     {
-        return CanFulfillCurrentOrder();
+        return CurrentOrderServeIndex() >= 0;
     }
 
     private float NextAutoSaleSeconds()
     {
-        if (!CanFulfillCurrentOrder())
+        if (!HasSellableStock())
         {
             return -1f;
         }
@@ -1129,23 +1211,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private int PrimaryProductIndex()
     {
-        for (int i = 0; i < products.Length; i++)
-        {
-            if (data.unlocked[i] && data.stock[i] >= 1f)
-            {
-                return i;
-            }
-        }
-
-        for (int i = 0; i < products.Length; i++)
-        {
-            if (data.unlocked[i])
-            {
-                return i;
-            }
-        }
-
-        return 0;
+        return CurrentOrderDisplayProductIndex();
     }
 
     private int BestRestockIndex()
@@ -1251,6 +1317,39 @@ public sealed class IdleShopGame : MonoBehaviour
             totalAmount += 1;
             totalCost += cost;
         }
+    }
+
+    private int PriorityRestockAmount(int productIndex)
+    {
+        if (productIndex < 0 || productIndex >= products.Length || !data.unlocked[productIndex])
+        {
+            return 0;
+        }
+
+        int capacity = MaxStock(productIndex) - Mathf.FloorToInt(data.stock[productIndex]);
+        if (capacity <= 0)
+        {
+            return 0;
+        }
+
+        int missingForOrder = CurrentOrderMissingAmount(productIndex);
+        int target = missingForOrder > 0 ? missingForOrder : RestockPack();
+        return Mathf.Min(capacity, Mathf.Max(1, target));
+    }
+
+    private void CalculateAffordablePriorityRestockPlan(int productIndex, out int amount, out int cost)
+    {
+        amount = 0;
+        cost = 0;
+        int target = PriorityRestockAmount(productIndex);
+        if (target <= 0)
+        {
+            return;
+        }
+
+        int unitCost = UnitCost(productIndex);
+        amount = Mathf.Min(target, Mathf.FloorToInt(data.cash / Mathf.Max(1, unitCost)));
+        cost = amount * unitCost;
     }
 
     private int BestRestockIndex(float[] stock)
@@ -1427,37 +1526,30 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private void BuyRestockAll()
     {
-        int bought = 0;
-        while (data.cash >= 1f)
+        int index = BestRestockIndex();
+        if (index < 0)
         {
-            int index = BestRestockIndex();
-            if (index < 0)
-            {
-                break;
-            }
-
-            int unitCost = UnitCost(index);
-            if (data.cash < unitCost)
-            {
-                break;
-            }
-
-            data.cash -= unitCost;
-            data.stock[index] += 1f;
-            bought++;
-        }
-
-        if (bought <= 0)
-        {
-            int cheapest = CheapestRestockCost();
-            AddLog(cheapest > 0 ? F("log.cash_short", Money(cheapest - data.cash)) : T("action.full_stock"));
+            AddLog(T("action.full_stock"));
             RenderAll();
             return;
         }
 
+        int targetAmount = PriorityRestockAmount(index);
+        int unitCost = UnitCost(index);
+        int bought = Mathf.Min(targetAmount, Mathf.FloorToInt(data.cash / Mathf.Max(1, unitCost)));
+        if (bought <= 0)
+        {
+            AddLog(F("log.cash_short", Money(Mathf.Max(0f, unitCost - data.cash))));
+            RenderAll();
+            return;
+        }
+
+        data.cash -= bought * unitCost;
+        data.stock[index] += bought;
+
         restockPulseTimer = 0.65f;
         data.restockActions += 1;
-        AddLog(F("log.restocked_all", bought));
+        AddLog(F("log.restocked", ProductName(index), bought));
         CheckMilestones();
         RenderAll();
     }
@@ -2300,16 +2392,18 @@ public sealed class IdleShopGame : MonoBehaviour
         int restockIndex = BestRestockIndex();
         int upgradeIndex = BestUpgradeIndex();
         int staffIndex = BestStaffIndex();
-        CalculateRestockAllPlan(out int restockAllAmount, out int restockAllCost);
-        CalculateAffordableRestockPlan(out int affordableRestockAmount, out int affordableRestockCost);
+        int priorityRestockAmount = PriorityRestockAmount(restockIndex);
+        int priorityRestockCost = restockIndex >= 0 ? priorityRestockAmount * UnitCost(restockIndex) : 0;
+        CalculateAffordablePriorityRestockPlan(restockIndex, out int affordablePriorityRestockAmount, out int affordablePriorityRestockCost);
         int cheapestRestockCost = CheapestRestockCost();
         int autoIncomePerMinute = EstimatedIncomePerMinute();
+        int nextItemValue = CurrentOrderNextItemValue();
         int upgradeCost = upgradeIndex >= 0 ? UpgradeCost(upgradeIndex) : 0;
         int staffCost = staffIndex >= 0 ? StaffCost(staffIndex) : 0;
         bool shortPortrait = IsShortPortraitScreen();
         bool hasSellableStock = HasSellableStock();
-        bool orderBlocked = !hasSellableStock;
-        int orderMissingCost = orderBlocked ? CurrentOrderMissingCost() : 0;
+        int orderMissingCost = CurrentOrderMissingCost();
+        bool orderHasMissing = orderMissingCost > 0;
         bool lowStock = hasSellableStock && LowestUnlockedStockRatio() <= LowStockRatio;
 
         RectTransform stage = CreatePanel("GameStage", contentRoot, new Color(0.16f, 0.36f, 0.32f));
@@ -2406,7 +2500,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
         RectTransform orderCard = CreatePanel("CurrentOrder", stage, new Color(1f, 0.97f, 0.88f, 0.94f));
         orderCard.anchorMin = new Vector2(0.05f, 0.04f);
-        orderCard.anchorMax = new Vector2(0.95f, 0.23f);
+        orderCard.anchorMax = new Vector2(0.95f, 0.27f);
         orderCard.offsetMin = Vector2.zero;
         orderCard.offsetMax = Vector2.zero;
         VerticalLayoutGroup orderLayout = orderCard.gameObject.AddComponent<VerticalLayoutGroup>();
@@ -2420,7 +2514,11 @@ public sealed class IdleShopGame : MonoBehaviour
         orderTitle.resizeTextForBestFit = true;
         orderTitle.resizeTextMinSize = wideLayout ? 17 : 21;
         orderTitle.resizeTextMaxSize = wideLayout ? 27 : shortPortrait ? 31 : 35;
-        Text orderState = CreateText("OrderState", orderCard, CanFulfillCurrentOrder() ? F("order.checkout_state", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : CurrentOrderShortageText(), wideLayout ? 22 : shortPortrait ? 25 : 28, FontStyle.Bold, CanFulfillCurrentOrder() ? coral : blue, TextAnchor.MiddleLeft);
+        Text orderFocus = CreateText("OrderFocus", orderCard, CurrentOrderFocusText(), wideLayout ? 23 : shortPortrait ? 27 : 30, FontStyle.Bold, products[primaryIndex].Accent, TextAnchor.MiddleLeft);
+        orderFocus.resizeTextForBestFit = true;
+        orderFocus.resizeTextMinSize = wideLayout ? 16 : 19;
+        orderFocus.resizeTextMaxSize = wideLayout ? 23 : shortPortrait ? 27 : 30;
+        Text orderState = CreateText("OrderState", orderCard, hasSellableStock ? F("order.checkout_state", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : CurrentOrderShortageText(), wideLayout ? 22 : shortPortrait ? 25 : 28, FontStyle.Bold, hasSellableStock ? coral : blue, TextAnchor.MiddleLeft);
         orderState.resizeTextForBestFit = true;
         orderState.resizeTextMinSize = wideLayout ? 15 : 18;
         orderState.resizeTextMaxSize = wideLayout ? 22 : shortPortrait ? 25 : 28;
@@ -2432,38 +2530,38 @@ public sealed class IdleShopGame : MonoBehaviour
         managementLayout.padding = wideLayout ? new RectOffset(16, 16, 16, 16) : new RectOffset(20, 20, 20, 20);
         managementLayout.spacing = wideLayout ? 12f : 16f;
 
-        string primaryTitle = F("recommend.checkout", Money(CurrentOrderValue()));
-        string primaryDetail = F("recommend.checkout_detail", CurrentOrderSummary());
-        string primaryCta = CanFulfillCurrentOrder() ? T("action.quick_checkout") : T("action.restock_order");
+        string primaryTitle = F("recommend.checkout", Money(nextItemValue));
+        string primaryDetail = F("recommend.checkout_detail", CurrentOrderFocusText());
+        string primaryCta = hasSellableStock ? T("action.quick_checkout") : T("action.restock_order");
         Sprite primaryIcon = coinSprite;
         Color primaryColor = coral;
         UnityEngine.Events.UnityAction primaryAction = () =>
         {
             CompleteOrderManualAndRender();
         };
-        string primaryUnavailable = CanFulfillCurrentOrder() ? string.Empty : CurrentOrderShortageText();
+        string primaryUnavailable = hasSellableStock ? string.Empty : CurrentOrderShortageText();
 
         bool shouldRecommendRestock = restockIndex >= 0 && (!hasSellableStock || lowStock);
         if (shouldRecommendRestock)
         {
-            bool canRestockNow = affordableRestockAmount > 0;
-            bool partialRestock = canRestockNow && affordableRestockAmount < restockAllAmount;
-            if (orderBlocked && orderMissingCost > 0)
+            bool canRestockNow = affordablePriorityRestockAmount > 0;
+            bool partialRestock = canRestockNow && affordablePriorityRestockAmount < priorityRestockAmount;
+            if (orderHasMissing)
             {
                 primaryTitle = F("recommend.restock_order", Money(orderMissingCost));
                 primaryDetail = F("recommend.restock_order_detail", CurrentOrderShortageText());
-                primaryCta = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("action.restock_order");
+                primaryCta = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : T("action.restock_order");
             }
             else
             {
-                primaryTitle = partialRestock ? F("recommend.restock_partial", affordableRestockAmount, Money(affordableRestockCost)) : F("recommend.restock", Money(restockAllCost));
+                primaryTitle = partialRestock ? F("recommend.restock_partial", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : F("recommend.restock", Money(priorityRestockCost));
                 primaryDetail = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(cheapestRestockCost - data.cash)) : T("recommend.restock_detail");
-                primaryCta = restockIndex < 0 || restockAllAmount <= 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : T("guide.restock");
+                primaryCta = restockIndex < 0 || priorityRestockAmount <= 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : T("guide.restock");
             }
             primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
             primaryColor = blue;
             primaryAction = BuyRestockAll;
-            primaryUnavailable = restockIndex < 0 || restockAllAmount <= 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : string.Empty;
+            primaryUnavailable = restockIndex < 0 || priorityRestockAmount <= 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : string.Empty;
         }
         else if (upgradeIndex >= 0 && data.cash >= upgradeCost)
         {
@@ -2531,11 +2629,11 @@ public sealed class IdleShopGame : MonoBehaviour
         }
         else if (milestoneIndex == 1)
         {
-            bool canRestockNow = restockIndex >= 0 && affordableRestockAmount > 0;
-            bool partialRestock = canRestockNow && affordableRestockAmount < restockAllAmount;
+            bool canRestockNow = restockIndex >= 0 && affordablePriorityRestockAmount > 0;
+            bool partialRestock = canRestockNow && affordablePriorityRestockAmount < priorityRestockAmount;
             primaryTitle = CurrentMilestoneText();
-            primaryDetail = orderBlocked && orderMissingCost > 0 ? F("recommend.restock_order_detail", CurrentOrderShortageText()) : restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : T("recommend.restock_detail");
-            primaryCta = restockIndex < 0 ? T("action.full_stock") : canRestockNow ? (orderBlocked ? (data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("action.restock_order")) : partialRestock ? F("action.restock_affordable_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("guide.restock")) : hasSellableStock ? T("action.quick_checkout") : ShortCashShort(cheapestRestockCost - data.cash);
+            primaryDetail = orderHasMissing ? F("recommend.restock_order_detail", CurrentOrderShortageText()) : restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : T("recommend.restock_detail");
+            primaryCta = restockIndex < 0 ? T("action.full_stock") : canRestockNow ? (orderHasMissing ? (data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : T("action.restock_order")) : partialRestock ? F("action.restock_affordable_detail", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : T("guide.restock")) : hasSellableStock ? T("action.quick_checkout") : ShortCashShort(cheapestRestockCost - data.cash);
             primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
             primaryColor = blue;
             if (canRestockNow)
@@ -2628,9 +2726,9 @@ public sealed class IdleShopGame : MonoBehaviour
         quickLayout.childForceExpandWidth = true;
         quickLayout.childForceExpandHeight = true;
 
-        CreateQuickActionButton(quickActions, T("action.quick_checkout"), CanFulfillCurrentOrder() ? $"+{Money(CurrentOrderValue())}" : CurrentOrderShortageText(), coinSprite, coral, () =>
+        CreateQuickActionButton(quickActions, T("action.quick_checkout"), hasSellableStock ? F("action.checkout_one_detail", ProductName(primaryIndex), Money(nextItemValue)) : CurrentOrderShortageText(), coinSprite, coral, () =>
         {
-            if (!CanFulfillCurrentOrder())
+            if (!HasSellableStock())
             {
                 AddLog(CurrentOrderShortageText());
                 RenderAll();
@@ -2640,9 +2738,9 @@ public sealed class IdleShopGame : MonoBehaviour
             CompleteOrderManualAndRender();
         });
 
-        CreateQuickActionButton(quickActions, orderBlocked ? T("action.restock_order") : T("action.restock_all"), RestockAllButtonDetail(restockIndex, restockAllAmount, restockAllCost, cheapestRestockCost, affordableRestockAmount, affordableRestockCost), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>
+        CreateQuickActionButton(quickActions, orderHasMissing ? T("action.restock_order") : T("action.restock_all"), RestockAllButtonDetail(restockIndex, priorityRestockAmount, priorityRestockCost, cheapestRestockCost, affordablePriorityRestockAmount, affordablePriorityRestockCost), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>
         {
-            if (restockIndex < 0 || restockAllAmount <= 0)
+            if (restockIndex < 0 || priorityRestockAmount <= 0)
             {
                 AddLog(T("action.full_stock"));
                 RenderAll();
@@ -2772,7 +2870,7 @@ public sealed class IdleShopGame : MonoBehaviour
             return F("action.restock_affordable_detail", affordableAmount, Money(affordableCost));
         }
 
-        return F("action.restock_all_detail", amount, Money(totalCost));
+        return F("action.restock_product_detail", ProductName(restockIndex), amount, Money(totalCost));
     }
 
     private string StockButtonLabel(int productIndex, bool locked, int amount, int cost)

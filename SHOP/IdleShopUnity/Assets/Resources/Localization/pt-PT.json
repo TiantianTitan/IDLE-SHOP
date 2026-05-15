@@ -184,7 +184,7 @@
     },
     {
       "key": "action.quick_checkout",
-      "value": "Cobrar manual"
+      "value": "Vender 1"
     },
     {
       "key": "action.manual_boost",
@@ -356,7 +356,7 @@
     },
     {
       "key": "log.sold",
-      "value": "{0} vendido por {1}."
+      "value": "Vendido 1 {0}, ganho {1}."
     },
     {
       "key": "log.product_unlocked",
@@ -428,7 +428,7 @@
     },
     {
       "key": "recommend.restock_detail",
-      "value": "Stock baixo. Repõe para continuar a cobrar."
+      "value": "Repõe um artigo prioritário sem gastar todo o dinheiro."
     },
     {
       "key": "recommend.upgrade",
@@ -460,11 +460,11 @@
     },
     {
       "key": "recommend.checkout_detail",
-      "value": "A cobrança manual termina este pedido: {0}"
+      "value": "{0}. Um toque vende apenas 1 unidade."
     },
     {
       "key": "recommend.checkout",
-      "value": "Recomendado: terminar pedido {0}"
+      "value": "Recomendado: vender artigo {0}"
     },
     {
       "key": "stat.income",
@@ -712,11 +712,11 @@
     },
     {
       "key": "order.checkout_state",
-      "value": "Checking out, done in {0}s"
+      "value": "Próximo artigo em {0}s"
     },
     {
       "key": "order.timer",
-      "value": "Cobrança {0}s"
+      "value": "Próximo artigo {0}s"
     },
     {
       "key": "order.waiting",
@@ -728,7 +728,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "Order complete: {0}, earned {1}"
+      "value": "Pedido concluído: {0}, último ganho {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -769,6 +769,22 @@
     {
       "key": "recommend.restock_order_detail",
       "value": "{0}. Repõe antes de cobrar."
+    },
+    {
+      "key": "action.checkout_one_detail",
+      "value": "{0} · +{1}"
+    },
+    {
+      "key": "action.restock_product_detail",
+      "value": "Repor {0} x{1} · {2}"
+    },
+    {
+      "key": "order.focus",
+      "value": "A tratar: {0} x{1} · stock {2}"
+    },
+    {
+      "key": "order.focus_blocked",
+      "value": "Repõe primeiro: {0} falta {1}"
     }
   ]
 }
