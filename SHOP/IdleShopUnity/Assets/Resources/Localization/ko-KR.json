@@ -621,6 +621,134 @@
     {
       "key": "milestone.hint.all_done",
       "value": "목표 완료. 보충과 업그레이드로 수익을 늘리세요."
+    },
+    {
+      "key": "product.bread.name",
+      "value": "수제 빵"
+    },
+    {
+      "key": "product.bread.subtitle",
+      "value": "Fast breakfast seller"
+    },
+    {
+      "key": "product.coffee.name",
+      "value": "따뜻한 커피"
+    },
+    {
+      "key": "product.coffee.subtitle",
+      "value": "Raises order value"
+    },
+    {
+      "key": "product.dessert.name",
+      "value": "미니 디저트"
+    },
+    {
+      "key": "product.dessert.subtitle",
+      "value": "Pairs well in combos"
+    },
+    {
+      "key": "product.gift_box.name",
+      "value": "선물 상자"
+    },
+    {
+      "key": "product.gift_box.subtitle",
+      "value": "High-value rare order"
+    },
+    {
+      "key": "staff.kobayashi.name",
+      "value": "Kobayashi · Cashier"
+    },
+    {
+      "key": "staff.kobayashi.detail",
+      "value": "Speeds up order checkout."
+    },
+    {
+      "key": "staff.misaki.name",
+      "value": "Misaki · Stocker"
+    },
+    {
+      "key": "staff.misaki.detail",
+      "value": "Improves restock size and shelf capacity."
+    },
+    {
+      "key": "staff.aken.name",
+      "value": "Aken · Promoter"
+    },
+    {
+      "key": "staff.aken.detail",
+      "value": "Improves reputation growth and order flow."
+    },
+    {
+      "key": "staff.lina.name",
+      "value": "Lina · Merchandiser"
+    },
+    {
+      "key": "staff.lina.detail",
+      "value": "Raises combo order chance."
+    },
+    {
+      "key": "staff.zhou.name",
+      "value": "Old Zhou · Buyer"
+    },
+    {
+      "key": "staff.zhou.detail",
+      "value": "Lowers purchase costs."
+    },
+    {
+      "key": "staff.anna.name",
+      "value": "Anna · Manager"
+    },
+    {
+      "key": "staff.anna.detail",
+      "value": "Improves order value and shop efficiency."
+    },
+    {
+      "key": "order.item",
+      "value": "{0} x{1}"
+    },
+    {
+      "key": "order.current",
+      "value": "현재 주문: {0} · {1}"
+    },
+    {
+      "key": "order.checkout_state",
+      "value": "Checking out, done in {0}s"
+    },
+    {
+      "key": "order.timer",
+      "value": "주문 계산 {0}초"
+    },
+    {
+      "key": "order.waiting",
+      "value": "Waiting for an order"
+    },
+    {
+      "key": "order.shortage",
+      "value": "Need {1} more {0}"
+    },
+    {
+      "key": "log.order_completed",
+      "value": "Order complete: {0}, earned {1}"
+    },
+    {
+      "key": "milestone.order_3.name",
+      "value": "주문 3건 완료"
+    },
+    {
+      "key": "milestone.order_3",
+      "value": "Goal: complete 3 customer orders ({0}/3) · Reward {1}"
+    },
+    {
+      "key": "staff.merchandiser.automation",
+      "value": "Combo orders {0}% → {1}%"
+    },
+    {
+      "key": "staff.purchaser.automation",
+      "value": "Purchase cost {0} → {1}"
+    },
+    {
+      "key": "staff.manager.automation",
+      "value": "Order value {0}% → {1}%"
     }
   ]
 }

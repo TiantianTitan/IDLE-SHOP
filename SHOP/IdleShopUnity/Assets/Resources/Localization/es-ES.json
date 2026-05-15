@@ -621,6 +621,134 @@
     {
       "key": "milestone.hint.all_done",
       "value": "Objetivos completados. Repón y mejora para ganar más."
+    },
+    {
+      "key": "product.bread.name",
+      "value": "Pan artesanal"
+    },
+    {
+      "key": "product.bread.subtitle",
+      "value": "Fast breakfast seller"
+    },
+    {
+      "key": "product.coffee.name",
+      "value": "Café caliente"
+    },
+    {
+      "key": "product.coffee.subtitle",
+      "value": "Raises order value"
+    },
+    {
+      "key": "product.dessert.name",
+      "value": "Mini postre"
+    },
+    {
+      "key": "product.dessert.subtitle",
+      "value": "Pairs well in combos"
+    },
+    {
+      "key": "product.gift_box.name",
+      "value": "Caja regalo"
+    },
+    {
+      "key": "product.gift_box.subtitle",
+      "value": "High-value rare order"
+    },
+    {
+      "key": "staff.kobayashi.name",
+      "value": "Kobayashi · Cashier"
+    },
+    {
+      "key": "staff.kobayashi.detail",
+      "value": "Speeds up order checkout."
+    },
+    {
+      "key": "staff.misaki.name",
+      "value": "Misaki · Stocker"
+    },
+    {
+      "key": "staff.misaki.detail",
+      "value": "Improves restock size and shelf capacity."
+    },
+    {
+      "key": "staff.aken.name",
+      "value": "Aken · Promoter"
+    },
+    {
+      "key": "staff.aken.detail",
+      "value": "Improves reputation growth and order flow."
+    },
+    {
+      "key": "staff.lina.name",
+      "value": "Lina · Merchandiser"
+    },
+    {
+      "key": "staff.lina.detail",
+      "value": "Raises combo order chance."
+    },
+    {
+      "key": "staff.zhou.name",
+      "value": "Old Zhou · Buyer"
+    },
+    {
+      "key": "staff.zhou.detail",
+      "value": "Lowers purchase costs."
+    },
+    {
+      "key": "staff.anna.name",
+      "value": "Anna · Manager"
+    },
+    {
+      "key": "staff.anna.detail",
+      "value": "Improves order value and shop efficiency."
+    },
+    {
+      "key": "order.item",
+      "value": "{0} x{1}"
+    },
+    {
+      "key": "order.current",
+      "value": "Pedido actual: {0} · {1}"
+    },
+    {
+      "key": "order.checkout_state",
+      "value": "Checking out, done in {0}s"
+    },
+    {
+      "key": "order.timer",
+      "value": "Cobro {0}s"
+    },
+    {
+      "key": "order.waiting",
+      "value": "Waiting for an order"
+    },
+    {
+      "key": "order.shortage",
+      "value": "Need {1} more {0}"
+    },
+    {
+      "key": "log.order_completed",
+      "value": "Order complete: {0}, earned {1}"
+    },
+    {
+      "key": "milestone.order_3.name",
+      "value": "Completar 3 pedidos"
+    },
+    {
+      "key": "milestone.order_3",
+      "value": "Goal: complete 3 customer orders ({0}/3) · Reward {1}"
+    },
+    {
+      "key": "staff.merchandiser.automation",
+      "value": "Combo orders {0}% → {1}%"
+    },
+    {
+      "key": "staff.purchaser.automation",
+      "value": "Purchase cost {0} → {1}"
+    },
+    {
+      "key": "staff.manager.automation",
+      "value": "Order value {0}% → {1}%"
     }
   ]
 }

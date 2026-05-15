@@ -57,14 +57,21 @@ public static class ProjectBootstrapper
             {
                 LoadSprite($"{ArtPath}/Products/rice_ball.png"),
                 LoadSprite($"{ArtPath}/Products/sparkling_water.png"),
+                LoadSprite($"{ArtPath}/Products/bread.png"),
+                LoadSprite($"{ArtPath}/Products/coffee.png"),
                 LoadSprite($"{ArtPath}/Products/lunch_box.png"),
-                LoadSprite($"{ArtPath}/Products/flower.png")
+                LoadSprite($"{ArtPath}/Products/dessert.png"),
+                LoadSprite($"{ArtPath}/Products/flower.png"),
+                LoadSprite($"{ArtPath}/Products/gift_box.png")
             },
             new[]
             {
-                LoadSprite($"{ArtPath}/Staff/cashier.png"),
-                LoadSprite($"{ArtPath}/Staff/stocker.png"),
-                LoadSprite($"{ArtPath}/Staff/promoter.png")
+                LoadFirstSprite($"{ArtPath}/Staff/kobayashi_cashier.png", $"{ArtPath}/Staff/cashier.png"),
+                LoadFirstSprite($"{ArtPath}/Staff/misaki_stocker.png", $"{ArtPath}/Staff/stocker.png"),
+                LoadFirstSprite($"{ArtPath}/Staff/aken_promoter.png", $"{ArtPath}/Staff/promoter.png"),
+                LoadSprite($"{ArtPath}/Staff/lina_merchandiser.png"),
+                LoadSprite($"{ArtPath}/Staff/zhou_purchaser.png"),
+                LoadSprite($"{ArtPath}/Staff/anna_manager.png")
             },
             LoadFont("Assets/Fonts/NotoSansCJK-Regular.ttc"),
             LoadFont("Assets/Fonts/NotoNaskhArabic-Regular.ttf"));
@@ -247,6 +254,20 @@ public static class ProjectBootstrapper
         }
 
         return sprite;
+    }
+
+    private static Sprite LoadFirstSprite(params string[] paths)
+    {
+        foreach (string path in paths)
+        {
+            if (File.Exists(path))
+            {
+                return LoadSprite(path);
+            }
+        }
+
+        Debug.LogWarning($"Optional art asset not found: {string.Join(" or ", paths)}");
+        return null;
     }
 
     private static int MaxTextureSizeFor(string path)

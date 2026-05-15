@@ -26,9 +26,10 @@ public sealed class IdleShopGame : MonoBehaviour
         public float Demand;
         public int UnlockLevel;
         public int BaseMaxStock;
+        public int MaxOrderQty;
         public Color Accent;
 
-        public ProductDef(string nameKey, string subtitleKey, float cost, float price, float demand, int unlockLevel, int baseMaxStock, Color accent)
+        public ProductDef(string nameKey, string subtitleKey, float cost, float price, float demand, int unlockLevel, int baseMaxStock, int maxOrderQty, Color accent)
         {
             NameKey = nameKey;
             SubtitleKey = subtitleKey;
@@ -37,6 +38,7 @@ public sealed class IdleShopGame : MonoBehaviour
             Demand = demand;
             UnlockLevel = unlockLevel;
             BaseMaxStock = baseMaxStock;
+            MaxOrderQty = maxOrderQty;
             Accent = accent;
         }
     }
@@ -92,9 +94,11 @@ public sealed class IdleShopGame : MonoBehaviour
         public int pendingOfflineSold;
         public float pendingOfflineEarned;
         public int restockActions;
+        public int completedOrders;
         public long lastSavedUnix;
         public float[] stock = Array.Empty<float>();
         public int[] sold = Array.Empty<int>();
+        public int[] currentOrder = Array.Empty<int>();
         public bool[] unlocked = Array.Empty<bool>();
         public int[] upgrades = Array.Empty<int>();
         public int[] staff = Array.Empty<int>();
@@ -112,10 +116,14 @@ public sealed class IdleShopGame : MonoBehaviour
     private const int MilestoneCount = 5;
     private readonly ProductDef[] products =
     {
-        new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 11f, 1.4f, 1, 18, new Color(0.94f, 0.48f, 0.32f)),
-        new ProductDef("product.sparkling_water.name", "product.sparkling_water.subtitle", 9f, 18f, 1.15f, 3, 14, new Color(0.18f, 0.58f, 0.72f)),
-        new ProductDef("product.lunch_box.name", "product.lunch_box.subtitle", 18f, 34f, 0.85f, 5, 10, new Color(0.89f, 0.64f, 0.22f)),
-        new ProductDef("product.flower.name", "product.flower.subtitle", 32f, 62f, 0.52f, 8, 8, new Color(0.78f, 0.38f, 0.62f))
+        new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 11f, 1.35f, 1, 18, 2, new Color(0.94f, 0.48f, 0.32f)),
+        new ProductDef("product.sparkling_water.name", "product.sparkling_water.subtitle", 9f, 18f, 1.18f, 1, 16, 2, new Color(0.18f, 0.58f, 0.72f)),
+        new ProductDef("product.bread.name", "product.bread.subtitle", 11f, 22f, 1.05f, 1, 14, 2, new Color(0.85f, 0.56f, 0.27f)),
+        new ProductDef("product.coffee.name", "product.coffee.subtitle", 14f, 30f, 0.95f, 2, 12, 2, new Color(0.54f, 0.34f, 0.22f)),
+        new ProductDef("product.lunch_box.name", "product.lunch_box.subtitle", 24f, 52f, 0.78f, 3, 10, 2, new Color(0.89f, 0.64f, 0.22f)),
+        new ProductDef("product.dessert.name", "product.dessert.subtitle", 30f, 68f, 0.64f, 4, 9, 2, new Color(0.84f, 0.48f, 0.64f)),
+        new ProductDef("product.flower.name", "product.flower.subtitle", 48f, 118f, 0.48f, 6, 8, 1, new Color(0.78f, 0.38f, 0.62f)),
+        new ProductDef("product.gift_box.name", "product.gift_box.subtitle", 72f, 180f, 0.34f, 8, 6, 1, new Color(0.62f, 0.46f, 0.86f))
     };
 
     private readonly UpgradeDef[] upgrades =
@@ -128,9 +136,12 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private readonly StaffDef[] staffDefs =
     {
-        new StaffDef("staff.cashier.name", "staff.cashier.detail", 140f, 10),
-        new StaffDef("staff.stocker.name", "staff.stocker.detail", 170f, 10),
-        new StaffDef("staff.promoter.name", "staff.promoter.detail", 210f, 10)
+        new StaffDef("staff.kobayashi.name", "staff.kobayashi.detail", 180f, 30),
+        new StaffDef("staff.misaki.name", "staff.misaki.detail", 220f, 30),
+        new StaffDef("staff.aken.name", "staff.aken.detail", 260f, 30),
+        new StaffDef("staff.lina.name", "staff.lina.detail", 360f, 25),
+        new StaffDef("staff.zhou.name", "staff.zhou.detail", 520f, 25),
+        new StaffDef("staff.anna.name", "staff.anna.detail", 900f, 20)
     };
 
     private readonly List<string> log = new List<string>();
@@ -356,6 +367,7 @@ public sealed class IdleShopGame : MonoBehaviour
     {
         data.stock = Resize(data.stock, products.Length);
         data.sold = Resize(data.sold, products.Length);
+        data.currentOrder = Resize(data.currentOrder, products.Length);
         data.unlocked = Resize(data.unlocked, products.Length);
         data.upgrades = Resize(data.upgrades, upgrades.Length);
         data.staff = Resize(data.staff, staffDefs.Length);
@@ -375,10 +387,18 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
-        if (data.stock[0] <= 0f && data.totalEarned <= 0.01f)
+        if (data.totalEarned <= 0.01f)
         {
-            data.stock[0] = 8f;
+            for (int i = 0; i < products.Length; i++)
+            {
+                if (data.unlocked[i] && data.stock[i] <= 0f)
+                {
+                    data.stock[i] = Mathf.Min(8f, MaxStock(i));
+                }
+            }
         }
+
+        EnsureCurrentOrder();
     }
 
     private static float[] Resize(float[] source, int length)
@@ -509,7 +529,7 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return TotalSoldCount() >= 5;
+                return data.completedOrders >= 3;
             case 1:
                 return data.restockActions >= 1;
             case 2:
@@ -528,7 +548,7 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return Mathf.Clamp01(TotalSoldCount() / 5f);
+                return Mathf.Clamp01(data.completedOrders / 3f);
             case 1:
                 return data.restockActions >= 1 ? 1f : 0f;
             case 2:
@@ -566,7 +586,7 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return T("milestone.sell_5.name");
+                return T("milestone.order_3.name");
             case 1:
                 return T("milestone.restock_once.name");
             case 2:
@@ -592,7 +612,7 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return F("milestone.sell_5", TotalSoldCount(), reward);
+                return F("milestone.order_3", data.completedOrders, reward);
             case 1:
                 return F("milestone.restock_once", reward);
             case 2:
@@ -678,13 +698,14 @@ public sealed class IdleShopGame : MonoBehaviour
             data.soldToday = 0;
         }
 
-        data.queue += seconds * TrafficPerSecond();
+        EnsureCurrentOrder();
+        data.queue += seconds * OrderProgressPerSecond();
         int served = 0;
-        int serveLimit = offline ? 12000 : 35;
+        int serveLimit = offline ? 6000 : 20;
         while (data.queue >= 1f && served < serveLimit)
         {
             data.queue -= 1f;
-            bool sold = SellOne(false);
+            bool sold = CompleteCurrentOrder(false);
             if (!sold && offline)
             {
                 break;
@@ -694,34 +715,48 @@ public sealed class IdleShopGame : MonoBehaviour
         }
     }
 
-    private bool SellOne(bool manual)
+    private bool CompleteCurrentOrder(bool manual)
     {
-        int productIndex = ChooseProductIndex();
-        if (productIndex < 0)
+        EnsureCurrentOrder();
+        if (!CanFulfillCurrentOrder())
         {
             if (manual)
             {
-                AddLog(T("log.empty_shelf"));
+                AddLog(CurrentOrderShortageText());
             }
 
             data.reputation = Mathf.Max(0f, data.reputation - 0.02f);
+            data.queue = 0f;
             return false;
         }
 
-        data.stock[productIndex] -= 1f;
-        data.sold[productIndex] += 1;
-        int earned = SalePrice(productIndex);
+        int earned = CurrentOrderValue();
+        int itemCount = CurrentOrderItemCount();
+        string orderText = CurrentOrderSummary();
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderQuantity(i);
+            if (quantity <= 0)
+            {
+                continue;
+            }
+
+            data.stock[i] -= quantity;
+            data.sold[i] += quantity;
+        }
+
         data.cash += earned;
         data.totalEarned += earned;
-        data.soldToday += 1;
-        data.xp += 12f + Mathf.Floor(earned / 10f);
-        data.reputation += 0.018f * (1f + data.staff[2] * 0.16f);
+        data.completedOrders += 1;
+        data.soldToday += itemCount;
+        data.xp += 18f + itemCount * 7f + Mathf.Floor(earned / 12f);
+        data.reputation += 0.026f * (1f + StaffLevel(2) * 0.12f + StaffLevel(5) * 0.05f);
         salePopMessage = $"+{Money(earned)}";
         salePopTimer = manual ? 1.15f : 0.8f;
 
         if (manual || UnityEngine.Random.value < 0.14f)
         {
-            AddLog(F("log.sold", ProductName(productIndex), Money(earned)));
+            AddLog(F("log.order_completed", orderText, Money(earned)));
         }
 
         while (data.xp >= XpNeeded())
@@ -738,15 +773,74 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
+        GenerateCurrentOrder();
         return true;
     }
 
-    private int ChooseProductIndex()
+    private void CompleteOrderManualAndRender()
+    {
+        CompleteCurrentOrder(true);
+        CheckMilestones();
+        RenderAll();
+    }
+
+    private void EnsureCurrentOrder()
+    {
+        if (data.currentOrder == null || data.currentOrder.Length != products.Length)
+        {
+            data.currentOrder = Resize(data.currentOrder, products.Length);
+        }
+
+        if (CurrentOrderItemCount() <= 0 || !CurrentOrderUsesUnlockedProducts())
+        {
+            GenerateCurrentOrder();
+        }
+    }
+
+    private void GenerateCurrentOrder()
+    {
+        for (int i = 0; i < data.currentOrder.Length; i++)
+        {
+            data.currentOrder[i] = 0;
+        }
+
+        int unlockedCount = UnlockedProductCount();
+        if (unlockedCount <= 0)
+        {
+            data.currentOrder[0] = 1;
+            return;
+        }
+
+        int maxKinds = Mathf.Min(unlockedCount, MaxOrderKinds());
+        int targetKinds = Mathf.Clamp(1 + (UnityEngine.Random.value < ComboOrderChance() ? 1 : 0) + (UnityEngine.Random.value < ComboOrderChance() * 0.45f ? 1 : 0), 1, maxKinds);
+        int guard = 0;
+        while (OrderDistinctProductCount() < targetKinds && guard < 40)
+        {
+            guard++;
+            int index = ChooseOrderProductIndex();
+            if (index < 0)
+            {
+                break;
+            }
+
+            int maxQty = Mathf.Max(1, products[index].MaxOrderQty + (data.level >= 5 ? 1 : 0));
+            int quantity = UnityEngine.Random.Range(1, maxQty + 1);
+            data.currentOrder[index] = Mathf.Max(data.currentOrder[index], quantity);
+        }
+
+        if (CurrentOrderItemCount() <= 0)
+        {
+            int fallback = FirstUnlockedProductIndex();
+            data.currentOrder[fallback] = 1;
+        }
+    }
+
+    private int ChooseOrderProductIndex()
     {
         float total = 0f;
         for (int i = 0; i < products.Length; i++)
         {
-            if (data.unlocked[i] && data.stock[i] >= 1f)
+            if (data.unlocked[i] && data.currentOrder[i] <= 0)
             {
                 total += products[i].Demand;
             }
@@ -760,7 +854,7 @@ public sealed class IdleShopGame : MonoBehaviour
         float roll = UnityEngine.Random.value * total;
         for (int i = 0; i < products.Length; i++)
         {
-            if (!data.unlocked[i] || data.stock[i] < 1f)
+            if (!data.unlocked[i] || data.currentOrder[i] > 0)
             {
                 continue;
             }
@@ -775,15 +869,207 @@ public sealed class IdleShopGame : MonoBehaviour
         return 0;
     }
 
+    private bool CurrentOrderUsesUnlockedProducts()
+    {
+        for (int i = 0; i < products.Length; i++)
+        {
+            if (CurrentOrderQuantity(i) > 0 && !data.unlocked[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private int FirstUnlockedProductIndex()
+    {
+        for (int i = 0; i < products.Length; i++)
+        {
+            if (data.unlocked[i])
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+    private int UnlockedProductCount()
+    {
+        int count = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            if (data.unlocked[i])
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private int OrderDistinctProductCount()
+    {
+        int count = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            if (CurrentOrderQuantity(i) > 0)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private int CurrentOrderQuantity(int productIndex)
+    {
+        return data.currentOrder != null && productIndex >= 0 && productIndex < data.currentOrder.Length ? Mathf.Max(0, data.currentOrder[productIndex]) : 0;
+    }
+
+    private int CurrentOrderItemCount()
+    {
+        int count = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            count += CurrentOrderQuantity(i);
+        }
+
+        return count;
+    }
+
+    private int CurrentOrderValue()
+    {
+        int value = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderQuantity(i);
+            if (quantity > 0)
+            {
+                value += SalePrice(i) * quantity;
+            }
+        }
+
+        return Mathf.FloorToInt(value * OrderValueMultiplier());
+    }
+
+    private bool CanFulfillCurrentOrder()
+    {
+        EnsureCurrentOrder();
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderQuantity(i);
+            if (quantity > 0 && data.stock[i] < quantity)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private string CurrentOrderSummary()
+    {
+        EnsureCurrentOrder();
+        var parts = new List<string>();
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderQuantity(i);
+            if (quantity > 0)
+            {
+                parts.Add(F("order.item", ProductName(i), quantity));
+            }
+        }
+
+        return parts.Count > 0 ? string.Join(" + ", parts) : T("order.waiting");
+    }
+
+    private string CurrentOrderShortageText()
+    {
+        EnsureCurrentOrder();
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderQuantity(i);
+            int stock = Mathf.FloorToInt(data.stock[i]);
+            if (quantity > 0 && stock < quantity)
+            {
+                return F("order.shortage", ProductName(i), quantity - stock);
+            }
+        }
+
+        return T("log.empty_shelf");
+    }
+
+    private int CurrentOrderMissingCost()
+    {
+        int cost = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderQuantity(i);
+            int stock = Mathf.FloorToInt(data.stock[i]);
+            if (quantity > stock)
+            {
+                cost += (quantity - stock) * UnitCost(i);
+            }
+        }
+
+        return cost;
+    }
+
+    private float OrderProgressPerSecond()
+    {
+        return 1f / Mathf.Max(1f, CheckoutDurationSeconds());
+    }
+
+    private float CheckoutDurationSeconds()
+    {
+        float staffSpeed = StaffLevel(0) * 0.08f + StaffLevel(5) * 0.035f;
+        float upgradeSpeed = data.upgrades[1] * 0.055f;
+        float duration = 9.5f / (1f + staffSpeed + upgradeSpeed);
+        return Mathf.Clamp(duration, 3.2f, 12f);
+    }
+
+    private float OrderValueMultiplier()
+    {
+        return 1f + StaffLevel(3) * 0.018f + StaffLevel(5) * 0.025f;
+    }
+
+    private int MaxOrderKinds()
+    {
+        int baseKinds = data.level >= 4 ? 3 : data.level >= 2 ? 2 : 2;
+        return Mathf.Clamp(baseKinds + (StaffLevel(3) >= 8 ? 1 : 0), 1, 4);
+    }
+
+    private float ComboOrderChance()
+    {
+        return Mathf.Clamp01(0.26f + data.level * 0.018f + StaffLevel(3) * 0.018f);
+    }
+
+    private int EstimatedIncomePerMinute()
+    {
+        EnsureCurrentOrder();
+        return Mathf.FloorToInt(OrderProgressPerSecond() * 60f * Mathf.Max(1, CurrentOrderValue()));
+    }
+
+    private int StaffLevel(int index)
+    {
+        return data.staff != null && index >= 0 && index < data.staff.Length ? data.staff[index] : 0;
+    }
+
     private float TrafficPerSecond()
     {
-        return 0.24f + data.level * 0.025f + data.upgrades[1] * 0.055f + data.staff[0] * 0.07f + data.reputation * 0.006f;
+        return OrderProgressPerSecond();
     }
 
     private float TrafficPerSecondWithStaffLevel(int staffIndex, int level)
     {
-        int cashierLevel = staffIndex == 0 ? level : data.staff[0];
-        return 0.24f + data.level * 0.025f + data.upgrades[1] * 0.055f + cashierLevel * 0.07f + data.reputation * 0.006f;
+        int cashierLevel = staffIndex == 0 ? level : StaffLevel(0);
+        int managerLevel = staffIndex == 5 ? level : StaffLevel(5);
+        float staffSpeed = cashierLevel * 0.08f + managerLevel * 0.035f;
+        float upgradeSpeed = data.upgrades[1] * 0.055f;
+        float duration = Mathf.Clamp(9.5f / (1f + staffSpeed + upgradeSpeed), 3.2f, 12f);
+        return 1f / duration;
     }
 
     private float AutoSaleInterval()
@@ -793,25 +1079,17 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private bool HasSellableStock()
     {
-        for (int i = 0; i < products.Length; i++)
-        {
-            if (data.unlocked[i] && data.stock[i] >= 1f)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return CanFulfillCurrentOrder();
     }
 
     private float NextAutoSaleSeconds()
     {
-        if (!HasSellableStock())
+        if (!CanFulfillCurrentOrder())
         {
             return -1f;
         }
 
-        float rate = Mathf.Max(0.01f, TrafficPerSecond());
+        float rate = Mathf.Max(0.01f, OrderProgressPerSecond());
         return Mathf.Max(0f, (1f - Mathf.Clamp01(data.queue)) / rate);
     }
 
@@ -822,12 +1100,14 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private int MaxStock(int productIndex)
     {
-        return products[productIndex].BaseMaxStock + data.upgrades[0] * 5;
+        return products[productIndex].BaseMaxStock + data.upgrades[0] * 4 + StaffLevel(1);
     }
 
     private int SalePrice(int productIndex)
     {
-        return Mathf.FloorToInt(products[productIndex].Price + data.upgrades[2] * PriceUpgradeBonus(productIndex));
+        float upgraded = products[productIndex].Price * Mathf.Pow(1.16f, data.upgrades[2]);
+        float managed = upgraded * (1f + StaffLevel(5) * 0.025f);
+        return Mathf.FloorToInt(managed);
     }
 
     private float PriceUpgradeBonus(int productIndex)
@@ -837,12 +1117,14 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private int UnitCost(int productIndex)
     {
-        return Mathf.Max(1, Mathf.FloorToInt(products[productIndex].Cost * (1f - data.upgrades[3] * 0.045f)));
+        float upgraded = products[productIndex].Cost * Mathf.Pow(0.94f, data.upgrades[3]);
+        float purchased = upgraded * (1f - StaffLevel(4) * 0.025f);
+        return Mathf.Max(1, Mathf.FloorToInt(purchased));
     }
 
     private int RestockPack()
     {
-        return 5 + data.staff[1] * 2;
+        return 4 + StaffLevel(1) * 2;
     }
 
     private int PrimaryProductIndex()
@@ -868,6 +1150,12 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private int BestRestockIndex()
     {
+        int missingOrderIndex = BestMissingOrderProductIndex(data.stock);
+        if (missingOrderIndex >= 0)
+        {
+            return missingOrderIndex;
+        }
+
         int bestIndex = -1;
         float bestRatio = 2f;
         for (int i = 0; i < products.Length; i++)
@@ -967,6 +1255,12 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private int BestRestockIndex(float[] stock)
     {
+        int missingOrderIndex = BestMissingOrderProductIndex(stock);
+        if (missingOrderIndex >= 0)
+        {
+            return missingOrderIndex;
+        }
+
         int bestIndex = -1;
         float bestRatio = 2f;
         for (int i = 0; i < products.Length; i++)
@@ -986,6 +1280,23 @@ public sealed class IdleShopGame : MonoBehaviour
             if (ratio < bestRatio)
             {
                 bestRatio = ratio;
+                bestIndex = i;
+            }
+        }
+
+        return bestIndex;
+    }
+
+    private int BestMissingOrderProductIndex(float[] stock)
+    {
+        int bestIndex = -1;
+        int largestMissing = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            int missing = CurrentOrderQuantity(i) - Mathf.FloorToInt(stock[i]);
+            if (data.unlocked[i] && missing > largestMissing)
+            {
+                largestMissing = missing;
                 bestIndex = i;
             }
         }
@@ -1068,17 +1379,17 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private bool ShouldRecommendStaff()
     {
-        return data.upgrades[2] > 0 && (data.level >= 3 || TotalSoldCount() >= StaffRecommendationMinSold);
+        return data.upgrades[2] > 0 && (data.level >= 3 || TotalSoldCount() >= StaffRecommendationMinSold || data.completedOrders >= 8);
     }
 
     private int UpgradeCost(int upgradeIndex)
     {
-        return Mathf.FloorToInt(upgrades[upgradeIndex].BaseCost * Mathf.Pow(1.72f, data.upgrades[upgradeIndex]));
+        return Mathf.FloorToInt(upgrades[upgradeIndex].BaseCost * Mathf.Pow(1.86f, data.upgrades[upgradeIndex]));
     }
 
     private int StaffCost(int staffIndex)
     {
-        return Mathf.FloorToInt(staffDefs[staffIndex].BaseCost * Mathf.Pow(1.82f, data.staff[staffIndex]));
+        return Mathf.FloorToInt(staffDefs[staffIndex].BaseCost * Mathf.Pow(1.78f, data.staff[staffIndex]));
     }
 
     private void BuyStock(int productIndex)
@@ -1207,7 +1518,7 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         data.cash -= cost;
-        data.queue += 5f + data.staff[2];
+        data.queue += 0.35f + StaffLevel(2) * 0.015f;
         data.reputation += 0.08f;
         AddLog(T("log.advertised"));
         RenderAll();
@@ -1260,19 +1571,22 @@ public sealed class IdleShopGame : MonoBehaviour
                 return F("recommend.upgrade_stock", 5);
             case 1:
             {
-                int extraSales = Mathf.Max(1, Mathf.RoundToInt(0.055f * 60f));
-                return F("recommend.upgrade_speed", extraSales);
+                float current = OrderProgressPerSecond();
+                float nextDuration = Mathf.Clamp(9.5f / (1f + StaffLevel(0) * 0.08f + StaffLevel(5) * 0.035f + (data.upgrades[1] + 1) * 0.055f), 3.2f, 12f);
+                float next = 1f / nextDuration;
+                int extraOrders = Mathf.Max(1, Mathf.RoundToInt((next - current) * 60f));
+                return F("recommend.upgrade_speed", extraOrders);
             }
             case 2:
             {
                 int currentPrice = SalePrice(productIndex);
-                int nextPrice = Mathf.FloorToInt(products[productIndex].Price + (data.upgrades[2] + 1) * PriceUpgradeBonus(productIndex));
+                int nextPrice = Mathf.FloorToInt(products[productIndex].Price * Mathf.Pow(1.16f, data.upgrades[2] + 1) * (1f + StaffLevel(5) * 0.025f));
                 return F("recommend.upgrade_price", Money(Mathf.Max(1, nextPrice - currentPrice)));
             }
             case 3:
             {
                 int currentCost = UnitCost(productIndex);
-                int nextCost = Mathf.Max(1, Mathf.FloorToInt(products[productIndex].Cost * (1f - (data.upgrades[3] + 1) * 0.045f)));
+                int nextCost = Mathf.Max(1, Mathf.FloorToInt(products[productIndex].Cost * Mathf.Pow(0.94f, data.upgrades[3] + 1) * (1f - StaffLevel(4) * 0.025f)));
                 return F("recommend.upgrade_cost", Money(Mathf.Max(1, currentCost - nextCost)));
             }
             default:
@@ -1304,14 +1618,20 @@ public sealed class IdleShopGame : MonoBehaviour
             case 0:
             {
                 float current = TrafficPerSecond();
-                float next = TrafficPerSecondWithStaffLevel(index, data.staff[index] + 1);
-                int extraSales = Mathf.Max(1, Mathf.RoundToInt((next - current) * 60f));
-                return F("staff.cashier.automation", extraSales);
+                float next = TrafficPerSecondWithStaffLevel(index, StaffLevel(index) + 1);
+                int extraOrders = Mathf.Max(1, Mathf.RoundToInt((next - current) * 60f));
+                return F("staff.cashier.automation", extraOrders);
             }
             case 1:
                 return F("staff.stocker.automation", RestockPack(), RestockPack() + 2);
             case 2:
                 return F("staff.promoter.automation", "16%");
+            case 3:
+                return F("staff.merchandiser.automation", Mathf.RoundToInt(ComboOrderChance() * 100f), Mathf.RoundToInt(Mathf.Clamp01(ComboOrderChance() + 0.018f) * 100f));
+            case 4:
+                return F("staff.purchaser.automation", Money(UnitCost(PrimaryProductIndex())), Money(Mathf.Max(1, Mathf.FloorToInt(products[PrimaryProductIndex()].Cost * Mathf.Pow(0.94f, data.upgrades[3]) * (1f - (StaffLevel(4) + 1) * 0.025f)))));
+            case 5:
+                return F("staff.manager.automation", Mathf.RoundToInt(OrderValueMultiplier() * 100f), Mathf.RoundToInt((OrderValueMultiplier() + 0.025f) * 100f));
             default:
                 return StaffDetail(index);
         }
@@ -1775,13 +2095,13 @@ public sealed class IdleShopGame : MonoBehaviour
     private void RenderHeader()
     {
         int primaryIndex = PrimaryProductIndex();
-        int autoIncomePerMinute = Mathf.FloorToInt(TrafficPerSecond() * 60f * SalePrice(primaryIndex));
+        int autoIncomePerMinute = EstimatedIncomePerMinute();
         SetTextIfChanged(titleText, F("header.level", T("app.title"), data.level));
         SetTextIfChanged(cashText, $"{T("stat.cash")} {Money(data.cash)}");
         SetTextIfChanged(reputationText, $"{T("stat.reputation")}\n{Compact(data.reputation)}");
         SetTextIfChanged(totalText, $"{T("stat.income")} {Money(autoIncomePerMinute)}/min");
         SetTextIfChanged(newItemsText, HeaderStockText());
-        SetTextIfChanged(queueText, HasSellableStock() ? F("shop.auto_timer", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : T("shop.waiting_restock"));
+        SetTextIfChanged(queueText, HasSellableStock() ? F("order.timer", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : T("shop.waiting_restock"));
         if (stageCashText != null)
         {
             SetTextIfChanged(stageCashText, $"{T("stat.cash")}\n{Money(data.cash)}");
@@ -1886,13 +2206,12 @@ public sealed class IdleShopGame : MonoBehaviour
         else
         {
             string seconds = NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture);
-            SetTextIfChanged(autoSaleText, F("shop.auto_timer", seconds));
+            SetTextIfChanged(autoSaleText, F("order.timer", seconds));
         }
 
         if (autoIntervalText != null)
         {
-            int primaryIndex = PrimaryProductIndex();
-            int autoIncomePerMinute = Mathf.FloorToInt(TrafficPerSecond() * 60f * SalePrice(primaryIndex));
+            int autoIncomePerMinute = EstimatedIncomePerMinute();
             SetTextIfChanged(autoIntervalText, $"{Money(autoIncomePerMinute)}/min · {HeaderStockText()}");
         }
     }
@@ -1984,7 +2303,7 @@ public sealed class IdleShopGame : MonoBehaviour
         CalculateRestockAllPlan(out int restockAllAmount, out int restockAllCost);
         CalculateAffordableRestockPlan(out int affordableRestockAmount, out int affordableRestockCost);
         int cheapestRestockCost = CheapestRestockCost();
-        int autoIncomePerMinute = Mathf.FloorToInt(TrafficPerSecond() * 60f * SalePrice(primaryIndex));
+        int autoIncomePerMinute = EstimatedIncomePerMinute();
         int upgradeCost = upgradeIndex >= 0 ? UpgradeCost(upgradeIndex) : 0;
         int staffCost = staffIndex >= 0 ? StaffCost(staffIndex) : 0;
         bool shortPortrait = IsShortPortraitScreen();
@@ -2066,7 +2385,7 @@ public sealed class IdleShopGame : MonoBehaviour
             stockHint.anchorMax = new Vector2(0.92f, 0.92f);
             stockHint.offsetMin = Vector2.zero;
             stockHint.offsetMax = Vector2.zero;
-            Text hintText = CreateText("Hint", stockHint, lowStock ? T("shop.low_stock_stage_hint") : T("shop.empty_stage_hint"), wideLayout ? 30 : shortPortrait ? 35 : 39, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
+            Text hintText = CreateText("Hint", stockHint, lowStock ? T("shop.low_stock_stage_hint") : CurrentOrderShortageText(), wideLayout ? 30 : shortPortrait ? 35 : 39, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
             hintText.resizeTextForBestFit = true;
             hintText.resizeTextMinSize = wideLayout ? 18 : 22;
             hintText.resizeTextMaxSize = wideLayout ? 30 : shortPortrait ? 35 : 39;
@@ -2083,23 +2402,44 @@ public sealed class IdleShopGame : MonoBehaviour
         salePopRectTransform.offsetMax = Vector2.zero;
         salePopText.gameObject.SetActive(salePopTimer > 0f && !string.IsNullOrEmpty(salePopMessage));
 
+        RectTransform orderCard = CreatePanel("CurrentOrder", stage, new Color(1f, 0.97f, 0.88f, 0.94f));
+        orderCard.anchorMin = new Vector2(0.05f, 0.04f);
+        orderCard.anchorMax = new Vector2(0.95f, 0.23f);
+        orderCard.offsetMin = Vector2.zero;
+        orderCard.offsetMax = Vector2.zero;
+        VerticalLayoutGroup orderLayout = orderCard.gameObject.AddComponent<VerticalLayoutGroup>();
+        orderLayout.padding = wideLayout ? new RectOffset(18, 18, 10, 10) : new RectOffset(22, 22, 12, 12);
+        orderLayout.spacing = wideLayout ? 5f : 7f;
+        orderLayout.childControlWidth = true;
+        orderLayout.childControlHeight = true;
+        orderLayout.childForceExpandWidth = true;
+        orderLayout.childForceExpandHeight = false;
+        Text orderTitle = CreateText("OrderTitle", orderCard, F("order.current", CurrentOrderSummary(), Money(CurrentOrderValue())), wideLayout ? 27 : shortPortrait ? 31 : 35, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+        orderTitle.resizeTextForBestFit = true;
+        orderTitle.resizeTextMinSize = wideLayout ? 17 : 21;
+        orderTitle.resizeTextMaxSize = wideLayout ? 27 : shortPortrait ? 31 : 35;
+        Text orderState = CreateText("OrderState", orderCard, CanFulfillCurrentOrder() ? F("order.checkout_state", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : CurrentOrderShortageText(), wideLayout ? 22 : shortPortrait ? 25 : 28, FontStyle.Bold, CanFulfillCurrentOrder() ? coral : blue, TextAnchor.MiddleLeft);
+        orderState.resizeTextForBestFit = true;
+        orderState.resizeTextMinSize = wideLayout ? 15 : 18;
+        orderState.resizeTextMaxSize = wideLayout ? 22 : shortPortrait ? 25 : 28;
+        autoSaleFill = CreateProgress(orderCard, data.queue, coral, wideLayout ? 16f : 20f);
+
         RectTransform management = CreatePanel("ManagementPanel", contentRoot, new Color(0.36f, 0.23f, 0.14f));
         management.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 360f : shortPortrait ? 470f : 510f;
         VerticalLayoutGroup managementLayout = management.gameObject.AddComponent<VerticalLayoutGroup>();
         managementLayout.padding = wideLayout ? new RectOffset(16, 16, 16, 16) : new RectOffset(20, 20, 20, 20);
         managementLayout.spacing = wideLayout ? 12f : 16f;
 
-        string primaryTitle = F("recommend.checkout", Money(SalePrice(primaryIndex)));
-        string primaryDetail = F("recommend.checkout_detail", Money(SalePrice(primaryIndex)));
-        string primaryCta = data.stock[primaryIndex] >= 1f ? T("action.quick_checkout") : T("log.empty_shelf");
+        string primaryTitle = F("recommend.checkout", Money(CurrentOrderValue()));
+        string primaryDetail = F("recommend.checkout_detail", CurrentOrderSummary());
+        string primaryCta = CanFulfillCurrentOrder() ? T("action.quick_checkout") : CurrentOrderShortageText();
         Sprite primaryIcon = coinSprite;
         Color primaryColor = coral;
         UnityEngine.Events.UnityAction primaryAction = () =>
         {
-            SellOne(true);
-            RenderAll();
+            CompleteOrderManualAndRender();
         };
-        string primaryUnavailable = data.stock[primaryIndex] >= 1f ? string.Empty : T("log.empty_shelf");
+        string primaryUnavailable = CanFulfillCurrentOrder() ? string.Empty : CurrentOrderShortageText();
 
         bool shouldRecommendRestock = restockIndex >= 0 && (!hasSellableStock || lowStock);
         if (shouldRecommendRestock)
@@ -2149,8 +2489,7 @@ public sealed class IdleShopGame : MonoBehaviour
             primaryColor = honey;
             primaryAction = () =>
             {
-                SellOne(true);
-                RenderAll();
+                CompleteOrderManualAndRender();
             };
             primaryUnavailable = string.Empty;
         }
@@ -2163,10 +2502,97 @@ public sealed class IdleShopGame : MonoBehaviour
             primaryColor = pine;
             primaryAction = () =>
             {
-                SellOne(true);
-                RenderAll();
+                CompleteOrderManualAndRender();
             };
             primaryUnavailable = string.Empty;
+        }
+
+        int milestoneIndex = CurrentMilestoneIndex();
+        if (milestoneIndex == 0 && hasSellableStock)
+        {
+            primaryTitle = CurrentMilestoneText();
+            primaryDetail = CurrentMilestoneHint();
+            primaryCta = T("action.quick_checkout");
+            primaryIcon = coinSprite;
+            primaryColor = coral;
+            primaryAction = CompleteOrderManualAndRender;
+            primaryUnavailable = string.Empty;
+        }
+        else if (milestoneIndex == 1)
+        {
+            bool canRestockNow = restockIndex >= 0 && affordableRestockAmount > 0;
+            bool partialRestock = canRestockNow && affordableRestockAmount < restockAllAmount;
+            primaryTitle = CurrentMilestoneText();
+            primaryDetail = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : T("recommend.restock_detail");
+            primaryCta = restockIndex < 0 ? T("action.full_stock") : canRestockNow ? (partialRestock ? F("action.restock_affordable_detail", affordableRestockAmount, Money(affordableRestockCost)) : T("guide.restock")) : hasSellableStock ? T("action.quick_checkout") : ShortCashShort(cheapestRestockCost - data.cash);
+            primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
+            primaryColor = blue;
+            if (canRestockNow)
+            {
+                primaryAction = BuyRestockAll;
+            }
+            else if (hasSellableStock)
+            {
+                primaryAction = CompleteOrderManualAndRender;
+            }
+            else
+            {
+                primaryAction = BuyRestockAll;
+            }
+
+            primaryUnavailable = restockIndex < 0 ? T("action.full_stock") : !canRestockNow && !hasSellableStock ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : string.Empty;
+        }
+        else if (milestoneIndex == 2 && data.upgrades.Length > 2 && data.upgrades[2] < upgrades[2].MaxLevel)
+        {
+            int priceUpgradeCost = UpgradeCost(2);
+            primaryTitle = data.cash >= priceUpgradeCost ? F("recommend.upgrade", UpgradeName(2), Money(priceUpgradeCost)) : F("recommend.upgrade_goal", UpgradeName(2), Money(priceUpgradeCost));
+            primaryDetail = data.cash >= priceUpgradeCost ? UpgradeImpactText(2, primaryIndex) : F("recommend.upgrade_goal_detail", UpgradeImpactText(2, primaryIndex), Money(priceUpgradeCost - data.cash));
+            primaryCta = data.cash >= priceUpgradeCost ? F("action.upgrade", Money(priceUpgradeCost)) : hasSellableStock ? T("action.quick_checkout") : T("guide.restock");
+            primaryIcon = upgradeSprite;
+            primaryColor = honey;
+            if (data.cash >= priceUpgradeCost)
+            {
+                primaryAction = () =>
+                {
+                    BuyUpgrade(2);
+                };
+            }
+            else if (hasSellableStock)
+            {
+                primaryAction = CompleteOrderManualAndRender;
+            }
+            else
+            {
+                primaryAction = BuyRestockAll;
+            }
+
+            primaryUnavailable = !hasSellableStock && data.cash < priceUpgradeCost && restockIndex < 0 ? T("log.empty_shelf") : string.Empty;
+        }
+        else if (milestoneIndex == 3 && data.staff.Length > 0 && data.staff[0] < staffDefs[0].MaxLevel)
+        {
+            int cashierCost = StaffCost(0);
+            primaryTitle = data.cash >= cashierCost ? F("recommend.staff", StaffName(0), Money(cashierCost)) : F("recommend.staff_goal", StaffName(0), Money(cashierCost));
+            primaryDetail = data.cash >= cashierCost ? StaffAutomationText(0) : F("recommend.staff_goal_detail", StaffAutomationText(0), Money(cashierCost - data.cash));
+            primaryCta = data.cash >= cashierCost ? F("action.train", Money(cashierCost)) : hasSellableStock ? T("action.quick_checkout") : T("guide.restock");
+            primaryIcon = StaffSprite(0) != null ? StaffSprite(0) : customerSprite;
+            primaryColor = pine;
+            if (data.cash >= cashierCost)
+            {
+                primaryAction = () =>
+                {
+                    HireStaff(0);
+                };
+            }
+            else if (hasSellableStock)
+            {
+                primaryAction = CompleteOrderManualAndRender;
+            }
+            else
+            {
+                primaryAction = BuyRestockAll;
+            }
+
+            primaryUnavailable = !hasSellableStock && data.cash < cashierCost && restockIndex < 0 ? T("log.empty_shelf") : string.Empty;
         }
 
         CreateFeaturedActionCard(management, primaryTitle, primaryDetail, primaryCta, primaryIcon, primaryColor, () =>
@@ -2191,17 +2617,16 @@ public sealed class IdleShopGame : MonoBehaviour
         quickLayout.childForceExpandWidth = true;
         quickLayout.childForceExpandHeight = true;
 
-        CreateQuickActionButton(quickActions, T("action.quick_checkout"), data.stock[primaryIndex] >= 1f ? $"+{Money(SalePrice(primaryIndex))}" : T("log.empty_shelf"), coinSprite, coral, () =>
+        CreateQuickActionButton(quickActions, T("action.quick_checkout"), CanFulfillCurrentOrder() ? $"+{Money(CurrentOrderValue())}" : CurrentOrderShortageText(), coinSprite, coral, () =>
         {
-            if (data.stock[primaryIndex] < 1f)
+            if (!CanFulfillCurrentOrder())
             {
-                AddLog(T("log.empty_shelf"));
+                AddLog(CurrentOrderShortageText());
                 RenderAll();
                 return;
             }
 
-            SellOne(true);
-            RenderAll();
+            CompleteOrderManualAndRender();
         });
 
         CreateQuickActionButton(quickActions, T("action.restock_all"), RestockAllButtonDetail(restockIndex, restockAllAmount, restockAllCost, cheapestRestockCost, affordableRestockAmount, affordableRestockCost), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>

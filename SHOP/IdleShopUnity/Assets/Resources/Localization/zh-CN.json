@@ -621,6 +621,134 @@
     {
       "key": "milestone.hint.all_done",
       "value": "阶段目标完成后，继续围绕补货和升级扩大收益。"
+    },
+    {
+      "key": "product.bread.name",
+      "value": "手作面包"
+    },
+    {
+      "key": "product.bread.subtitle",
+      "value": "早餐高频商品"
+    },
+    {
+      "key": "product.coffee.name",
+      "value": "热咖啡"
+    },
+    {
+      "key": "product.coffee.subtitle",
+      "value": "提升客单价"
+    },
+    {
+      "key": "product.dessert.name",
+      "value": "小甜点"
+    },
+    {
+      "key": "product.dessert.subtitle",
+      "value": "适合套餐搭配"
+    },
+    {
+      "key": "product.gift_box.name",
+      "value": "礼品盒"
+    },
+    {
+      "key": "product.gift_box.subtitle",
+      "value": "高价值低频订单"
+    },
+    {
+      "key": "staff.kobayashi.name",
+      "value": "小林 · 收银员"
+    },
+    {
+      "key": "staff.kobayashi.detail",
+      "value": "加快订单结账速度。"
+    },
+    {
+      "key": "staff.misaki.name",
+      "value": "美咲 · 补货员"
+    },
+    {
+      "key": "staff.misaki.detail",
+      "value": "提高每次补货数量和货架容量。"
+    },
+    {
+      "key": "staff.aken.name",
+      "value": "阿健 · 宣传员"
+    },
+    {
+      "key": "staff.aken.detail",
+      "value": "提升口碑成长和订单热度。"
+    },
+    {
+      "key": "staff.lina.name",
+      "value": "莉娜 · 陈列员"
+    },
+    {
+      "key": "staff.lina.detail",
+      "value": "提高组合订单出现概率。"
+    },
+    {
+      "key": "staff.zhou.name",
+      "value": "老周 · 采购员"
+    },
+    {
+      "key": "staff.zhou.detail",
+      "value": "降低进货成本。"
+    },
+    {
+      "key": "staff.anna.name",
+      "value": "安娜 · 店长"
+    },
+    {
+      "key": "staff.anna.detail",
+      "value": "提升订单价值和全店效率。"
+    },
+    {
+      "key": "order.item",
+      "value": "{0} x{1}"
+    },
+    {
+      "key": "order.current",
+      "value": "当前订单：{0} · {1}"
+    },
+    {
+      "key": "order.checkout_state",
+      "value": "结账中，{0} 秒后完成"
+    },
+    {
+      "key": "order.timer",
+      "value": "订单结账 {0} 秒"
+    },
+    {
+      "key": "order.waiting",
+      "value": "等待顾客下单"
+    },
+    {
+      "key": "order.shortage",
+      "value": "{0} 不够，还差 {1} 件"
+    },
+    {
+      "key": "log.order_completed",
+      "value": "完成订单：{0}，收入 {1}"
+    },
+    {
+      "key": "milestone.order_3.name",
+      "value": "完成 3 个订单"
+    },
+    {
+      "key": "milestone.order_3",
+      "value": "目标：完成 3 个顾客订单 ({0}/3) · 奖励 {1}"
+    },
+    {
+      "key": "staff.merchandiser.automation",
+      "value": "组合订单 {0}% → {1}%"
+    },
+    {
+      "key": "staff.purchaser.automation",
+      "value": "进货成本 {0} → {1}"
+    },
+    {
+      "key": "staff.manager.automation",
+      "value": "订单收益 {0}% → {1}%"
     }
   ]
 }
