@@ -1,5 +1,8 @@
 MVP 2.3 scene and UI art goes here.
 
+For MVP 3.0 art production, use `SHOP/Docs/ArtBible/` and `Assets/Art/MVP30/`.
+MVP 3.0 assets must be generated from approved master assets rather than unrelated one-off prompts.
+
 Required optional sprite names used by ProjectBootstrapper:
 - scene_shop_interior_base.png
 - scene_cashier_counter.png
@@ -28,6 +31,14 @@ Required optional sprite names used by ProjectBootstrapper:
 - fx_low_stock_pulse.png
 - fx_customer_waiting_bubble.png
 - ui_scene_floor_shadow.png
+- customer_enter_01.png
+- customer_leave_01.png
+- ui_order_complete_stamp.png
+- fx_order_complete_glow.png
+- fx_item_selected_glow.png
+- fx_cash_float.png
+- fx_restock_success_ring.png
+- fx_upgrade_success.png
 
 All assets should be PNG sprites with transparent backgrounds unless the file is a full scene background.
 
