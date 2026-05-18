@@ -375,6 +375,10 @@
       "value": "{0} reposto x{1}."
     },
     {
+      "key": "log.restocked_order_ready",
+      "value": "{0} x{1} reposto. O pedido pode continuar a vender."
+    },
+    {
       "key": "log.restocked_all",
       "value": "{0} itens repostos."
     },
@@ -408,15 +412,15 @@
     },
     {
       "key": "settings.reset_title",
-      "value": "Ferramentas de teste"
+      "value": "Teste de novo jogador"
     },
     {
       "key": "settings.reset_body",
-      "value": "Limpa o progresso atual e recomeça no primeiro dia. O idioma mantém-se."
+      "value": "Limpa o save da loja e recomeça no dia 1 com o primeiro pedido. O idioma mantém-se. Usa para testar os primeiros 3 minutos."
     },
     {
       "key": "action.reset_save",
-      "value": "Repor gravação"
+      "value": "Reiniciar início"
     },
     {
       "key": "log.save_reset",
@@ -736,7 +740,7 @@
     },
     {
       "key": "milestone.order_3",
-      "value": "Goal: complete 3 customer orders ({0}/3) · Reward {1}"
+      "value": "Objetivo: concluir 3 pedidos de clientes ({0}/3) · Recompensa {1}"
     },
     {
       "key": "staff.merchandiser.automation",
@@ -752,7 +756,7 @@
     },
     {
       "key": "action.restock_order",
-      "value": "Repor pedido"
+      "value": "Repor atual"
     },
     {
       "key": "action.restock_order_detail",
@@ -785,6 +789,114 @@
     {
       "key": "order.focus_blocked",
       "value": "Repõe primeiro: {0} falta {1}"
+    },
+    {
+      "key": "order.current_short",
+      "value": "Pedido · {0}"
+    },
+    {
+      "key": "order.progress",
+      "value": "Order progress {0}/{1}"
+    },
+    {
+      "key": "order.item_status",
+      "value": "Stock {0} · +{1}"
+    },
+    {
+      "key": "order.item_missing",
+      "value": "Faltam {0}"
+    },
+    {
+      "key": "order.item_selected",
+      "value": "Ativo"
+    },
+    {
+      "key": "log.focus_product",
+      "value": "Prioridade: {0}."
+    },
+    {
+      "key": "recommend.restock_focus",
+      "value": "Recomendado: repor {0} {1}"
+    },
+    {
+      "key": "order.step_selling",
+      "value": "A vender: {0} x{1} · stock {2}"
+    },
+    {
+      "key": "order.step_blocked",
+      "value": "Bloqueado: faltam {1} de {0}"
+    },
+    {
+      "key": "order.next_checkout",
+      "value": "A seguir: vender 1 {0} por {1}"
+    },
+    {
+      "key": "order.next_restock",
+      "value": "A seguir: repor {0} x{1} · {2}"
+    },
+    {
+      "key": "order.next_wait_cash",
+      "value": "A seguir: esperar receita, faltam {0}"
+    },
+    {
+      "key": "order.item_ready",
+      "value": "Pode vender {0}/{1} · +{2}"
+    },
+    {
+      "key": "order.item_low",
+      "value": "Stock {0}/{1}, repor em breve"
+    },
+    {
+      "key": "order.item_progress",
+      "value": "Done {0}/Need {1}"
+    },
+    {
+      "key": "order.item_done",
+      "value": "Done"
+    },
+    {
+      "key": "action.restock_current_missing",
+      "value": "Restock {0} {1}"
+    },
+    {
+      "key": "action.restock_current_stock",
+      "value": "Restock {0} stock {1}"
+    },
+    {
+      "key": "order.item_sold_feedback",
+      "value": "Vendido 1 · restam {0}"
+    },
+    {
+      "key": "order.complete_feedback",
+      "value": "Pedido concluído +{0}"
+    },
+    {
+      "key": "milestone.order_1.name",
+      "value": "Concluir 1 pedido"
+    },
+    {
+      "key": "milestone.order_1",
+      "value": "Objetivo: concluir o primeiro pedido ({0}/1) · Recompensa {1}"
+    },
+    {
+      "key": "milestone.hint.order_3",
+      "value": "Continua a venda automática; repõe este item se bloquear."
+    },
+    {
+      "key": "settings.test_title",
+      "value": "Verificação dos primeiros 3 minutos"
+    },
+    {
+      "key": "settings.test_done",
+      "value": "Concluído"
+    },
+    {
+      "key": "settings.test_pending",
+      "value": "Pendente"
+    },
+    {
+      "key": "settings.test_report",
+      "value": "Pedidos {0} · Reposições {1}\nPrimeira melhoria de preço: {2}\nIntervalo de venda auto: {3}s\nObjetivo atual: {4}"
     }
   ]
 }

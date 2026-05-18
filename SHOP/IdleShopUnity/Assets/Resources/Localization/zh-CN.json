@@ -375,6 +375,10 @@
       "value": "{0} 补货 {1} 件。"
     },
     {
+      "key": "log.restocked_order_ready",
+      "value": "已补 {0} x{1}，订单可以继续卖了。"
+    },
+    {
       "key": "log.restocked_all",
       "value": "已补货 {0} 件。"
     },
@@ -408,15 +412,15 @@
     },
     {
       "key": "settings.reset_title",
-      "value": "测试工具"
+      "value": "新手流程测试"
     },
     {
       "key": "settings.reset_body",
-      "value": "清空当前经营存档并从第一天重新开始，语言设置会保留。"
+      "value": "清空当前经营存档，从第一天和第一单重新开始；语言设置会保留。用于反复测试前 3 分钟。"
     },
     {
       "key": "action.reset_save",
-      "value": "重置存档"
+      "value": "重跑新手流程"
     },
     {
       "key": "log.save_reset",
@@ -728,7 +732,7 @@
     },
     {
       "key": "log.order_completed",
-      "value": "整单完成：{0}，本单最后收入 {1}"
+      "value": "{0}订单完成，收入 {1}"
     },
     {
       "key": "milestone.order_3.name",
@@ -736,7 +740,7 @@
     },
     {
       "key": "milestone.order_3",
-      "value": "目标：完成 3 个顾客订单 ({0}/3) · 奖励 {1}"
+      "value": "目标：继续完成 3 个顾客订单 ({0}/3) · 奖励 {1}"
     },
     {
       "key": "staff.merchandiser.automation",
@@ -752,7 +756,7 @@
     },
     {
       "key": "action.restock_order",
-      "value": "补当前订单"
+      "value": "补当前缺货"
     },
     {
       "key": "action.restock_order_detail",
@@ -785,6 +789,114 @@
     {
       "key": "order.focus_blocked",
       "value": "先补货：{0} 还缺 {1} 件"
+    },
+    {
+      "key": "order.current_short",
+      "value": "当前订单 · {0}"
+    },
+    {
+      "key": "order.progress",
+      "value": "订单进度 {0}/{1}"
+    },
+    {
+      "key": "order.item_status",
+      "value": "库存 {0} · +{1}"
+    },
+    {
+      "key": "order.item_missing",
+      "value": "缺 {0} 件"
+    },
+    {
+      "key": "order.item_selected",
+      "value": "处理中"
+    },
+    {
+      "key": "log.focus_product",
+      "value": "优先处理 {0}。"
+    },
+    {
+      "key": "recommend.restock_focus",
+      "value": "推荐：补 {0} {1}"
+    },
+    {
+      "key": "order.step_selling",
+      "value": "正在卖：{0} x{1} · 库存 {2}"
+    },
+    {
+      "key": "order.step_blocked",
+      "value": "卡住了：{0} 还缺 {1} 件"
+    },
+    {
+      "key": "order.next_checkout",
+      "value": "下一步：收银 1 件 {0}，获得 {1}"
+    },
+    {
+      "key": "order.next_restock",
+      "value": "下一步：补 {0} x{1} · {2}"
+    },
+    {
+      "key": "order.next_wait_cash",
+      "value": "下一步：等自动收入，还差 {0}"
+    },
+    {
+      "key": "order.item_ready",
+      "value": "可卖 {0}/{1} · +{2}"
+    },
+    {
+      "key": "order.item_low",
+      "value": "库存 {0}/{1}，快补货"
+    },
+    {
+      "key": "order.item_progress",
+      "value": "已完成 {0}/需要 {1}"
+    },
+    {
+      "key": "order.item_done",
+      "value": "已完成"
+    },
+    {
+      "key": "action.restock_current_missing",
+      "value": "补{0} {1}"
+    },
+    {
+      "key": "action.restock_current_stock",
+      "value": "补{0}库存 {1}"
+    },
+    {
+      "key": "order.item_sold_feedback",
+      "value": "刚卖出 1 件 · 剩 {0}"
+    },
+    {
+      "key": "order.complete_feedback",
+      "value": "订单完成 +{0}"
+    },
+    {
+      "key": "milestone.order_1.name",
+      "value": "完成第 1 单"
+    },
+    {
+      "key": "milestone.order_1",
+      "value": "目标：完成第 1 个顾客订单 ({0}/1) · 奖励 {1}"
+    },
+    {
+      "key": "milestone.hint.order_3",
+      "value": "继续自动卖货；缺货时补这件商品。"
+    },
+    {
+      "key": "settings.test_title",
+      "value": "前 3 分钟观察"
+    },
+    {
+      "key": "settings.test_done",
+      "value": "已完成"
+    },
+    {
+      "key": "settings.test_pending",
+      "value": "未完成"
+    },
+    {
+      "key": "settings.test_report",
+      "value": "订单 {0} 单 · 补货 {1} 次\n首次售价升级：{2}\n自动售卖间隔：{3} 秒\n当前目标：{4}"
     }
   ]
 }

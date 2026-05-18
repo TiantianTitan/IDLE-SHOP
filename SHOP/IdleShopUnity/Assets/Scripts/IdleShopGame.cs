@@ -95,10 +95,13 @@ public sealed class IdleShopGame : MonoBehaviour
         public float pendingOfflineEarned;
         public int restockActions;
         public int completedOrders;
+        public int selectedOrderProductIndex = -1;
+        public int currentOrderEarned;
         public long lastSavedUnix;
         public float[] stock = Array.Empty<float>();
         public int[] sold = Array.Empty<int>();
         public int[] currentOrder = Array.Empty<int>();
+        public int[] currentOrderInitial = Array.Empty<int>();
         public bool[] unlocked = Array.Empty<bool>();
         public int[] upgrades = Array.Empty<int>();
         public int[] staff = Array.Empty<int>();
@@ -112,13 +115,47 @@ public sealed class IdleShopGame : MonoBehaviour
     private const float LowStockRatio = 0.20f;
     private const float UpgradeGoalRatio = 0.70f;
     private const float StaffGoalRatio = 0.70f;
+    private const float OrderCompleteDelaySeconds = 0.9f;
     private const int StaffRecommendationMinSold = 30;
     private const int MilestoneCount = 5;
+    private const int Mvp23SceneInterior = 0;
+    private const int Mvp23CashierCounter = 1;
+    private const int Mvp23ShelfFull = 2;
+    private const int Mvp23ShelfLow = 3;
+    private const int Mvp23ShelfEmpty = 4;
+    private const int Mvp23CustomerWalk01 = 5;
+    private const int Mvp23CustomerWalk02 = 6;
+    private const int Mvp23CustomerIdle = 7;
+    private const int Mvp23CustomerPay = 8;
+    private const int Mvp23CustomerHappy = 9;
+    private const int Mvp23CustomerDisappointed = 10;
+    private const int Mvp23StaffCashierIdle = 11;
+    private const int Mvp23StaffCashierWork = 12;
+    private const int Mvp23FxCoinPop = 13;
+    private const int Mvp23FxRestockSpark = 14;
+    private const int Mvp23UiOrderTicket = 15;
+    private const int Mvp23UiOrderItemSlot = 16;
+    private const int Mvp23UiStockWarningBadge = 17;
+    private const int Mvp23UiCurrentItemFrame = 18;
+    private const int Mvp23IconCheckoutOne = 19;
+    private const int Mvp23IconRestockItem = 20;
+    private const int Mvp23IconUpgradeProduct = 21;
+    private const int Mvp23SceneEmptyShelfOverlay = 22;
+    private const int Mvp23FxOrderCompleteStamp = 23;
+    private const int Mvp23FxLowStockPulse = 24;
+    private const int Mvp23FxCustomerWaitingBubble = 25;
+    private const int Mvp23SceneFloorShadow = 26;
+    private const int Mvp23FxOrderCompleteGlow = 27;
+    private const int Mvp23FxItemSelectedGlow = 28;
+    private const int Mvp23FxCashFloat = 29;
+    private const int Mvp23FxRestockSuccessRing = 30;
+    private const int Mvp23FxUpgradeSuccess = 31;
+    private const int Mvp23CustomerLeave = 32;
     private readonly ProductDef[] products =
     {
-        new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 11f, 1.35f, 1, 18, 2, new Color(0.94f, 0.48f, 0.32f)),
-        new ProductDef("product.sparkling_water.name", "product.sparkling_water.subtitle", 9f, 18f, 1.18f, 1, 16, 2, new Color(0.18f, 0.58f, 0.72f)),
-        new ProductDef("product.bread.name", "product.bread.subtitle", 11f, 22f, 1.05f, 1, 14, 2, new Color(0.85f, 0.56f, 0.27f)),
+        new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 12f, 1.35f, 1, 12, 2, new Color(0.94f, 0.48f, 0.32f)),
+        new ProductDef("product.sparkling_water.name", "product.sparkling_water.subtitle", 9f, 19f, 1.18f, 2, 12, 2, new Color(0.18f, 0.58f, 0.72f)),
+        new ProductDef("product.bread.name", "product.bread.subtitle", 11f, 24f, 1.05f, 3, 12, 2, new Color(0.85f, 0.56f, 0.27f)),
         new ProductDef("product.coffee.name", "product.coffee.subtitle", 14f, 30f, 0.95f, 2, 12, 2, new Color(0.54f, 0.34f, 0.22f)),
         new ProductDef("product.lunch_box.name", "product.lunch_box.subtitle", 24f, 52f, 0.78f, 3, 10, 2, new Color(0.89f, 0.64f, 0.22f)),
         new ProductDef("product.dessert.name", "product.dessert.subtitle", 30f, 68f, 0.64f, 4, 9, 2, new Color(0.84f, 0.48f, 0.64f)),
@@ -128,9 +165,9 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private readonly UpgradeDef[] upgrades =
     {
-        new UpgradeDef("upgrade.shelf.name", "upgrade.shelf.detail", 260f, 8),
-        new UpgradeDef("upgrade.signboard.name", "upgrade.signboard.detail", 300f, 10),
-        new UpgradeDef("upgrade.fridge.name", "upgrade.fridge.detail", 220f, 7),
+        new UpgradeDef("upgrade.shelf.name", "upgrade.shelf.detail", 210f, 8),
+        new UpgradeDef("upgrade.signboard.name", "upgrade.signboard.detail", 240f, 10),
+        new UpgradeDef("upgrade.fridge.name", "upgrade.fridge.detail", 150f, 7),
         new UpgradeDef("upgrade.express.name", "upgrade.express.detail", 420f, 7)
     };
 
@@ -167,6 +204,7 @@ public sealed class IdleShopGame : MonoBehaviour
     [SerializeField] private Sprite upgradeSprite = null!;
     [SerializeField] private Sprite[] productSprites = Array.Empty<Sprite>();
     [SerializeField] private Sprite[] staffSprites = Array.Empty<Sprite>();
+    [SerializeField] private Sprite[] mvp23Sprites = Array.Empty<Sprite>();
     [SerializeField] private Font mainFont = null!;
     [SerializeField] private Font arabicFont = null!;
 
@@ -188,7 +226,17 @@ public sealed class IdleShopGame : MonoBehaviour
     private RectTransform autoSaleFill = null!;
     private RectTransform headerAutoFill = null!;
     private RectTransform salePopRectTransform = null!;
+    private RectTransform salePopIconRectTransform = null!;
     private RectTransform sceneProductMotion = null!;
+    private RectTransform sceneCustomerMotion = null!;
+    private RectTransform sceneStaffMotion = null!;
+    private RectTransform sceneRestockFxMotion = null!;
+    private Image salePopIconImage = null!;
+    private Image sceneProductImage = null!;
+    private Outline sceneProductOutline = null!;
+    private Image sceneCustomerImage = null!;
+    private Image sceneStaffImage = null!;
+    private Image sceneRestockFxImage = null!;
     private Image sceneCashierGlow = null!;
     private Image sceneCustomerGlow = null!;
     private Text offlineText = null!;
@@ -201,12 +249,21 @@ public sealed class IdleShopGame : MonoBehaviour
     private Vector2Int layoutScreenSize;
     private string offlineNotice = string.Empty;
     private string salePopMessage = string.Empty;
+    private string orderCompleteMessage = string.Empty;
+    private string orderCompleteTitle = string.Empty;
     private float salePopTimer;
+    private float orderCompleteTimer;
+    private float newOrderFlashTimer;
     private float restockPulseTimer;
     private float upgradePulseTimer;
+    private float orderSelectPulseTimer;
     private float displayedAutoSaleProgress;
+    private Color sceneProductBaseColor;
+    private bool pendingOrderCompletion;
+    private int recentSoldProductIndex = -1;
+    private int recentRestockProductIndex = -1;
 
-    public void ConfigureArt(Sprite shopFront, Sprite shelf, Sprite counter, Sprite coin, Sprite reputation, Sprite customer, Sprite upgrade, Sprite[] productsArt, Sprite[] staffArt, Font defaultUiFont, Font rtlFont)
+    public void ConfigureArt(Sprite shopFront, Sprite shelf, Sprite counter, Sprite coin, Sprite reputation, Sprite customer, Sprite upgrade, Sprite[] productsArt, Sprite[] staffArt, Sprite[] mvp23Art, Font defaultUiFont, Font rtlFont)
     {
         shopFrontSprite = shopFront;
         shelfSprite = shelf;
@@ -217,6 +274,7 @@ public sealed class IdleShopGame : MonoBehaviour
         upgradeSprite = upgrade;
         productSprites = productsArt ?? Array.Empty<Sprite>();
         staffSprites = staffArt ?? Array.Empty<Sprite>();
+        mvp23Sprites = mvp23Art ?? Array.Empty<Sprite>();
         mainFont = defaultUiFont;
         arabicFont = rtlFont;
     }
@@ -260,6 +318,23 @@ public sealed class IdleShopGame : MonoBehaviour
             salePopTimer = Mathf.Max(0f, salePopTimer - Time.deltaTime);
         }
 
+        if (orderCompleteTimer > 0f)
+        {
+            orderCompleteTimer = Mathf.Max(0f, orderCompleteTimer - Time.deltaTime);
+            if (pendingOrderCompletion && orderCompleteTimer <= 0f)
+            {
+                pendingOrderCompletion = false;
+                GenerateCurrentOrder();
+                newOrderFlashTimer = 0.55f;
+                RenderAll();
+            }
+        }
+
+        if (newOrderFlashTimer > 0f)
+        {
+            newOrderFlashTimer = Mathf.Max(0f, newOrderFlashTimer - Time.deltaTime);
+        }
+
         if (restockPulseTimer > 0f)
         {
             restockPulseTimer = Mathf.Max(0f, restockPulseTimer - Time.deltaTime);
@@ -268,6 +343,11 @@ public sealed class IdleShopGame : MonoBehaviour
         if (upgradePulseTimer > 0f)
         {
             upgradePulseTimer = Mathf.Max(0f, upgradePulseTimer - Time.deltaTime);
+        }
+
+        if (orderSelectPulseTimer > 0f)
+        {
+            orderSelectPulseTimer = Mathf.Max(0f, orderSelectPulseTimer - Time.deltaTime);
         }
 
         UpdateAutoSaleVisuals();
@@ -368,6 +448,7 @@ public sealed class IdleShopGame : MonoBehaviour
         data.stock = Resize(data.stock, products.Length);
         data.sold = Resize(data.sold, products.Length);
         data.currentOrder = Resize(data.currentOrder, products.Length);
+        data.currentOrderInitial = Resize(data.currentOrderInitial, products.Length);
         data.unlocked = Resize(data.unlocked, products.Length);
         data.upgrades = Resize(data.upgrades, upgrades.Length);
         data.staff = Resize(data.staff, staffDefs.Length);
@@ -375,7 +456,13 @@ public sealed class IdleShopGame : MonoBehaviour
 
         data.level = Mathf.Max(1, data.level);
         data.cash = Mathf.Max(0f, data.cash);
+        data.currentOrderEarned = Mathf.Max(0, data.currentOrderEarned);
         data.day = Mathf.Max(1, data.day);
+        if (data.selectedOrderProductIndex < -1 || data.selectedOrderProductIndex >= products.Length)
+        {
+            data.selectedOrderProductIndex = -1;
+        }
+
         data.saveVersion = CurrentSaveVersion;
         data.unlocked[0] = true;
 
@@ -393,12 +480,32 @@ public sealed class IdleShopGame : MonoBehaviour
             {
                 if (data.unlocked[i] && data.stock[i] <= 0f)
                 {
-                    data.stock[i] = Mathf.Min(8f, MaxStock(i));
+                    data.stock[i] = Mathf.Min(InitialStock(i), MaxStock(i));
                 }
             }
         }
 
+        bool hasActiveOrder = false;
+        bool hasInitialOrder = false;
+        for (int i = 0; i < products.Length; i++)
+        {
+            hasActiveOrder |= data.currentOrder[i] > 0;
+            hasInitialOrder |= data.currentOrderInitial[i] > 0;
+        }
+
+        if (hasActiveOrder && !hasInitialOrder)
+        {
+            for (int i = 0; i < products.Length; i++)
+            {
+                data.currentOrderInitial[i] = data.currentOrder[i];
+            }
+        }
+
         EnsureCurrentOrder();
+        if (data.selectedOrderProductIndex < 0 || CurrentOrderQuantity(data.selectedOrderProductIndex) <= 0)
+        {
+            data.selectedOrderProductIndex = CurrentOrderDisplayProductIndex();
+        }
     }
 
     private static float[] Resize(float[] source, int length)
@@ -529,15 +636,15 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return data.completedOrders >= 3;
+                return data.completedOrders >= 1;
             case 1:
                 return data.restockActions >= 1;
             case 2:
-                return data.upgrades.Length > 2 && data.upgrades[2] >= 1;
+                return data.completedOrders >= 3;
             case 3:
-                return data.staff.Length > 0 && data.staff[0] >= 1;
+                return data.upgrades.Length > 2 && data.upgrades[2] >= 1;
             case 4:
-                return data.level >= 3 || (data.unlocked.Length > 1 && data.unlocked[1]);
+                return data.staff.Length > 0 && data.staff[0] >= 1;
             default:
                 return false;
         }
@@ -548,15 +655,15 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return Mathf.Clamp01(data.completedOrders / 3f);
+                return Mathf.Clamp01(data.completedOrders);
             case 1:
                 return data.restockActions >= 1 ? 1f : 0f;
             case 2:
-                return data.upgrades.Length > 2 && data.upgrades[2] >= 1 ? 1f : 0f;
+                return Mathf.Clamp01(data.completedOrders / 3f);
             case 3:
-                return data.staff.Length > 0 && data.staff[0] >= 1 ? 1f : 0f;
+                return data.upgrades.Length > 2 && data.upgrades[2] >= 1 ? 1f : 0f;
             case 4:
-                return Mathf.Clamp01(data.level / 3f);
+                return data.staff.Length > 0 && data.staff[0] >= 1 ? 1f : 0f;
             default:
                 return 1f;
         }
@@ -567,15 +674,15 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return 40;
+                return 12;
             case 1:
-                return 60;
+                return 30;
             case 2:
-                return 90;
+                return 35;
             case 3:
-                return 120;
+                return 80;
             case 4:
-                return 150;
+                return 120;
             default:
                 return 0;
         }
@@ -586,15 +693,15 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return T("milestone.order_3.name");
+                return T("milestone.order_1.name");
             case 1:
                 return T("milestone.restock_once.name");
             case 2:
-                return T("milestone.price_upgrade.name");
+                return T("milestone.order_3.name");
             case 3:
-                return T("milestone.cashier.name");
+                return T("milestone.price_upgrade.name");
             case 4:
-                return T("milestone.level_3.name");
+                return T("milestone.cashier.name");
             default:
                 return string.Empty;
         }
@@ -612,15 +719,15 @@ public sealed class IdleShopGame : MonoBehaviour
         switch (index)
         {
             case 0:
-                return F("milestone.order_3", data.completedOrders, reward);
+                return F("milestone.order_1", data.completedOrders, reward);
             case 1:
                 return F("milestone.restock_once", reward);
             case 2:
-                return F("milestone.price_upgrade", reward);
+                return F("milestone.order_3", data.completedOrders, reward);
             case 3:
-                return F("milestone.cashier", reward);
+                return F("milestone.price_upgrade", reward);
             case 4:
-                return F("milestone.level_3", data.level, reward);
+                return F("milestone.cashier", reward);
             default:
                 return T("milestone.all_done");
         }
@@ -635,11 +742,11 @@ public sealed class IdleShopGame : MonoBehaviour
             case 1:
                 return T("milestone.hint.restock");
             case 2:
-                return T("milestone.hint.upgrade");
+                return T("milestone.hint.order_3");
             case 3:
-                return T("milestone.hint.cashier");
+                return T("milestone.hint.upgrade");
             case 4:
-                return T("milestone.hint.level_3");
+                return T("milestone.hint.cashier");
             default:
                 return T("milestone.hint.all_done");
         }
@@ -698,6 +805,12 @@ public sealed class IdleShopGame : MonoBehaviour
             data.soldToday = 0;
         }
 
+        if (pendingOrderCompletion)
+        {
+            data.queue = 0f;
+            return;
+        }
+
         EnsureCurrentOrder();
         data.queue += seconds * OrderProgressPerSecond();
         int served = 0;
@@ -732,6 +845,7 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         string orderText = CurrentOrderSummary();
+        string completionTitle = OrderCompletionTitle(orderText);
         int earned = CurrentOrderItemValue(productIndex);
         data.currentOrder[productIndex] = Mathf.Max(0, data.currentOrder[productIndex] - 1);
         data.stock[productIndex] -= 1f;
@@ -740,10 +854,12 @@ public sealed class IdleShopGame : MonoBehaviour
         data.cash += earned;
         data.totalEarned += earned;
         data.soldToday += 1;
+        data.currentOrderEarned += earned;
         data.xp += 10f + Mathf.Floor(earned / 14f);
         data.reputation += 0.026f * (1f + StaffLevel(2) * 0.12f + StaffLevel(5) * 0.05f);
         salePopMessage = $"+{Money(earned)}";
         salePopTimer = manual ? 1.15f : 0.8f;
+        recentSoldProductIndex = productIndex;
 
         bool orderDone = CurrentOrderItemCount() <= 0;
         if (manual || UnityEngine.Random.value < 0.14f)
@@ -753,10 +869,19 @@ public sealed class IdleShopGame : MonoBehaviour
 
         if (orderDone)
         {
+            int orderEarned = Mathf.Max(earned, data.currentOrderEarned);
             data.completedOrders += 1;
             data.xp += 12f + Mathf.Floor(earned / 16f);
-            AddLog(F("log.order_completed", orderText, Money(earned)));
-            GenerateCurrentOrder();
+            orderCompleteMessage = F("order.complete_feedback", Money(orderEarned));
+            orderCompleteTitle = completionTitle;
+            orderCompleteTimer = manual ? 1.20f : OrderCompleteDelaySeconds;
+            pendingOrderCompletion = true;
+            data.queue = 0f;
+            AddLog(F("log.order_completed", orderCompleteTitle, Money(orderEarned)));
+        }
+        else if (CurrentOrderQuantity(data.selectedOrderProductIndex) <= 0)
+        {
+            data.selectedOrderProductIndex = CurrentOrderDisplayProductIndex();
         }
 
         while (data.xp >= XpNeeded())
@@ -783,11 +908,37 @@ public sealed class IdleShopGame : MonoBehaviour
         RenderAll();
     }
 
+    private void SelectOrderProductAndRender(int productIndex)
+    {
+        EnsureCurrentOrder();
+        if (productIndex < 0 || productIndex >= products.Length || CurrentOrderQuantity(productIndex) <= 0)
+        {
+            AddLog(T("order.waiting"));
+            RenderAll();
+            return;
+        }
+
+        data.selectedOrderProductIndex = productIndex;
+        orderSelectPulseTimer = 0.42f;
+        AddLog(F("log.focus_product", ProductName(productIndex)));
+        RenderAll();
+    }
+
     private void EnsureCurrentOrder()
     {
         if (data.currentOrder == null || data.currentOrder.Length != products.Length)
         {
             data.currentOrder = Resize(data.currentOrder, products.Length);
+        }
+
+        if (data.currentOrderInitial == null || data.currentOrderInitial.Length != products.Length)
+        {
+            data.currentOrderInitial = Resize(data.currentOrderInitial, products.Length);
+        }
+
+        if (pendingOrderCompletion)
+        {
+            return;
         }
 
         if (CurrentOrderItemCount() <= 0 || !CurrentOrderUsesUnlockedProducts())
@@ -798,20 +949,26 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private void GenerateCurrentOrder()
     {
+        pendingOrderCompletion = false;
+        data.currentOrderEarned = 0;
+        orderCompleteTitle = string.Empty;
+        data.selectedOrderProductIndex = -1;
         for (int i = 0; i < data.currentOrder.Length; i++)
         {
             data.currentOrder[i] = 0;
+            data.currentOrderInitial[i] = 0;
         }
 
         int unlockedCount = UnlockedProductCount();
         if (unlockedCount <= 0)
         {
             data.currentOrder[0] = 1;
+            data.currentOrderInitial[0] = 1;
             return;
         }
 
         int maxKinds = Mathf.Min(unlockedCount, MaxOrderKinds());
-        int targetKinds = Mathf.Clamp(1 + (UnityEngine.Random.value < ComboOrderChance() ? 1 : 0) + (UnityEngine.Random.value < ComboOrderChance() * 0.45f ? 1 : 0), 1, maxKinds);
+        int targetKinds = EarlyOrderSingleProductOnly() ? 1 : Mathf.Clamp(1 + (UnityEngine.Random.value < ComboOrderChance() ? 1 : 0) + (UnityEngine.Random.value < ComboOrderChance() * 0.45f ? 1 : 0), 1, maxKinds);
         int guard = 0;
         while (OrderDistinctProductCount() < targetKinds && guard < 40)
         {
@@ -823,6 +980,11 @@ public sealed class IdleShopGame : MonoBehaviour
             }
 
             int maxQty = Mathf.Max(1, products[index].MaxOrderQty + (data.level >= 5 ? 1 : 0));
+            if (EarlyOrderSingleProductOnly())
+            {
+                maxQty = Mathf.Min(maxQty, data.completedOrders <= 0 ? 1 : 2);
+            }
+
             int quantity = UnityEngine.Random.Range(1, maxQty + 1);
             data.currentOrder[index] = Mathf.Max(data.currentOrder[index], quantity);
         }
@@ -832,6 +994,18 @@ public sealed class IdleShopGame : MonoBehaviour
             int fallback = FirstUnlockedProductIndex();
             data.currentOrder[fallback] = 1;
         }
+
+        for (int i = 0; i < data.currentOrder.Length; i++)
+        {
+            data.currentOrderInitial[i] = data.currentOrder[i];
+        }
+
+        data.selectedOrderProductIndex = CurrentOrderDisplayProductIndex();
+    }
+
+    private bool EarlyOrderSingleProductOnly()
+    {
+        return data.completedOrders < 3 && data.level <= 1;
     }
 
     private int ChooseOrderProductIndex()
@@ -913,7 +1087,7 @@ public sealed class IdleShopGame : MonoBehaviour
         int count = 0;
         for (int i = 0; i < products.Length; i++)
         {
-            if (CurrentOrderQuantity(i) > 0)
+            if (CurrentOrderInitialQuantity(i) > 0)
             {
                 count++;
             }
@@ -927,6 +1101,17 @@ public sealed class IdleShopGame : MonoBehaviour
         return data.currentOrder != null && productIndex >= 0 && productIndex < data.currentOrder.Length ? Mathf.Max(0, data.currentOrder[productIndex]) : 0;
     }
 
+    private int CurrentOrderInitialQuantity(int productIndex)
+    {
+        int initial = data.currentOrderInitial != null && productIndex >= 0 && productIndex < data.currentOrderInitial.Length ? Mathf.Max(0, data.currentOrderInitial[productIndex]) : 0;
+        return Mathf.Max(initial, CurrentOrderQuantity(productIndex));
+    }
+
+    private int CurrentOrderCompletedQuantity(int productIndex)
+    {
+        return Mathf.Clamp(CurrentOrderInitialQuantity(productIndex) - CurrentOrderQuantity(productIndex), 0, CurrentOrderInitialQuantity(productIndex));
+    }
+
     private int CurrentOrderItemCount()
     {
         int count = 0;
@@ -938,12 +1123,60 @@ public sealed class IdleShopGame : MonoBehaviour
         return count;
     }
 
+    private int CurrentOrderInitialItemCount()
+    {
+        int count = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            count += CurrentOrderInitialQuantity(i);
+        }
+
+        return count;
+    }
+
+    private int CurrentOrderCompletedItemCount()
+    {
+        int count = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            count += CurrentOrderCompletedQuantity(i);
+        }
+
+        return count;
+    }
+
+    private float CurrentOrderCompletionProgress()
+    {
+        int initial = CurrentOrderInitialItemCount();
+        if (initial <= 0)
+        {
+            return 0f;
+        }
+
+        return Mathf.Clamp01(CurrentOrderCompletedItemCount() / (float)initial);
+    }
+
     private int CurrentOrderValue()
     {
         int value = 0;
         for (int i = 0; i < products.Length; i++)
         {
             int quantity = CurrentOrderQuantity(i);
+            if (quantity > 0)
+            {
+                value += SalePrice(i) * quantity;
+            }
+        }
+
+        return Mathf.FloorToInt(value * OrderValueMultiplier());
+    }
+
+    private int CurrentOrderInitialValue()
+    {
+        int value = 0;
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderInitialQuantity(i);
             if (quantity > 0)
             {
                 value += SalePrice(i) * quantity;
@@ -984,7 +1217,7 @@ public sealed class IdleShopGame : MonoBehaviour
         var parts = new List<string>();
         for (int i = 0; i < products.Length; i++)
         {
-            int quantity = CurrentOrderQuantity(i);
+            int quantity = CurrentOrderInitialQuantity(i);
             if (quantity > 0)
             {
                 parts.Add(F("order.item", ProductName(i), quantity));
@@ -994,9 +1227,37 @@ public sealed class IdleShopGame : MonoBehaviour
         return parts.Count > 0 ? string.Join(" + ", parts) : T("order.waiting");
     }
 
+    private string OrderCompletionTitle(string orderSummary)
+    {
+        int distinctCount = OrderDistinctProductCount();
+        if (distinctCount == 1)
+        {
+            for (int i = 0; i < products.Length; i++)
+            {
+                if (CurrentOrderInitialQuantity(i) > 0)
+                {
+                    return ProductName(i);
+                }
+            }
+        }
+
+        return string.IsNullOrEmpty(orderSummary) ? T("order.waiting") : orderSummary;
+    }
+
     private string CurrentOrderShortageText()
     {
         EnsureCurrentOrder();
+        int selected = data.selectedOrderProductIndex;
+        if (selected >= 0 && selected < products.Length)
+        {
+            int selectedQuantity = CurrentOrderQuantity(selected);
+            int selectedStock = Mathf.FloorToInt(data.stock[selected]);
+            if (selectedQuantity > 0 && selectedStock < selectedQuantity)
+            {
+                return F("order.shortage", ProductName(selected), selectedQuantity - selectedStock);
+            }
+        }
+
         for (int i = 0; i < products.Length; i++)
         {
             int quantity = CurrentOrderQuantity(i);
@@ -1029,9 +1290,72 @@ public sealed class IdleShopGame : MonoBehaviour
         return F("order.focus", ProductName(productIndex), quantity, stock);
     }
 
+    private string CurrentOrderStepText()
+    {
+        EnsureCurrentOrder();
+        int productIndex = CurrentOrderDisplayProductIndex();
+        if (productIndex < 0 || productIndex >= products.Length)
+        {
+            return T("order.waiting");
+        }
+
+        int quantity = CurrentOrderQuantity(productIndex);
+        int stock = Mathf.FloorToInt(data.stock[productIndex]);
+        int missing = Mathf.Max(0, quantity - stock);
+        if (quantity <= 0)
+        {
+            return T("order.waiting");
+        }
+
+        if (missing > 0)
+        {
+            return F("order.step_blocked", ProductName(productIndex), missing);
+        }
+
+        return F("order.step_selling", ProductName(productIndex), quantity, stock);
+    }
+
+    private string CurrentOrderNextStepText()
+    {
+        EnsureCurrentOrder();
+        int productIndex = CurrentOrderDisplayProductIndex();
+        if (productIndex < 0 || productIndex >= products.Length)
+        {
+            return T("order.waiting");
+        }
+
+        int quantity = CurrentOrderQuantity(productIndex);
+        int stock = Mathf.FloorToInt(data.stock[productIndex]);
+        int missing = Mathf.Max(0, quantity - stock);
+        if (missing > 0)
+        {
+            int unitCost = UnitCost(productIndex);
+            int affordable = Mathf.Min(missing, Mathf.FloorToInt(data.cash / Mathf.Max(1, unitCost)));
+            if (affordable > 0)
+            {
+                return F("order.next_restock", ProductName(productIndex), affordable, Money(affordable * unitCost));
+            }
+
+            return F("order.next_wait_cash", Money(Mathf.Max(0f, unitCost - data.cash)));
+        }
+
+        if (quantity > 0 && stock > 0)
+        {
+            return F("order.next_checkout", ProductName(productIndex), Money(CurrentOrderItemValue(productIndex)));
+        }
+
+        return T("order.waiting");
+    }
+
     private int CurrentOrderServeIndex()
     {
         EnsureCurrentOrder();
+        int selected = data.selectedOrderProductIndex;
+        if (selected >= 0 && selected < products.Length && CurrentOrderQuantity(selected) > 0)
+        {
+            return data.stock[selected] >= 1f ? selected : -1;
+        }
+
         for (int i = 0; i < products.Length; i++)
         {
             if (CurrentOrderQuantity(i) > 0 && data.stock[i] >= 1f)
@@ -1045,6 +1369,17 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private int CurrentOrderDisplayProductIndex()
     {
+        if (pendingOrderCompletion && recentSoldProductIndex >= 0 && recentSoldProductIndex < products.Length)
+        {
+            return recentSoldProductIndex;
+        }
+
+        int selected = data.selectedOrderProductIndex;
+        if (selected >= 0 && selected < products.Length && CurrentOrderQuantity(selected) > 0)
+        {
+            return selected;
+        }
+
         int serveIndex = CurrentOrderServeIndex();
         if (serveIndex >= 0)
         {
@@ -1103,7 +1438,7 @@ public sealed class IdleShopGame : MonoBehaviour
     {
         float staffSpeed = StaffLevel(0) * 0.08f + StaffLevel(5) * 0.035f;
         float upgradeSpeed = data.upgrades[1] * 0.055f;
-        float duration = 9.5f / (1f + staffSpeed + upgradeSpeed);
+        float duration = 8.2f / (1f + staffSpeed + upgradeSpeed);
         return Mathf.Clamp(duration, 3.2f, 12f);
     }
 
@@ -1150,7 +1485,7 @@ public sealed class IdleShopGame : MonoBehaviour
         int managerLevel = staffIndex == 5 ? level : StaffLevel(5);
         float staffSpeed = cashierLevel * 0.08f + managerLevel * 0.035f;
         float upgradeSpeed = data.upgrades[1] * 0.055f;
-        float duration = Mathf.Clamp(9.5f / (1f + staffSpeed + upgradeSpeed), 3.2f, 12f);
+        float duration = Mathf.Clamp(8.2f / (1f + staffSpeed + upgradeSpeed), 3.2f, 12f);
         return 1f / duration;
     }
 
@@ -1161,6 +1496,11 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private bool HasSellableStock()
     {
+        if (pendingOrderCompletion)
+        {
+            return false;
+        }
+
         return CurrentOrderServeIndex() >= 0;
     }
 
@@ -1388,6 +1728,16 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private int BestMissingOrderProductIndex(float[] stock)
     {
+        int selected = data.selectedOrderProductIndex;
+        if (selected >= 0 && selected < products.Length && data.unlocked[selected])
+        {
+            int selectedMissing = CurrentOrderQuantity(selected) - Mathf.FloorToInt(stock[selected]);
+            if (selectedMissing > 0)
+            {
+                return selected;
+            }
+        }
+
         int bestIndex = -1;
         int largestMissing = 0;
         for (int i = 0; i < products.Length; i++)
@@ -1491,6 +1841,21 @@ public sealed class IdleShopGame : MonoBehaviour
         return Mathf.FloorToInt(staffDefs[staffIndex].BaseCost * Mathf.Pow(1.78f, data.staff[staffIndex]));
     }
 
+    private int InitialStock(int productIndex)
+    {
+        if (productIndex == 0)
+        {
+            return 4;
+        }
+
+        if (productIndex == 1)
+        {
+            return 2;
+        }
+
+        return 1;
+    }
+
     private void BuyStock(int productIndex)
     {
         if (!data.unlocked[productIndex])
@@ -1519,7 +1884,8 @@ public sealed class IdleShopGame : MonoBehaviour
         data.stock[productIndex] += amount;
         data.restockActions += 1;
         restockPulseTimer = 0.65f;
-        AddLog(F("log.restocked", ProductName(productIndex), amount));
+        recentRestockProductIndex = productIndex;
+        AddRestockLog(productIndex, amount);
         CheckMilestones();
         RenderAll();
     }
@@ -1548,10 +1914,24 @@ public sealed class IdleShopGame : MonoBehaviour
         data.stock[index] += bought;
 
         restockPulseTimer = 0.65f;
+        recentRestockProductIndex = index;
         data.restockActions += 1;
-        AddLog(F("log.restocked", ProductName(index), bought));
+        AddRestockLog(index, bought);
         CheckMilestones();
         RenderAll();
+    }
+
+    private void AddRestockLog(int productIndex, int amount)
+    {
+        bool affectsCurrentOrder = CurrentOrderQuantity(productIndex) > 0;
+        bool canContinueOrder = affectsCurrentOrder && data.stock[productIndex] >= 1f;
+        if (canContinueOrder)
+        {
+            AddLog(F("log.restocked_order_ready", ProductName(productIndex), amount));
+            return;
+        }
+
+        AddLog(F("log.restocked", ProductName(productIndex), amount));
     }
 
     private void BuyUpgrade(int upgradeIndex)
@@ -1664,7 +2044,7 @@ public sealed class IdleShopGame : MonoBehaviour
             case 1:
             {
                 float current = OrderProgressPerSecond();
-                float nextDuration = Mathf.Clamp(9.5f / (1f + StaffLevel(0) * 0.08f + StaffLevel(5) * 0.035f + (data.upgrades[1] + 1) * 0.055f), 3.2f, 12f);
+                float nextDuration = Mathf.Clamp(8.2f / (1f + StaffLevel(0) * 0.08f + StaffLevel(5) * 0.035f + (data.upgrades[1] + 1) * 0.055f), 3.2f, 12f);
                 float next = 1f / nextDuration;
                 int extraOrders = Mathf.Max(1, Mathf.RoundToInt((next - current) * 60f));
                 return F("recommend.upgrade_speed", extraOrders);
@@ -1799,6 +2179,24 @@ public sealed class IdleShopGame : MonoBehaviour
     private Sprite StaffSprite(int index)
     {
         return staffSprites != null && index >= 0 && index < staffSprites.Length ? staffSprites[index] : null;
+    }
+
+    private Sprite Mvp23Sprite(int index)
+    {
+        return mvp23Sprites != null && index >= 0 && index < mvp23Sprites.Length ? mvp23Sprites[index] : null;
+    }
+
+    private static Sprite FirstSprite(params Sprite[] sprites)
+    {
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            if (sprites[i] != null)
+            {
+                return sprites[i];
+            }
+        }
+
+        return null;
     }
 
     private string Money(float value)
@@ -2260,11 +2658,100 @@ public sealed class IdleShopGame : MonoBehaviour
         float saleBurst = Mathf.Clamp01(salePopTimer / 0.45f);
         float restockBurst = Mathf.Clamp01(restockPulseTimer / 0.65f);
         float upgradeBurst = Mathf.Clamp01(upgradePulseTimer / 0.75f);
+        float orderCompleteBurst = Mathf.Clamp01(orderCompleteTimer / 1.05f);
+        float newOrderBurst = Mathf.Clamp01(newOrderFlashTimer / 0.55f);
+        float selectBurst = Mathf.Clamp01(orderSelectPulseTimer / 0.42f);
+        float productSaleBurst = recentSoldProductIndex == CurrentOrderDisplayProductIndex() ? saleBurst : 0f;
+        float productRestockBurst = recentRestockProductIndex == CurrentOrderDisplayProductIndex() ? restockBurst : 0f;
         if (sceneProductMotion != null)
         {
             float idlePulse = 1f + Mathf.Sin(time * 3.2f) * 0.012f;
-            float salePulse = 1f + saleBurst * 0.10f + restockBurst * 0.14f + upgradeBurst * 0.05f;
+            float salePulse = 1f + productSaleBurst * 0.16f + productRestockBurst * 0.18f + upgradeBurst * 0.05f + orderCompleteBurst * 0.08f + selectBurst * 0.12f;
             sceneProductMotion.localScale = Vector3.one * idlePulse * salePulse;
+        }
+
+        if (sceneProductOutline != null)
+        {
+            float visualBurst = Mathf.Max(selectBurst, productRestockBurst, productSaleBurst);
+            sceneProductOutline.effectColor = new Color(1f, 0.90f, 0.30f, 0.72f + visualBurst * 0.24f);
+            float distance = wideLayout ? 3f : 4f;
+            sceneProductOutline.effectDistance = new Vector2(distance + visualBurst * 2f, -distance - visualBurst * 2f);
+        }
+
+        if (sceneProductImage != null)
+        {
+            sceneProductImage.color = Color.Lerp(sceneProductBaseColor, Color.white, Mathf.Max(selectBurst * 0.18f, productRestockBurst * 0.24f, productSaleBurst * 0.22f));
+        }
+
+        if (sceneRestockFxMotion != null && sceneRestockFxImage != null)
+        {
+            bool showRestock = restockBurst > 0f;
+            if (sceneRestockFxMotion.gameObject.activeSelf != showRestock)
+            {
+                sceneRestockFxMotion.gameObject.SetActive(showRestock);
+            }
+
+            if (showRestock)
+            {
+                float alpha = Mathf.Clamp01(restockPulseTimer / 0.65f);
+                sceneRestockFxMotion.localScale = Vector3.one * (1f + (1f - alpha) * 0.24f);
+                sceneRestockFxImage.color = new Color(1f, 1f, 1f, alpha);
+            }
+        }
+
+        if (sceneCustomerMotion != null)
+        {
+            bool showingOrderComplete = pendingOrderCompletion || (orderCompleteTimer > 0f && !string.IsNullOrEmpty(orderCompleteMessage));
+            bool canServe = HasSellableStock() || showingOrderComplete;
+            float width = wideLayout ? 0.12f : 0.15f;
+            float height = wideLayout ? 0.24f : 0.28f;
+            float baseY = wideLayout ? 0.28f : 0.26f;
+            float progress = showingOrderComplete ? 1f : canServe ? displayedAutoSaleProgress : 0.28f + Mathf.Sin(time * 1.7f) * 0.015f;
+            float x = Mathf.Lerp(0.08f, 0.68f, Mathf.SmoothStep(0f, 1f, progress));
+            if (showingOrderComplete)
+            {
+                x += (1f - orderCompleteBurst) * 0.10f;
+            }
+            else if (newOrderBurst > 0f && canServe)
+            {
+                x -= newOrderBurst * 0.08f;
+            }
+            SetSceneRect(sceneCustomerMotion, x, baseY, width, height);
+
+            if (sceneCustomerImage != null)
+            {
+                Sprite sprite = null;
+                if (showingOrderComplete)
+                {
+                    sprite = FirstSprite(orderCompleteBurst < 0.45f ? Mvp23Sprite(Mvp23CustomerLeave) : null, Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerPay), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                }
+                else if (!canServe)
+                {
+                    sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerDisappointed), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                }
+                else if (saleBurst > 0f)
+                {
+                    sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerPay), Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                }
+                else
+                {
+                    bool walkFrame = Mathf.FloorToInt(time * 5f) % 2 == 0;
+                    sprite = FirstSprite(walkFrame ? Mvp23Sprite(Mvp23CustomerWalk01) : Mvp23Sprite(Mvp23CustomerWalk02), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                }
+
+                sceneCustomerImage.sprite = sprite;
+                sceneCustomerImage.color = canServe ? new Color(1f, 1f, 1f, 1f - newOrderBurst * 0.28f) : new Color(0.86f, 0.86f, 0.86f, 0.92f);
+            }
+        }
+
+        if (sceneStaffMotion != null)
+        {
+            float staffPulse = 1f + saleBurst * 0.06f + Mathf.Sin(time * 2.4f) * 0.008f;
+            sceneStaffMotion.localScale = Vector3.one * staffPulse;
+            if (sceneStaffImage != null)
+            {
+                sceneStaffImage.sprite = FirstSprite(saleBurst > 0f ? Mvp23Sprite(Mvp23StaffCashierWork) : Mvp23Sprite(Mvp23StaffCashierIdle), StaffSprite(0), customerSprite);
+            }
         }
 
         if (sceneCashierGlow != null)
@@ -2321,6 +2808,11 @@ public sealed class IdleShopGame : MonoBehaviour
             salePopText.gameObject.SetActive(showSalePop);
         }
 
+        if (salePopIconRectTransform != null && salePopIconRectTransform.gameObject.activeSelf != showSalePop)
+        {
+            salePopIconRectTransform.gameObject.SetActive(showSalePop);
+        }
+
         if (!showSalePop)
         {
             return;
@@ -2335,6 +2827,18 @@ public sealed class IdleShopGame : MonoBehaviour
             salePopRectTransform.offsetMin = new Vector2(0f, rise);
             salePopRectTransform.offsetMax = new Vector2(0f, rise);
         }
+
+        if (salePopIconImage != null)
+        {
+            salePopIconImage.color = new Color(1f, 1f, 1f, alpha);
+        }
+
+        if (salePopIconRectTransform != null)
+        {
+            salePopIconRectTransform.offsetMin = new Vector2(0f, rise);
+            salePopIconRectTransform.offsetMax = new Vector2(0f, rise);
+            salePopIconRectTransform.localScale = Vector3.one * (1f + (1f - alpha) * 0.16f);
+        }
     }
 
     private static void SetTextIfChanged(Text text, string value)
@@ -2343,6 +2847,14 @@ public sealed class IdleShopGame : MonoBehaviour
         {
             text.text = value;
         }
+    }
+
+    private static void SetSceneRect(RectTransform rect, float x, float y, float width, float height)
+    {
+        rect.anchorMin = new Vector2(x, y);
+        rect.anchorMax = new Vector2(x + width, y + height);
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
     }
 
     private void RenderTab()
@@ -2355,7 +2867,17 @@ public sealed class IdleShopGame : MonoBehaviour
         salePopText = null!;
         autoSaleFill = null!;
         salePopRectTransform = null!;
+        salePopIconRectTransform = null!;
         sceneProductMotion = null!;
+        sceneCustomerMotion = null!;
+        sceneStaffMotion = null!;
+        sceneRestockFxMotion = null!;
+        salePopIconImage = null!;
+        sceneProductImage = null!;
+        sceneProductOutline = null!;
+        sceneCustomerImage = null!;
+        sceneStaffImage = null!;
+        sceneRestockFxImage = null!;
         sceneCashierGlow = null!;
         sceneCustomerGlow = null!;
         Clear(contentRoot);
@@ -2402,6 +2924,7 @@ public sealed class IdleShopGame : MonoBehaviour
         int staffCost = staffIndex >= 0 ? StaffCost(staffIndex) : 0;
         bool shortPortrait = IsShortPortraitScreen();
         bool hasSellableStock = HasSellableStock();
+        bool showingOrderComplete = pendingOrderCompletion || (orderCompleteTimer > 0f && !string.IsNullOrEmpty(orderCompleteMessage));
         int orderMissingCost = CurrentOrderMissingCost();
         bool orderHasMissing = orderMissingCost > 0;
         bool lowStock = hasSellableStock && LowestUnlockedStockRatio() <= LowStockRatio;
@@ -2409,13 +2932,26 @@ public sealed class IdleShopGame : MonoBehaviour
         RectTransform stage = CreatePanel("GameStage", contentRoot, new Color(0.16f, 0.36f, 0.32f));
         stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 520f : shortPortrait ? 620f : 680f;
 
-        RectTransform stageArt = CreateImagePanel("ShopFront", stage, shopFrontSprite, new Color(0.18f, 0.32f, 0.30f), false);
+        RectTransform stageArt = CreateImagePanel("ShopFront", stage, FirstSprite(Mvp23Sprite(Mvp23SceneInterior), shopFrontSprite), new Color(0.18f, 0.32f, 0.30f), false);
         AnchorFill(stageArt, 0f, 0f, 0f, 0f);
 
         RectTransform shade = CreatePanel("StageShade", stage, new Color(0.02f, 0.08f, 0.07f, 0.36f));
         AnchorFill(shade, 0f, 0f, 0f, 0f);
 
-        if (shelfSprite != null || counterSprite != null)
+        if (!hasSellableStock && !showingOrderComplete && Mvp23Sprite(Mvp23SceneEmptyShelfOverlay) != null)
+        {
+            RectTransform emptyOverlay = CreateImagePanel("EmptyShelfOverlay", stage, Mvp23Sprite(Mvp23SceneEmptyShelfOverlay), Color.clear, false);
+            emptyOverlay.anchorMin = new Vector2(0.04f, 0.28f);
+            emptyOverlay.anchorMax = new Vector2(0.96f, 0.86f);
+            emptyOverlay.offsetMin = Vector2.zero;
+            emptyOverlay.offsetMax = Vector2.zero;
+        }
+
+        Sprite shelfStateSprite = FirstSprite(
+            !hasSellableStock && !showingOrderComplete ? Mvp23Sprite(Mvp23ShelfEmpty) : lowStock ? Mvp23Sprite(Mvp23ShelfLow) : Mvp23Sprite(Mvp23ShelfFull),
+            shelfSprite);
+        Sprite counterStateSprite = FirstSprite(Mvp23Sprite(Mvp23CashierCounter), counterSprite);
+        if (shelfStateSprite != null || counterStateSprite != null)
         {
             RectTransform overlay = CreateRect("ShopOverlay", stage);
             overlay.anchorMin = new Vector2(0.05f, 0.36f);
@@ -2428,8 +2964,8 @@ public sealed class IdleShopGame : MonoBehaviour
             overlayLayout.childControlHeight = true;
             overlayLayout.childForceExpandWidth = true;
             overlayLayout.childForceExpandHeight = true;
-            CreateImagePanel("ShelfArt", overlay, shelfSprite, new Color(0.62f, 0.42f, 0.24f, 0.32f));
-            CreateImagePanel("CounterArt", overlay, counterSprite, new Color(0.22f, 0.38f, 0.34f, 0.32f));
+            CreateImagePanel("ShelfArt", overlay, shelfStateSprite, new Color(0.62f, 0.42f, 0.24f, 0.32f));
+            CreateImagePanel("CounterArt", overlay, counterStateSprite, new Color(0.22f, 0.38f, 0.34f, 0.32f));
         }
 
         RectTransform customerPoint = CreatePanel("CustomerPulse", stage, new Color(0.95f, 0.78f, 0.32f, 0.16f));
@@ -2446,14 +2982,65 @@ public sealed class IdleShopGame : MonoBehaviour
         cashierPoint.offsetMax = Vector2.zero;
         sceneCashierGlow = cashierPoint.GetComponent<Image>();
 
+        RectTransform customerActor = CreateRect("SceneCustomer", stage);
+        SetSceneRect(customerActor, showingOrderComplete ? 0.68f : hasSellableStock ? Mathf.Lerp(0.08f, 0.68f, Mathf.Clamp01(data.queue)) : 0.28f, wideLayout ? 0.28f : 0.26f, wideLayout ? 0.12f : 0.15f, wideLayout ? 0.24f : 0.28f);
+        sceneCustomerMotion = customerActor;
+        if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
+        {
+            RectTransform customerShadow = CreateImagePanel("CustomerShadow", customerActor, Mvp23Sprite(Mvp23SceneFloorShadow), Color.clear, false);
+            customerShadow.anchorMin = new Vector2(0.10f, 0f);
+            customerShadow.anchorMax = new Vector2(0.90f, 0.18f);
+            customerShadow.offsetMin = Vector2.zero;
+            customerShadow.offsetMax = Vector2.zero;
+        }
+
+        Sprite customerActorSprite = FirstSprite(showingOrderComplete ? Mvp23Sprite(Mvp23CustomerHappy) : hasSellableStock ? Mvp23Sprite(Mvp23CustomerIdle) : Mvp23Sprite(Mvp23CustomerDisappointed), customerSprite);
+        if (customerActorSprite != null)
+        {
+            sceneCustomerImage = CreateImage("CustomerArt", customerActor, customerActorSprite, true);
+            sceneCustomerImage.color = hasSellableStock || showingOrderComplete ? Color.white : new Color(0.86f, 0.86f, 0.86f, 0.92f);
+        }
+
+        if (!hasSellableStock && !showingOrderComplete && Mvp23Sprite(Mvp23FxCustomerWaitingBubble) != null)
+        {
+            RectTransform waitingBubble = CreateImagePanel("CustomerWaitingBubble", customerActor, Mvp23Sprite(Mvp23FxCustomerWaitingBubble), Color.clear, true);
+            waitingBubble.anchorMin = new Vector2(0.44f, 0.72f);
+            waitingBubble.anchorMax = new Vector2(1.08f, 1.12f);
+            waitingBubble.offsetMin = Vector2.zero;
+            waitingBubble.offsetMax = Vector2.zero;
+        }
+
+        RectTransform staffActor = CreateRect("SceneCashierStaff", stage);
+        SetSceneRect(staffActor, wideLayout ? 0.72f : 0.70f, wideLayout ? 0.31f : 0.29f, wideLayout ? 0.13f : 0.16f, wideLayout ? 0.25f : 0.29f);
+        sceneStaffMotion = staffActor;
+        if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
+        {
+            RectTransform staffShadow = CreateImagePanel("StaffShadow", staffActor, Mvp23Sprite(Mvp23SceneFloorShadow), Color.clear, false);
+            staffShadow.anchorMin = new Vector2(0.10f, 0f);
+            staffShadow.anchorMax = new Vector2(0.90f, 0.18f);
+            staffShadow.offsetMin = Vector2.zero;
+            staffShadow.offsetMax = Vector2.zero;
+        }
+
+        Sprite staffActorSprite = FirstSprite(Mvp23Sprite(Mvp23StaffCashierIdle), StaffSprite(0), customerSprite);
+        if (staffActorSprite != null)
+        {
+            sceneStaffImage = CreateImage("StaffArt", staffActor, staffActorSprite, true);
+        }
+
         RectTransform productIcon = CreatePanel("SceneProduct", stage, products[primaryIndex].Accent);
-        productIcon.anchorMin = new Vector2(0.10f, 0.07f);
-        productIcon.anchorMax = new Vector2(0.28f, 0.31f);
+        productIcon.anchorMin = new Vector2(0.08f, 0.42f);
+        productIcon.anchorMax = new Vector2(0.24f, 0.68f);
         productIcon.offsetMin = Vector2.zero;
         productIcon.offsetMax = Vector2.zero;
         sceneProductMotion = productIcon;
+        Outline productFocusOutline = productIcon.gameObject.AddComponent<Outline>();
+        productFocusOutline.effectColor = new Color(1f, 0.90f, 0.30f, 0.86f);
+        productFocusOutline.effectDistance = wideLayout ? new Vector2(3f, -3f) : new Vector2(4f, -4f);
+        sceneProductOutline = productFocusOutline;
         Image productImage = productIcon.GetComponent<Image>();
-        if (productImage != null && !hasSellableStock)
+        sceneProductImage = productImage;
+        if (productImage != null && !hasSellableStock && !showingOrderComplete)
         {
             productImage.color = new Color(products[primaryIndex].Accent.r * 0.55f, products[primaryIndex].Accent.g * 0.55f, products[primaryIndex].Accent.b * 0.55f, 0.72f);
         }
@@ -2461,10 +3048,14 @@ public sealed class IdleShopGame : MonoBehaviour
         {
             productImage.color = Color.Lerp(products[primaryIndex].Accent, honey, 0.42f);
         }
+        if (productImage != null)
+        {
+            sceneProductBaseColor = productImage.color;
+        }
         if (ProductSprite(primaryIndex) != null)
         {
             Image productArt = CreateImage("ProductArt", productIcon, ProductSprite(primaryIndex), true);
-            if (!hasSellableStock)
+            if (!hasSellableStock && !showingOrderComplete)
             {
                 productArt.color = new Color(0.82f, 0.82f, 0.82f, 0.70f);
             }
@@ -2474,7 +3065,71 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
-        if (!hasSellableStock || lowStock)
+        if (Mvp23Sprite(Mvp23FxItemSelectedGlow) != null)
+        {
+            RectTransform selectedGlow = CreateImagePanel("SelectedProductGlow", productIcon, Mvp23Sprite(Mvp23FxItemSelectedGlow), Color.clear, true);
+            selectedGlow.anchorMin = new Vector2(-0.16f, -0.14f);
+            selectedGlow.anchorMax = new Vector2(1.16f, 1.14f);
+            selectedGlow.offsetMin = Vector2.zero;
+            selectedGlow.offsetMax = Vector2.zero;
+            selectedGlow.SetAsFirstSibling();
+            Image selectedGlowImage = selectedGlow.GetComponent<Image>();
+            if (selectedGlowImage != null)
+            {
+                float alpha = 0.62f + Mathf.Clamp01(orderSelectPulseTimer / 0.42f) * 0.30f;
+                selectedGlowImage.color = new Color(1f, 1f, 1f, alpha);
+            }
+        }
+
+        RectTransform productFocusLabel = CreatePanel("SceneFocusLabel", stage, new Color(0.05f, 0.10f, 0.08f, 0.82f));
+        productFocusLabel.anchorMin = new Vector2(0.06f, 0.34f);
+        productFocusLabel.anchorMax = new Vector2(0.34f, 0.41f);
+        productFocusLabel.offsetMin = Vector2.zero;
+        productFocusLabel.offsetMax = Vector2.zero;
+        Text productFocusText = CreateText("Label", productFocusLabel, $"{T("order.item_selected")} · {ProductName(primaryIndex)}", wideLayout ? 19 : shortPortrait ? 23 : 26, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
+        productFocusText.resizeTextForBestFit = true;
+        productFocusText.resizeTextMinSize = wideLayout ? 12 : 15;
+        productFocusText.resizeTextMaxSize = wideLayout ? 19 : shortPortrait ? 23 : 26;
+
+        if (lowStock && Mvp23Sprite(Mvp23FxLowStockPulse) != null)
+        {
+            RectTransform lowPulse = CreateImagePanel("LowStockPulse", productIcon, Mvp23Sprite(Mvp23FxLowStockPulse), Color.clear, true);
+            lowPulse.anchorMin = new Vector2(-0.12f, -0.10f);
+            lowPulse.anchorMax = new Vector2(1.12f, 1.10f);
+            lowPulse.offsetMin = Vector2.zero;
+            lowPulse.offsetMax = Vector2.zero;
+        }
+
+        Sprite restockFxSprite = FirstSprite(Mvp23Sprite(Mvp23FxRestockSuccessRing), Mvp23Sprite(Mvp23FxRestockSpark));
+        if (restockFxSprite != null)
+        {
+            RectTransform restockFx = CreateImagePanel("RestockSparkFx", stage, restockFxSprite, Color.clear, true);
+            restockFx.anchorMin = new Vector2(0.12f, 0.44f);
+            restockFx.anchorMax = new Vector2(0.32f, 0.72f);
+            restockFx.offsetMin = Vector2.zero;
+            restockFx.offsetMax = Vector2.zero;
+            sceneRestockFxMotion = restockFx;
+            sceneRestockFxImage = restockFx.GetComponent<Image>();
+            restockFx.gameObject.SetActive(restockPulseTimer > 0f);
+        }
+
+        Sprite upgradeFxSprite = Mvp23Sprite(Mvp23FxUpgradeSuccess);
+        if (upgradeFxSprite != null && upgradePulseTimer > 0f)
+        {
+            RectTransform upgradeFx = CreateImagePanel("UpgradeSuccessFx", stage, upgradeFxSprite, Color.clear, true);
+            upgradeFx.anchorMin = new Vector2(0.04f, 0.34f);
+            upgradeFx.anchorMax = new Vector2(0.34f, 0.74f);
+            upgradeFx.offsetMin = Vector2.zero;
+            upgradeFx.offsetMax = Vector2.zero;
+            Image upgradeFxImage = upgradeFx.GetComponent<Image>();
+            if (upgradeFxImage != null)
+            {
+                float alpha = Mathf.Clamp01(upgradePulseTimer / 0.75f);
+                upgradeFxImage.color = new Color(1f, 1f, 1f, alpha);
+            }
+        }
+
+        if ((!hasSellableStock && !showingOrderComplete) || lowStock)
         {
             RectTransform stockHint = CreatePanel("StockStateHint", stage, lowStock ? new Color(0.42f, 0.24f, 0.06f, 0.84f) : new Color(0.03f, 0.10f, 0.09f, 0.82f));
             stockHint.anchorMin = new Vector2(0.08f, 0.72f);
@@ -2498,11 +3153,49 @@ public sealed class IdleShopGame : MonoBehaviour
         salePopRectTransform.offsetMax = Vector2.zero;
         salePopText.gameObject.SetActive(salePopTimer > 0f && !string.IsNullOrEmpty(salePopMessage));
 
-        RectTransform orderCard = CreatePanel("CurrentOrder", stage, new Color(1f, 0.97f, 0.88f, 0.94f));
+        Sprite saleIconSprite = FirstSprite(Mvp23Sprite(Mvp23FxCashFloat), Mvp23Sprite(Mvp23FxCoinPop), coinSprite);
+        if (saleIconSprite != null)
+        {
+            RectTransform saleIcon = CreateRect("SalePopIcon", stage);
+            salePopIconRectTransform = saleIcon;
+            saleIcon.anchorMin = new Vector2(0.40f, 0.52f);
+            saleIcon.anchorMax = new Vector2(0.52f, 0.72f);
+            saleIcon.offsetMin = Vector2.zero;
+            saleIcon.offsetMax = Vector2.zero;
+            salePopIconImage = CreateImage("Icon", saleIcon, saleIconSprite, true);
+            saleIcon.gameObject.SetActive(salePopTimer > 0f && !string.IsNullOrEmpty(salePopMessage));
+        }
+
+        RectTransform orderCard = CreateImagePanel("CurrentOrder", stage, Mvp23Sprite(Mvp23UiOrderTicket), new Color(1f, 0.97f, 0.88f, 0.94f), false);
         orderCard.anchorMin = new Vector2(0.05f, 0.04f);
-        orderCard.anchorMax = new Vector2(0.95f, 0.27f);
+        orderCard.anchorMax = new Vector2(0.95f, 0.42f);
         orderCard.offsetMin = Vector2.zero;
         orderCard.offsetMax = Vector2.zero;
+        if (orderCompleteTimer > 0f)
+        {
+            orderCard.gameObject.AddComponent<UIFlashTint>().Configure(honey, orderCompleteTimer);
+            if (Mvp23Sprite(Mvp23FxOrderCompleteGlow) != null)
+            {
+                RectTransform completeGlow = CreateImagePanel("OrderCompleteGlow", orderCard, Mvp23Sprite(Mvp23FxOrderCompleteGlow), Color.clear, true);
+                LayoutElement glowLayout = completeGlow.gameObject.AddComponent<LayoutElement>();
+                glowLayout.ignoreLayout = true;
+                AnchorFill(completeGlow, -0.03f, -0.05f, -0.03f, -0.05f);
+                Image glowImage = completeGlow.GetComponent<Image>();
+                if (glowImage != null)
+                {
+                    glowImage.raycastTarget = false;
+                    float alpha = Mathf.Clamp01(orderCompleteTimer / 1.05f);
+                    glowImage.color = new Color(1f, 1f, 1f, alpha);
+                }
+
+                completeGlow.SetAsLastSibling();
+            }
+        }
+        else if (newOrderFlashTimer > 0f)
+        {
+            orderCard.gameObject.AddComponent<UIFlashTint>().Configure(blue, newOrderFlashTimer);
+        }
+
         VerticalLayoutGroup orderLayout = orderCard.gameObject.AddComponent<VerticalLayoutGroup>();
         orderLayout.padding = wideLayout ? new RectOffset(18, 18, 10, 10) : new RectOffset(22, 22, 12, 12);
         orderLayout.spacing = wideLayout ? 5f : 7f;
@@ -2510,19 +3203,49 @@ public sealed class IdleShopGame : MonoBehaviour
         orderLayout.childControlHeight = true;
         orderLayout.childForceExpandWidth = true;
         orderLayout.childForceExpandHeight = false;
-        Text orderTitle = CreateText("OrderTitle", orderCard, F("order.current", CurrentOrderSummary(), Money(CurrentOrderValue())), wideLayout ? 27 : shortPortrait ? 31 : 35, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+        string orderTitleText = showingOrderComplete ? orderCompleteMessage : F("order.current_short", Money(CurrentOrderInitialValue()));
+        Text orderTitle = CreateText("OrderTitle", orderCard, orderTitleText, wideLayout ? 27 : shortPortrait ? 31 : 35, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
         orderTitle.resizeTextForBestFit = true;
         orderTitle.resizeTextMinSize = wideLayout ? 17 : 21;
         orderTitle.resizeTextMaxSize = wideLayout ? 27 : shortPortrait ? 31 : 35;
-        Text orderFocus = CreateText("OrderFocus", orderCard, CurrentOrderFocusText(), wideLayout ? 23 : shortPortrait ? 27 : 30, FontStyle.Bold, products[primaryIndex].Accent, TextAnchor.MiddleLeft);
+        int completedItems = showingOrderComplete ? 0 : CurrentOrderCompletedItemCount();
+        int requiredItems = showingOrderComplete ? Mathf.Max(1, CurrentOrderInitialItemCount()) : Mathf.Max(1, CurrentOrderInitialItemCount());
+        Text orderProgressText = CreateText("OrderProgressText", orderCard, F("order.progress", completedItems, requiredItems), wideLayout ? 16 : shortPortrait ? 19 : 21, FontStyle.Bold, blue, TextAnchor.MiddleLeft);
+        orderProgressText.resizeTextForBestFit = true;
+        orderProgressText.resizeTextMinSize = wideLayout ? 11 : 13;
+        orderProgressText.resizeTextMaxSize = wideLayout ? 16 : shortPortrait ? 19 : 21;
+        CreateCurrentOrderItemGrid(orderCard, primaryIndex);
+        string orderFocusText = showingOrderComplete ? (string.IsNullOrEmpty(orderCompleteTitle) ? T("order.waiting") : orderCompleteTitle) : CurrentOrderStepText();
+        Text orderFocus = CreateText("OrderFocus", orderCard, orderFocusText, wideLayout ? 23 : shortPortrait ? 27 : 30, FontStyle.Bold, hasSellableStock ? products[primaryIndex].Accent : showingOrderComplete ? honey : coral, TextAnchor.MiddleLeft);
         orderFocus.resizeTextForBestFit = true;
         orderFocus.resizeTextMinSize = wideLayout ? 16 : 19;
         orderFocus.resizeTextMaxSize = wideLayout ? 23 : shortPortrait ? 27 : 30;
-        Text orderState = CreateText("OrderState", orderCard, hasSellableStock ? F("order.checkout_state", NextAutoSaleSeconds().ToString("0.0", CultureInfo.InvariantCulture)) : CurrentOrderShortageText(), wideLayout ? 22 : shortPortrait ? 25 : 28, FontStyle.Bold, hasSellableStock ? coral : blue, TextAnchor.MiddleLeft);
+        string orderStateText = showingOrderComplete ? T("order.waiting") : CurrentOrderNextStepText();
+        Text orderState = CreateText("OrderState", orderCard, orderStateText, wideLayout ? 22 : shortPortrait ? 25 : 28, FontStyle.Bold, hasSellableStock ? coral : blue, TextAnchor.MiddleLeft);
         orderState.resizeTextForBestFit = true;
         orderState.resizeTextMinSize = wideLayout ? 15 : 18;
         orderState.resizeTextMaxSize = wideLayout ? 22 : shortPortrait ? 25 : 28;
-        autoSaleFill = CreateProgress(orderCard, data.queue, coral, wideLayout ? 16f : 20f);
+        CreateProgress(orderCard, showingOrderComplete ? 0f : CurrentOrderCompletionProgress(), blue, wideLayout ? 12f : 15f);
+        autoSaleFill = CreateProgress(orderCard, showingOrderComplete ? 0f : data.queue, coral, wideLayout ? 13f : 16f);
+
+        if (orderCompleteTimer > 0f && !string.IsNullOrEmpty(orderCompleteMessage))
+        {
+            RectTransform completeBadge = CreateImagePanel("OrderCompleteBadge", orderCard, Mvp23Sprite(Mvp23FxOrderCompleteStamp), new Color(0.94f, 0.45f, 0.18f, 0.94f), true);
+            LayoutElement completeBadgeLayout = completeBadge.gameObject.AddComponent<LayoutElement>();
+            completeBadgeLayout.ignoreLayout = true;
+            AnchorFill(completeBadge, 0.12f, 0.18f, 0.12f, 0.18f);
+            Image completeImage = completeBadge.GetComponent<Image>();
+            if (completeImage != null)
+            {
+                completeImage.raycastTarget = false;
+            }
+
+            Text completeText = CreateText("CompleteText", completeBadge, orderCompleteMessage, wideLayout ? 32 : shortPortrait ? 38 : 42, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
+            completeText.resizeTextForBestFit = true;
+            completeText.resizeTextMinSize = wideLayout ? 20 : 25;
+            completeText.resizeTextMaxSize = wideLayout ? 32 : shortPortrait ? 38 : 42;
+            completeBadge.SetAsLastSibling();
+        }
 
         RectTransform management = CreatePanel("ManagementPanel", contentRoot, new Color(0.36f, 0.23f, 0.14f));
         management.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 360f : shortPortrait ? 470f : 510f;
@@ -2533,7 +3256,7 @@ public sealed class IdleShopGame : MonoBehaviour
         string primaryTitle = F("recommend.checkout", Money(nextItemValue));
         string primaryDetail = F("recommend.checkout_detail", CurrentOrderFocusText());
         string primaryCta = hasSellableStock ? T("action.quick_checkout") : T("action.restock_order");
-        Sprite primaryIcon = coinSprite;
+        Sprite primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconCheckoutOne), coinSprite);
         Color primaryColor = coral;
         UnityEngine.Events.UnityAction primaryAction = () =>
         {
@@ -2548,17 +3271,17 @@ public sealed class IdleShopGame : MonoBehaviour
             bool partialRestock = canRestockNow && affordablePriorityRestockAmount < priorityRestockAmount;
             if (orderHasMissing)
             {
-                primaryTitle = F("recommend.restock_order", Money(orderMissingCost));
+                primaryTitle = restockIndex >= 0 ? F("recommend.restock_focus", ProductName(restockIndex), Money(priorityRestockCost)) : F("recommend.restock_order", Money(orderMissingCost));
                 primaryDetail = F("recommend.restock_order_detail", CurrentOrderShortageText());
-                primaryCta = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : T("action.restock_order");
+                primaryCta = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : RestockButtonTitle(restockIndex, true);
             }
             else
             {
                 primaryTitle = partialRestock ? F("recommend.restock_partial", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : F("recommend.restock", Money(priorityRestockCost));
                 primaryDetail = restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(cheapestRestockCost - data.cash)) : T("recommend.restock_detail");
-                primaryCta = restockIndex < 0 || priorityRestockAmount <= 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : T("guide.restock");
+                primaryCta = restockIndex < 0 || priorityRestockAmount <= 0 ? T("action.full_stock") : !canRestockNow ? ShortCashShort(cheapestRestockCost - data.cash) : RestockButtonTitle(restockIndex, false);
             }
-            primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
+            primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconRestockItem), shelfSprite, upgradeSprite);
             primaryColor = blue;
             primaryAction = BuyRestockAll;
             primaryUnavailable = restockIndex < 0 || priorityRestockAmount <= 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : string.Empty;
@@ -2568,7 +3291,7 @@ public sealed class IdleShopGame : MonoBehaviour
             primaryTitle = F("recommend.upgrade", UpgradeName(upgradeIndex), Money(upgradeCost));
             primaryDetail = UpgradeImpactText(upgradeIndex, primaryIndex);
             primaryCta = F("action.upgrade", Money(upgradeCost));
-            primaryIcon = upgradeSprite;
+            primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconUpgradeProduct), upgradeSprite);
             primaryColor = honey;
             primaryAction = () =>
             {
@@ -2594,7 +3317,7 @@ public sealed class IdleShopGame : MonoBehaviour
             primaryTitle = F("recommend.upgrade_goal", UpgradeName(upgradeIndex), Money(upgradeCost));
             primaryDetail = F("recommend.upgrade_goal_detail", UpgradeImpactText(upgradeIndex, primaryIndex), Money(upgradeCost - data.cash));
             primaryCta = T("action.quick_checkout");
-            primaryIcon = upgradeSprite;
+            primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconUpgradeProduct), upgradeSprite);
             primaryColor = honey;
             primaryAction = () =>
             {
@@ -2622,7 +3345,7 @@ public sealed class IdleShopGame : MonoBehaviour
             primaryTitle = CurrentMilestoneText();
             primaryDetail = CurrentMilestoneHint();
             primaryCta = T("action.quick_checkout");
-            primaryIcon = coinSprite;
+            primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconCheckoutOne), coinSprite);
             primaryColor = coral;
             primaryAction = CompleteOrderManualAndRender;
             primaryUnavailable = string.Empty;
@@ -2633,8 +3356,8 @@ public sealed class IdleShopGame : MonoBehaviour
             bool partialRestock = canRestockNow && affordablePriorityRestockAmount < priorityRestockAmount;
             primaryTitle = CurrentMilestoneText();
             primaryDetail = orderHasMissing ? F("recommend.restock_order_detail", CurrentOrderShortageText()) : restockIndex < 0 ? T("action.full_stock") : !canRestockNow ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : T("recommend.restock_detail");
-            primaryCta = restockIndex < 0 ? T("action.full_stock") : canRestockNow ? (orderHasMissing ? (data.cash < orderMissingCost ? F("action.restock_order_partial_detail", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : T("action.restock_order")) : partialRestock ? F("action.restock_affordable_detail", affordablePriorityRestockAmount, Money(affordablePriorityRestockCost)) : T("guide.restock")) : hasSellableStock ? T("action.quick_checkout") : ShortCashShort(cheapestRestockCost - data.cash);
-            primaryIcon = shelfSprite != null ? shelfSprite : upgradeSprite;
+            primaryCta = restockIndex < 0 ? T("action.full_stock") : canRestockNow ? RestockButtonTitle(restockIndex, orderHasMissing) : hasSellableStock ? T("action.quick_checkout") : ShortCashShort(cheapestRestockCost - data.cash);
+            primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconRestockItem), shelfSprite, upgradeSprite);
             primaryColor = blue;
             if (canRestockNow)
             {
@@ -2651,13 +3374,23 @@ public sealed class IdleShopGame : MonoBehaviour
 
             primaryUnavailable = restockIndex < 0 ? T("action.full_stock") : !canRestockNow && !hasSellableStock ? F("log.cash_short", Money(Mathf.Max(0f, cheapestRestockCost - data.cash))) : string.Empty;
         }
-        else if (milestoneIndex == 2 && data.upgrades.Length > 2 && data.upgrades[2] < upgrades[2].MaxLevel)
+        else if (milestoneIndex == 2 && hasSellableStock)
+        {
+            primaryTitle = CurrentMilestoneText();
+            primaryDetail = CurrentMilestoneHint();
+            primaryCta = T("action.quick_checkout");
+            primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconCheckoutOne), coinSprite);
+            primaryColor = coral;
+            primaryAction = CompleteOrderManualAndRender;
+            primaryUnavailable = string.Empty;
+        }
+        else if (milestoneIndex == 3 && data.upgrades.Length > 2 && data.upgrades[2] < upgrades[2].MaxLevel)
         {
             int priceUpgradeCost = UpgradeCost(2);
             primaryTitle = data.cash >= priceUpgradeCost ? F("recommend.upgrade", UpgradeName(2), Money(priceUpgradeCost)) : F("recommend.upgrade_goal", UpgradeName(2), Money(priceUpgradeCost));
             primaryDetail = data.cash >= priceUpgradeCost ? UpgradeImpactText(2, primaryIndex) : F("recommend.upgrade_goal_detail", UpgradeImpactText(2, primaryIndex), Money(priceUpgradeCost - data.cash));
-            primaryCta = data.cash >= priceUpgradeCost ? F("action.upgrade", Money(priceUpgradeCost)) : hasSellableStock ? T("action.quick_checkout") : T("guide.restock");
-            primaryIcon = upgradeSprite;
+            primaryCta = data.cash >= priceUpgradeCost ? F("action.upgrade", Money(priceUpgradeCost)) : hasSellableStock ? T("action.quick_checkout") : restockIndex >= 0 ? RestockButtonTitle(restockIndex, orderHasMissing) : T("guide.restock");
+            primaryIcon = FirstSprite(Mvp23Sprite(Mvp23IconUpgradeProduct), upgradeSprite);
             primaryColor = honey;
             if (data.cash >= priceUpgradeCost)
             {
@@ -2677,12 +3410,12 @@ public sealed class IdleShopGame : MonoBehaviour
 
             primaryUnavailable = !hasSellableStock && data.cash < priceUpgradeCost && restockIndex < 0 ? T("log.empty_shelf") : string.Empty;
         }
-        else if (milestoneIndex == 3 && data.staff.Length > 0 && data.staff[0] < staffDefs[0].MaxLevel)
+        else if (milestoneIndex == 4 && data.staff.Length > 0 && data.staff[0] < staffDefs[0].MaxLevel)
         {
             int cashierCost = StaffCost(0);
             primaryTitle = data.cash >= cashierCost ? F("recommend.staff", StaffName(0), Money(cashierCost)) : F("recommend.staff_goal", StaffName(0), Money(cashierCost));
             primaryDetail = data.cash >= cashierCost ? StaffAutomationText(0) : F("recommend.staff_goal_detail", StaffAutomationText(0), Money(cashierCost - data.cash));
-            primaryCta = data.cash >= cashierCost ? F("action.train", Money(cashierCost)) : hasSellableStock ? T("action.quick_checkout") : T("guide.restock");
+            primaryCta = data.cash >= cashierCost ? F("action.train", Money(cashierCost)) : hasSellableStock ? T("action.quick_checkout") : restockIndex >= 0 ? RestockButtonTitle(restockIndex, orderHasMissing) : T("guide.restock");
             primaryIcon = StaffSprite(0) != null ? StaffSprite(0) : customerSprite;
             primaryColor = pine;
             if (data.cash >= cashierCost)
@@ -2704,17 +3437,7 @@ public sealed class IdleShopGame : MonoBehaviour
             primaryUnavailable = !hasSellableStock && data.cash < cashierCost && restockIndex < 0 ? T("log.empty_shelf") : string.Empty;
         }
 
-        CreateFeaturedActionCard(management, primaryTitle, primaryDetail, primaryCta, primaryIcon, primaryColor, () =>
-        {
-            if (!string.IsNullOrEmpty(primaryUnavailable))
-            {
-                AddLog(primaryUnavailable);
-                RenderAll();
-                return;
-            }
-
-            primaryAction();
-        });
+        CreateRecommendationBanner(management, primaryTitle, primaryDetail, primaryIcon, primaryColor);
 
         RectTransform quickActions = CreateRect("QuickActions", management);
         quickActions.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 124f : shortPortrait ? 164f : 184f;
@@ -2726,7 +3449,7 @@ public sealed class IdleShopGame : MonoBehaviour
         quickLayout.childForceExpandWidth = true;
         quickLayout.childForceExpandHeight = true;
 
-        CreateQuickActionButton(quickActions, T("action.quick_checkout"), hasSellableStock ? F("action.checkout_one_detail", ProductName(primaryIndex), Money(nextItemValue)) : CurrentOrderShortageText(), coinSprite, coral, () =>
+        CreateQuickActionButton(quickActions, T("action.quick_checkout"), hasSellableStock ? F("action.checkout_one_detail", ProductName(primaryIndex), Money(nextItemValue)) : CurrentOrderShortageText(), FirstSprite(Mvp23Sprite(Mvp23IconCheckoutOne), coinSprite), coral, () =>
         {
             if (!HasSellableStock())
             {
@@ -2738,7 +3461,7 @@ public sealed class IdleShopGame : MonoBehaviour
             CompleteOrderManualAndRender();
         });
 
-        CreateQuickActionButton(quickActions, orderHasMissing ? T("action.restock_order") : T("action.restock_all"), RestockAllButtonDetail(restockIndex, priorityRestockAmount, priorityRestockCost, cheapestRestockCost, affordablePriorityRestockAmount, affordablePriorityRestockCost), shelfSprite != null ? shelfSprite : upgradeSprite, blue, () =>
+        CreateQuickActionButton(quickActions, RestockButtonTitle(restockIndex, orderHasMissing), RestockAllButtonDetail(restockIndex, priorityRestockAmount, priorityRestockCost, cheapestRestockCost, affordablePriorityRestockAmount, affordablePriorityRestockCost), FirstSprite(Mvp23Sprite(Mvp23IconRestockItem), shelfSprite, upgradeSprite), blue, () =>
         {
             if (restockIndex < 0 || priorityRestockAmount <= 0)
             {
@@ -2757,7 +3480,7 @@ public sealed class IdleShopGame : MonoBehaviour
             BuyRestockAll();
         });
 
-        CreateQuickActionButton(quickActions, upgradeIndex >= 0 ? T("tab.upgrades") : T("action.maxed"), UpgradeButtonDetail(upgradeIndex, upgradeCost), upgradeSprite, honey, () =>
+        CreateQuickActionButton(quickActions, upgradeIndex >= 0 ? T("tab.upgrades") : T("action.maxed"), UpgradeButtonDetail(upgradeIndex, upgradeCost), FirstSprite(Mvp23Sprite(Mvp23IconUpgradeProduct), upgradeSprite), honey, () =>
         {
             if (upgradeIndex < 0)
             {
@@ -2791,6 +3514,174 @@ public sealed class IdleShopGame : MonoBehaviour
         hint.resizeTextForBestFit = true;
         hint.resizeTextMinSize = wideLayout ? 16 : 19;
         hint.resizeTextMaxSize = wideLayout ? 22 : shortPortrait ? 24 : 26;
+    }
+
+    private void CreateCurrentOrderItemGrid(RectTransform parent, int primaryIndex)
+    {
+        bool shortPortrait = IsShortPortraitScreen();
+        RectTransform grid = CreateRect("OrderItems", parent);
+        LayoutElement gridLayoutElement = grid.gameObject.AddComponent<LayoutElement>();
+        gridLayoutElement.preferredHeight = wideLayout ? 108f : shortPortrait ? 124f : 138f;
+        gridLayoutElement.flexibleHeight = 0f;
+
+        GridLayoutGroup gridLayout = grid.gameObject.AddComponent<GridLayoutGroup>();
+        gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        gridLayout.constraintCount = 2;
+        gridLayout.spacing = wideLayout ? new Vector2(8f, 6f) : new Vector2(10f, 8f);
+        gridLayout.cellSize = wideLayout ? new Vector2(248f, 50f) : shortPortrait ? new Vector2(286f, 58f) : new Vector2(312f, 64f);
+
+        for (int i = 0; i < products.Length; i++)
+        {
+            int quantity = CurrentOrderInitialQuantity(i);
+            if (quantity <= 0)
+            {
+                continue;
+            }
+
+            CreateOrderItemButton(grid, i, i == primaryIndex);
+        }
+    }
+
+    private Button CreateOrderItemButton(RectTransform parent, int productIndex, bool focused)
+    {
+        int initialQuantity = CurrentOrderInitialQuantity(productIndex);
+        int quantity = CurrentOrderQuantity(productIndex);
+        int completed = CurrentOrderCompletedQuantity(productIndex);
+        int stock = Mathf.FloorToInt(data.stock[productIndex]);
+        bool done = initialQuantity > 0 && quantity <= 0;
+        bool missing = quantity > 0 && stock <= 0;
+        bool low = quantity > 0 && !missing && stock < quantity;
+        Color color = focused ? products[productIndex].Accent : missing ? new Color(0.72f, 0.22f, 0.18f) : low ? honey : done ? new Color(0.46f, 0.68f, 0.50f, 0.96f) : new Color(1f, 0.95f, 0.84f, 0.96f);
+        Color textColor = focused || missing || low || done ? Color.white : pine;
+        Color detailColor = focused || missing || low || done ? new Color(1f, 0.95f, 0.78f) : ink;
+
+        RectTransform row = CreateImagePanel("OrderItemButton", parent, Mvp23Sprite(Mvp23UiOrderItemSlot), color, false);
+        if (focused)
+        {
+            Outline outline = row.gameObject.AddComponent<Outline>();
+            outline.effectColor = new Color(1f, 0.91f, 0.28f, 0.88f);
+            outline.effectDistance = wideLayout ? new Vector2(2f, -2f) : new Vector2(3f, -3f);
+            if (orderSelectPulseTimer > 0f)
+            {
+                row.gameObject.AddComponent<UIFlashTint>().Configure(new Color(1f, 0.88f, 0.25f), orderSelectPulseTimer);
+            }
+            else if (productIndex == recentSoldProductIndex && salePopTimer > 0f)
+            {
+                row.gameObject.AddComponent<UIFlashTint>().Configure(coral, salePopTimer);
+            }
+            else if (productIndex == recentRestockProductIndex && restockPulseTimer > 0f)
+            {
+                row.gameObject.AddComponent<UIFlashTint>().Configure(blue, restockPulseTimer);
+            }
+        }
+        else if (productIndex == recentSoldProductIndex && salePopTimer > 0f)
+        {
+            Outline outline = row.gameObject.AddComponent<Outline>();
+            outline.effectColor = new Color(1f, 0.48f, 0.30f, 0.82f);
+            outline.effectDistance = wideLayout ? new Vector2(2f, -2f) : new Vector2(3f, -3f);
+            row.gameObject.AddComponent<UIFlashTint>().Configure(coral, salePopTimer);
+        }
+        else if (productIndex == recentRestockProductIndex && restockPulseTimer > 0f)
+        {
+            Outline outline = row.gameObject.AddComponent<Outline>();
+            outline.effectColor = new Color(0.38f, 0.78f, 1f, 0.82f);
+            outline.effectDistance = wideLayout ? new Vector2(2f, -2f) : new Vector2(3f, -3f);
+            row.gameObject.AddComponent<UIFlashTint>().Configure(blue, restockPulseTimer);
+        }
+
+        HorizontalLayoutGroup layout = row.gameObject.AddComponent<HorizontalLayoutGroup>();
+        layout.padding = wideLayout ? new RectOffset(6, 8, 4, 4) : new RectOffset(8, 10, 5, 5);
+        layout.spacing = wideLayout ? 5f : 7f;
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+        layout.childForceExpandWidth = false;
+
+        RectTransform iconBox = CreatePanel("OrderItemIcon", row, focused || missing || low ? new Color(1f, 1f, 1f, 0.22f) : products[productIndex].Accent);
+        iconBox.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 30f : 38f;
+        if (ProductSprite(productIndex) != null)
+        {
+            CreateImage("Icon", iconBox, ProductSprite(productIndex), true);
+        }
+
+        if (missing && Mvp23Sprite(Mvp23UiStockWarningBadge) != null)
+        {
+            RectTransform warning = CreateImagePanel("StockWarning", row, Mvp23Sprite(Mvp23UiStockWarningBadge), Color.clear, true);
+            LayoutElement warningLayout = warning.gameObject.AddComponent<LayoutElement>();
+            warningLayout.preferredWidth = wideLayout ? 28f : 34f;
+            warningLayout.flexibleWidth = 0f;
+        }
+
+        RectTransform textGroup = CreateRect("OrderItemText", row);
+        textGroup.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
+        VerticalLayoutGroup textLayout = textGroup.gameObject.AddComponent<VerticalLayoutGroup>();
+        textLayout.spacing = 0f;
+        textLayout.childControlHeight = true;
+        textLayout.childControlWidth = true;
+        textLayout.childForceExpandHeight = false;
+
+        Text name = CreateText("Name", textGroup, F("order.item", ProductName(productIndex), initialQuantity), wideLayout ? 15 : 19, FontStyle.Bold, textColor, TextAnchor.MiddleLeft);
+        name.resizeTextForBestFit = true;
+        name.resizeTextMinSize = wideLayout ? 10 : 13;
+        name.resizeTextMaxSize = wideLayout ? 15 : 19;
+
+        string stockState = done ? T("order.item_done") : missing ? F("order.item_missing", quantity) : low ? F("order.item_low", stock, quantity) : F("order.item_ready", Mathf.Min(stock, quantity), quantity, Money(CurrentOrderItemValue(productIndex)));
+        string status = $"{F("order.item_progress", completed, initialQuantity)} · {stockState}";
+        if (productIndex == recentSoldProductIndex && salePopTimer > 0f)
+        {
+            status = $"{F("order.item_progress", completed, initialQuantity)} · {F("order.item_sold_feedback", quantity)}";
+        }
+
+        Text detail = CreateText("Status", textGroup, focused ? $"{T("order.item_selected")} · {status}" : status, wideLayout ? 12 : 15, FontStyle.Bold, detailColor, TextAnchor.MiddleLeft);
+        detail.resizeTextForBestFit = true;
+        detail.resizeTextMinSize = wideLayout ? 9 : 11;
+        detail.resizeTextMaxSize = wideLayout ? 12 : 15;
+
+        RectTransform lineProgress = CreateProgress(textGroup, initialQuantity <= 0 ? 0f : completed / (float)initialQuantity, focused ? Color.white : products[productIndex].Accent, wideLayout ? 5f : 6f);
+        LayoutElement progressLayout = lineProgress.parent != null ? lineProgress.parent.GetComponent<LayoutElement>() : null;
+        if (progressLayout != null)
+        {
+            progressLayout.preferredHeight = wideLayout ? 5f : 6f;
+        }
+
+        Button button = row.gameObject.AddComponent<Button>();
+        row.gameObject.AddComponent<UIButtonFeedback>();
+        button.targetGraphic = row.GetComponent<Image>();
+        int captured = productIndex;
+        button.onClick.AddListener(() => SelectOrderProductAndRender(captured));
+        ApplyButtonColor(button, color);
+        if (focused && Mvp23Sprite(Mvp23UiCurrentItemFrame) != null)
+        {
+            RectTransform frame = CreateImagePanel("CurrentItemFrame", row, Mvp23Sprite(Mvp23UiCurrentItemFrame), Color.clear, false);
+            Image frameImage = frame.GetComponent<Image>();
+            if (frameImage != null)
+            {
+                frameImage.raycastTarget = false;
+            }
+
+            LayoutElement frameLayout = frame.gameObject.AddComponent<LayoutElement>();
+            frameLayout.ignoreLayout = true;
+            AnchorFill(frame, 0f, 0f, 0f, 0f);
+            frame.SetAsLastSibling();
+        }
+
+        if (focused && Mvp23Sprite(Mvp23FxItemSelectedGlow) != null)
+        {
+            RectTransform glow = CreateImagePanel("ItemSelectedGlow", row, Mvp23Sprite(Mvp23FxItemSelectedGlow), Color.clear, false);
+            Image glowImage = glow.GetComponent<Image>();
+            if (glowImage != null)
+            {
+                glowImage.raycastTarget = false;
+                glowImage.color = new Color(1f, 1f, 1f, 0.78f);
+            }
+
+            LayoutElement glowLayout = glow.gameObject.AddComponent<LayoutElement>();
+            glowLayout.ignoreLayout = true;
+            AnchorFill(glow, -0.02f, -0.04f, -0.02f, -0.04f);
+            glow.SetAsLastSibling();
+        }
+
+        return button;
     }
 
     private void CreateGuidePanel()
@@ -2840,6 +3731,17 @@ public sealed class IdleShopGame : MonoBehaviour
         text.resizeTextMinSize = wideLayout ? 16 : 19;
         text.resizeTextMaxSize = wideLayout ? 26 : 30;
         text.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
+    }
+
+    private string RestockButtonTitle(int restockIndex, bool orderHasMissing)
+    {
+        if (restockIndex < 0)
+        {
+            return T("action.full_stock");
+        }
+
+        int cost = PriorityRestockAmount(restockIndex) * UnitCost(restockIndex);
+        return orderHasMissing ? F("action.restock_current_missing", ProductName(restockIndex), Money(cost)) : F("action.restock_current_stock", ProductName(restockIndex), Money(cost));
     }
 
     private string RestockAllButtonDetail(int restockIndex, int amount, int totalCost, int cheapestCost, int affordableAmount, int affordableCost)
@@ -3148,6 +4050,7 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         CreateText("LanguageHint", languagePanel, T("settings.language_hint"), wideLayout ? 22 : 25, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
+        CreateNewPlayerTestPanel();
 
         RectTransform resetPanel = CreatePanel("ResetPanel", contentRoot, panel);
         resetPanel.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 190f : 230f;
@@ -3157,6 +4060,25 @@ public sealed class IdleShopGame : MonoBehaviour
         CreateText("ResetTitle", resetPanel, T("settings.reset_title"), wideLayout ? 32 : 38, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
         CreateText("ResetBody", resetPanel, T("settings.reset_body"), wideLayout ? 23 : 27, FontStyle.Normal, ink, TextAnchor.MiddleLeft);
         CreateButton(resetPanel, T("action.reset_save"), coral, ResetSave);
+    }
+
+    private void CreateNewPlayerTestPanel()
+    {
+        bool shortPortrait = IsShortPortraitScreen();
+        RectTransform testPanel = CreatePanel("TestPanel", contentRoot, panel);
+        testPanel.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 220f : shortPortrait ? 260f : 292f;
+        VerticalLayoutGroup layout = testPanel.gameObject.AddComponent<VerticalLayoutGroup>();
+        layout.padding = wideLayout ? new RectOffset(24, 24, 18, 18) : new RectOffset(26, 26, 22, 22);
+        layout.spacing = wideLayout ? 10f : 12f;
+
+        CreateText("TestTitle", testPanel, T("settings.test_title"), wideLayout ? 32 : 38, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+        string firstUpgradeState = data.upgrades.Length > 2 && data.upgrades[2] >= 1 ? T("settings.test_done") : T("settings.test_pending");
+        int milestoneIndex = CurrentMilestoneIndex();
+        string milestone = milestoneIndex >= 0 ? MilestoneName(milestoneIndex) : T("milestone.all_done");
+        Text report = CreateText("TestReport", testPanel, F("settings.test_report", data.completedOrders, data.restockActions, firstUpgradeState, AutoSaleInterval().ToString("0.0", CultureInfo.InvariantCulture), milestone), wideLayout ? 23 : shortPortrait ? 26 : 29, FontStyle.Bold, ink, TextAnchor.MiddleLeft);
+        report.resizeTextForBestFit = true;
+        report.resizeTextMinSize = wideLayout ? 15 : 18;
+        report.resizeTextMaxSize = wideLayout ? 23 : shortPortrait ? 26 : 29;
     }
 
     private string CurrentLanguageName()
@@ -3280,6 +4202,44 @@ public sealed class IdleShopGame : MonoBehaviour
         RectTransform tab = CreatePanel("SheetTab", parent, active ? panel : new Color(0.50f, 0.32f, 0.18f));
         tab.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
         CreateText("Label", tab, label, wideLayout ? 26 : 31, FontStyle.Bold, active ? pine : Color.white, TextAnchor.MiddleCenter);
+    }
+
+    private void CreateRecommendationBanner(RectTransform parent, string title, string detail, Sprite icon, Color color)
+    {
+        bool shortPortrait = IsShortPortraitScreen();
+        RectTransform banner = CreatePanel("RecommendationBanner", parent, new Color(1f, 0.96f, 0.86f, 0.98f));
+        banner.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 118f : shortPortrait ? 148f : 162f;
+        HorizontalLayoutGroup layout = banner.gameObject.AddComponent<HorizontalLayoutGroup>();
+        layout.padding = wideLayout ? new RectOffset(14, 18, 12, 12) : new RectOffset(18, 22, 14, 14);
+        layout.spacing = wideLayout ? 12f : 16f;
+        layout.childAlignment = TextAnchor.MiddleCenter;
+        layout.childControlWidth = true;
+        layout.childControlHeight = true;
+
+        RectTransform accent = CreatePanel("RecommendationIcon", banner, color);
+        accent.gameObject.AddComponent<LayoutElement>().preferredWidth = wideLayout ? 84f : shortPortrait ? 102f : 112f;
+        if (icon != null)
+        {
+            CreateImage("Icon", accent, icon, true);
+        }
+
+        RectTransform textGroup = CreateRect("RecommendationText", banner);
+        textGroup.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
+        VerticalLayoutGroup textLayout = textGroup.gameObject.AddComponent<VerticalLayoutGroup>();
+        textLayout.spacing = wideLayout ? 6f : 8f;
+        textLayout.childControlWidth = true;
+        textLayout.childControlHeight = true;
+        textLayout.childForceExpandHeight = false;
+
+        Text titleText = CreateText("Title", textGroup, title, wideLayout ? 29 : shortPortrait ? 34 : 37, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+        titleText.resizeTextForBestFit = true;
+        titleText.resizeTextMinSize = wideLayout ? 19 : 24;
+        titleText.resizeTextMaxSize = wideLayout ? 29 : shortPortrait ? 34 : 37;
+
+        Text detailText = CreateText("Detail", textGroup, detail, wideLayout ? 21 : shortPortrait ? 25 : 27, FontStyle.Bold, ink, TextAnchor.MiddleLeft);
+        detailText.resizeTextForBestFit = true;
+        detailText.resizeTextMinSize = wideLayout ? 15 : 18;
+        detailText.resizeTextMaxSize = wideLayout ? 21 : shortPortrait ? 25 : 27;
     }
 
     private Button CreateFeaturedActionCard(RectTransform parent, string title, string detail, string cta, Sprite icon, Color color, UnityEngine.Events.UnityAction action)
@@ -3837,9 +4797,14 @@ public sealed class IdleShopGame : MonoBehaviour
                name == "SheetTabs" ||
                name == "SheetTab" ||
                name == "HomeActionCard" ||
+               name == "TestPanel" ||
+               name == "RecommendationBanner" ||
+               name == "RecommendationIcon" ||
                name == "FeaturedActionCard" ||
                name == "QuickActionButton" ||
                name == "QuickActionIcon" ||
+               name == "OrderItemButton" ||
+               name == "OrderItemIcon" ||
                name == "HomeCardIcon" ||
                name == "HomeCardButton" ||
                name == "ShopHero" ||

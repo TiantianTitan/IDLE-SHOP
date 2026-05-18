@@ -375,6 +375,10 @@
       "value": "تمت إعادة تخزين {0} ×{1}."
     },
     {
+      "key": "log.restocked_order_ready",
+      "value": "تمت تعبئة {0} x{1}. يمكن للطلب متابعة البيع."
+    },
+    {
       "key": "log.restocked_all",
       "value": "تمت إعادة تخزين {0} قطعة."
     },
@@ -408,15 +412,15 @@
     },
     {
       "key": "settings.reset_title",
-      "value": "أدوات الاختبار"
+      "value": "اختبار اللاعب الجديد"
     },
     {
       "key": "settings.reset_body",
-      "value": "يمسح حفظ المتجر الحالي ويعيد البدء من اليوم الأول. تبقى إعدادات اللغة كما هي."
+      "value": "يمسح حفظ المتجر ويبدأ من اليوم الأول والطلب الأول. تبقى اللغة كما هي. استخدمه لاختبار أول 3 دقائق."
     },
     {
       "key": "action.reset_save",
-      "value": "إعادة ضبط الحفظ"
+      "value": "إعادة بدء البداية"
     },
     {
       "key": "log.save_reset",
@@ -736,7 +740,7 @@
     },
     {
       "key": "milestone.order_3",
-      "value": "Goal: complete 3 customer orders ({0}/3) · Reward {1}"
+      "value": "الهدف: إكمال 3 طلبات عملاء ({0}/3) · المكافأة {1}"
     },
     {
       "key": "staff.merchandiser.automation",
@@ -752,7 +756,7 @@
     },
     {
       "key": "action.restock_order",
-      "value": "تزويد الطلب"
+      "value": "زوّد الحالي"
     },
     {
       "key": "action.restock_order_detail",
@@ -785,6 +789,114 @@
     {
       "key": "order.focus_blocked",
       "value": "زوّد أولًا: {0} ينقص {1}"
+    },
+    {
+      "key": "order.current_short",
+      "value": "الطلب · {0}"
+    },
+    {
+      "key": "order.progress",
+      "value": "Order progress {0}/{1}"
+    },
+    {
+      "key": "order.item_status",
+      "value": "المخزون {0} · +{1}"
+    },
+    {
+      "key": "order.item_missing",
+      "value": "ينقص {0}"
+    },
+    {
+      "key": "order.item_selected",
+      "value": "نشط"
+    },
+    {
+      "key": "log.focus_product",
+      "value": "الأولوية: {0}."
+    },
+    {
+      "key": "recommend.restock_focus",
+      "value": "مقترح: زوّد {0} {1}"
+    },
+    {
+      "key": "order.step_selling",
+      "value": "يتم البيع: {0} x{1} · المخزون {2}"
+    },
+    {
+      "key": "order.step_blocked",
+      "value": "متوقف: ينقص {0} عدد {1}"
+    },
+    {
+      "key": "order.next_checkout",
+      "value": "التالي: بيع 1 {0} مقابل {1}"
+    },
+    {
+      "key": "order.next_restock",
+      "value": "التالي: تعبئة {0} x{1} · {2}"
+    },
+    {
+      "key": "order.next_wait_cash",
+      "value": "التالي: انتظر الدخل، ينقص {0}"
+    },
+    {
+      "key": "order.item_ready",
+      "value": "جاهز للبيع {0}/{1} · +{2}"
+    },
+    {
+      "key": "order.item_low",
+      "value": "المخزون {0}/{1}، أعد التعبئة"
+    },
+    {
+      "key": "order.item_progress",
+      "value": "Done {0}/Need {1}"
+    },
+    {
+      "key": "order.item_done",
+      "value": "Done"
+    },
+    {
+      "key": "action.restock_current_missing",
+      "value": "Restock {0} {1}"
+    },
+    {
+      "key": "action.restock_current_stock",
+      "value": "Restock {0} stock {1}"
+    },
+    {
+      "key": "order.item_sold_feedback",
+      "value": "تم بيع 1 · المتبقي {0}"
+    },
+    {
+      "key": "order.complete_feedback",
+      "value": "اكتمل الطلب +{0}"
+    },
+    {
+      "key": "milestone.order_1.name",
+      "value": "إكمال أول طلب"
+    },
+    {
+      "key": "milestone.order_1",
+      "value": "الهدف: إكمال أول طلب عميل ({0}/1) · المكافأة {1}"
+    },
+    {
+      "key": "milestone.hint.order_3",
+      "value": "استمر في البيع التلقائي؛ عبئ هذا العنصر إذا توقف الطلب."
+    },
+    {
+      "key": "settings.test_title",
+      "value": "فحص أول 3 دقائق"
+    },
+    {
+      "key": "settings.test_done",
+      "value": "مكتمل"
+    },
+    {
+      "key": "settings.test_pending",
+      "value": "لم يكتمل"
+    },
+    {
+      "key": "settings.test_report",
+      "value": "الطلبات {0} · التعبئة {1}\nأول ترقية للسعر: {2}\nفاصل البيع التلقائي: {3} ث\nالهدف الحالي: {4}"
     }
   ]
 }

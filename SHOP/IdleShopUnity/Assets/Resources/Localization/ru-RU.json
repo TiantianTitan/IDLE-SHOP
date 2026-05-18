@@ -375,6 +375,10 @@
       "value": "{0} пополнено x{1}."
     },
     {
+      "key": "log.restocked_order_ready",
+      "value": "{0} x{1} пополнено. Заказ снова продается."
+    },
+    {
       "key": "log.restocked_all",
       "value": "Пополнено {0} шт."
     },
@@ -408,15 +412,15 @@
     },
     {
       "key": "settings.reset_title",
-      "value": "Инструменты теста"
+      "value": "Тест нового игрока"
     },
     {
       "key": "settings.reset_body",
-      "value": "Очищает текущее сохранение магазина и начинает с первого дня. Язык сохраняется."
+      "value": "Очистить сохранение магазина и начать с 1-го дня и первого заказа. Язык сохранится. Используйте для проверки первых 3 минут."
     },
     {
       "key": "action.reset_save",
-      "value": "Сбросить сохранение"
+      "value": "Перезапустить обучение"
     },
     {
       "key": "log.save_reset",
@@ -736,7 +740,7 @@
     },
     {
       "key": "milestone.order_3",
-      "value": "Goal: complete 3 customer orders ({0}/3) · Reward {1}"
+      "value": "Цель: выполнить 3 заказа клиентов ({0}/3) · Награда {1}"
     },
     {
       "key": "staff.merchandiser.automation",
@@ -752,7 +756,7 @@
     },
     {
       "key": "action.restock_order",
-      "value": "Пополнить заказ"
+      "value": "Пополнить текущее"
     },
     {
       "key": "action.restock_order_detail",
@@ -785,6 +789,114 @@
     {
       "key": "order.focus_blocked",
       "value": "Сначала пополните: {0}, не хватает {1}"
+    },
+    {
+      "key": "order.current_short",
+      "value": "Заказ · {0}"
+    },
+    {
+      "key": "order.progress",
+      "value": "Order progress {0}/{1}"
+    },
+    {
+      "key": "order.item_status",
+      "value": "Запас {0} · +{1}"
+    },
+    {
+      "key": "order.item_missing",
+      "value": "Не хватает {0}"
+    },
+    {
+      "key": "order.item_selected",
+      "value": "Активно"
+    },
+    {
+      "key": "log.focus_product",
+      "value": "Приоритет: {0}."
+    },
+    {
+      "key": "recommend.restock_focus",
+      "value": "Совет: пополнить {0} {1}"
+    },
+    {
+      "key": "order.step_selling",
+      "value": "Продается: {0} x{1} · запас {2}"
+    },
+    {
+      "key": "order.step_blocked",
+      "value": "Стоп: не хватает {0} x{1}"
+    },
+    {
+      "key": "order.next_checkout",
+      "value": "Дальше: продать 1 {0} за {1}"
+    },
+    {
+      "key": "order.next_restock",
+      "value": "Дальше: пополнить {0} x{1} · {2}"
+    },
+    {
+      "key": "order.next_wait_cash",
+      "value": "Дальше: ждать доход, не хватает {0}"
+    },
+    {
+      "key": "order.item_ready",
+      "value": "Можно продать {0}/{1} · +{2}"
+    },
+    {
+      "key": "order.item_low",
+      "value": "Запас {0}/{1}, пополните скоро"
+    },
+    {
+      "key": "order.item_progress",
+      "value": "Done {0}/Need {1}"
+    },
+    {
+      "key": "order.item_done",
+      "value": "Done"
+    },
+    {
+      "key": "action.restock_current_missing",
+      "value": "Restock {0} {1}"
+    },
+    {
+      "key": "action.restock_current_stock",
+      "value": "Restock {0} stock {1}"
+    },
+    {
+      "key": "order.item_sold_feedback",
+      "value": "Продано 1 · осталось {0}"
+    },
+    {
+      "key": "order.complete_feedback",
+      "value": "Заказ выполнен +{0}"
+    },
+    {
+      "key": "milestone.order_1.name",
+      "value": "Выполнить 1 заказ"
+    },
+    {
+      "key": "milestone.order_1",
+      "value": "Цель: выполнить первый заказ ({0}/1) · Награда {1}"
+    },
+    {
+      "key": "milestone.hint.order_3",
+      "value": "Продолжайте автопродажи; пополните товар, если заказ остановился."
+    },
+    {
+      "key": "settings.test_title",
+      "value": "Проверка первых 3 минут"
+    },
+    {
+      "key": "settings.test_done",
+      "value": "Готово"
+    },
+    {
+      "key": "settings.test_pending",
+      "value": "Не готово"
+    },
+    {
+      "key": "settings.test_report",
+      "value": "Заказы {0} · Пополнения {1}\nПервое улучшение цены: {2}\nИнтервал автопродажи: {3} с\nТекущая цель: {4}"
     }
   ]
 }

@@ -12,6 +12,7 @@ public static class ProjectBootstrapper
     private const string ApkPath = "Builds/Android/PocketShop-debug.apk";
     private const string LocalizationPath = "Assets/Resources/Localization";
     private const string ArtPath = "Assets/Art";
+    private const string SaveKey = "PocketShop.Unity.Save.V1";
 
     [Serializable]
     private sealed class LocalizationEntry
@@ -72,6 +73,42 @@ public static class ProjectBootstrapper
                 LoadSprite($"{ArtPath}/Staff/lina_merchandiser.png"),
                 LoadSprite($"{ArtPath}/Staff/zhou_purchaser.png"),
                 LoadSprite($"{ArtPath}/Staff/anna_manager.png")
+            },
+            new[]
+            {
+                LoadSprite($"{ArtPath}/MVP23/scene_shop_interior_base.png"),
+                LoadSprite($"{ArtPath}/MVP23/scene_cashier_counter.png"),
+                LoadSprite($"{ArtPath}/MVP23/scene_product_shelf_full.png"),
+                LoadSprite($"{ArtPath}/MVP23/scene_product_shelf_low.png"),
+                LoadSprite($"{ArtPath}/MVP23/scene_product_shelf_empty.png"),
+                LoadFirstSprite($"{ArtPath}/MVP23/customer_enter_01.png", $"{ArtPath}/MVP23/npc_customer_walk_01.png"),
+                LoadFirstSprite($"{ArtPath}/MVP23/customer_enter_01.png", $"{ArtPath}/MVP23/npc_customer_walk_02.png"),
+                LoadFirstSprite($"{ArtPath}/MVP23/customer_waiting_01.png", $"{ArtPath}/MVP23/npc_customer_idle.png"),
+                LoadSprite($"{ArtPath}/MVP23/npc_customer_pay.png"),
+                LoadFirstSprite($"{ArtPath}/MVP23/customer_happy_01.png", $"{ArtPath}/MVP23/npc_customer_leave_happy.png"),
+                LoadSprite($"{ArtPath}/MVP23/npc_customer_disappointed.png"),
+                LoadSprite($"{ArtPath}/MVP23/npc_staff_cashier_idle.png"),
+                LoadSprite($"{ArtPath}/MVP23/npc_staff_cashier_work.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_coin_pop.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_restock_spark.png"),
+                LoadSprite($"{ArtPath}/MVP23/ui_order_ticket.png"),
+                LoadSprite($"{ArtPath}/MVP23/ui_order_item_slot.png"),
+                LoadSprite($"{ArtPath}/MVP23/ui_stock_warning_badge.png"),
+                LoadSprite($"{ArtPath}/MVP23/ui_current_item_frame.png"),
+                LoadSprite($"{ArtPath}/MVP23/icon_checkout_one.png"),
+                LoadSprite($"{ArtPath}/MVP23/icon_restock_item.png"),
+                LoadSprite($"{ArtPath}/MVP23/icon_upgrade_product.png"),
+                LoadSprite($"{ArtPath}/MVP23/scene_empty_shelf_overlay.png"),
+                LoadFirstSprite($"{ArtPath}/MVP23/ui_order_complete_stamp.png", $"{ArtPath}/MVP23/fx_order_complete_stamp.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_low_stock_pulse.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_customer_waiting_bubble.png"),
+                LoadSprite($"{ArtPath}/MVP23/ui_scene_floor_shadow.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_order_complete_glow.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_item_selected_glow.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_cash_float.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_restock_success_ring.png"),
+                LoadSprite($"{ArtPath}/MVP23/fx_upgrade_success.png"),
+                LoadFirstSprite($"{ArtPath}/MVP23/customer_leave_01.png", $"{ArtPath}/MVP23/npc_customer_leave_happy.png")
             },
             LoadFont("Assets/Fonts/NotoSansCJK-Regular.ttc"),
             LoadFont("Assets/Fonts/NotoNaskhArabic-Regular.ttf"));
@@ -178,6 +215,14 @@ public static class ProjectBootstrapper
         }
 
         Debug.Log($"Localization validation passed: {tables.Count} languages, {referenceKeys.Count} keys each.");
+    }
+
+    [MenuItem("Pocket Shop/Clear Local Save")]
+    public static void ClearLocalSave()
+    {
+        PlayerPrefs.DeleteKey(SaveKey);
+        PlayerPrefs.Save();
+        Debug.Log("Pocket Shop local save cleared. Enter Play Mode to test the new-player flow from day one.");
     }
 
     private static Sprite LoadSprite(string path)

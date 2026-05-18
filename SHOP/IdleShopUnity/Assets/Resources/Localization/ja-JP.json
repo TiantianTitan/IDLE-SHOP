@@ -375,6 +375,10 @@
       "value": "{0}を{1}個補充しました。"
     },
     {
+      "key": "log.restocked_order_ready",
+      "value": "{0} x{1} を補充しました。注文の販売を続けられます。"
+    },
+    {
       "key": "log.restocked_all",
       "value": "{0}個補充しました。"
     },
@@ -408,15 +412,15 @@
     },
     {
       "key": "settings.reset_title",
-      "value": "テストツール"
+      "value": "初心者フローテスト"
     },
     {
       "key": "settings.reset_body",
-      "value": "現在の経営データを消去して1日目からやり直します。言語設定は保持されます。"
+      "value": "経営データを消去し、1日目と最初の注文から再開します。言語設定は保持されます。最初の3分を再テストできます。"
     },
     {
       "key": "action.reset_save",
-      "value": "セーブをリセット"
+      "value": "初心者フローを再開"
     },
     {
       "key": "log.save_reset",
@@ -732,11 +736,11 @@
     },
     {
       "key": "milestone.order_3.name",
-      "value": "注文3件を完了"
+      "value": "注文を3件完了"
     },
     {
       "key": "milestone.order_3",
-      "value": "Goal: complete 3 customer orders ({0}/3) · Reward {1}"
+      "value": "目標：注文を3件完了 ({0}/3)・報酬 {1}"
     },
     {
       "key": "staff.merchandiser.automation",
@@ -752,7 +756,7 @@
     },
     {
       "key": "action.restock_order",
-      "value": "注文分を補充"
+      "value": "今の不足を補充"
     },
     {
       "key": "action.restock_order_detail",
@@ -785,6 +789,114 @@
     {
       "key": "order.focus_blocked",
       "value": "先に補充：{0} が {1} 個不足"
+    },
+    {
+      "key": "order.current_short",
+      "value": "現在の注文 · {0}"
+    },
+    {
+      "key": "order.progress",
+      "value": "Order progress {0}/{1}"
+    },
+    {
+      "key": "order.item_status",
+      "value": "在庫 {0} · +{1}"
+    },
+    {
+      "key": "order.item_missing",
+      "value": "{0} 個不足"
+    },
+    {
+      "key": "order.item_selected",
+      "value": "処理中"
+    },
+    {
+      "key": "log.focus_product",
+      "value": "{0} を優先します。"
+    },
+    {
+      "key": "recommend.restock_focus",
+      "value": "おすすめ：{0} を補充 {1}"
+    },
+    {
+      "key": "order.step_selling",
+      "value": "販売中：{0} x{1}・在庫 {2}"
+    },
+    {
+      "key": "order.step_blocked",
+      "value": "停止中：{0} があと {1} 個不足"
+    },
+    {
+      "key": "order.next_checkout",
+      "value": "次：{0} を1個会計して {1}"
+    },
+    {
+      "key": "order.next_restock",
+      "value": "次：{0} x{1} を補充・{2}"
+    },
+    {
+      "key": "order.next_wait_cash",
+      "value": "次：自動収入を待つ、あと {0}"
+    },
+    {
+      "key": "order.item_ready",
+      "value": "販売可 {0}/{1}・+{2}"
+    },
+    {
+      "key": "order.item_low",
+      "value": "在庫 {0}/{1}、早めに補充"
+    },
+    {
+      "key": "order.item_progress",
+      "value": "Done {0}/Need {1}"
+    },
+    {
+      "key": "order.item_done",
+      "value": "Done"
+    },
+    {
+      "key": "action.restock_current_missing",
+      "value": "Restock {0} {1}"
+    },
+    {
+      "key": "action.restock_current_stock",
+      "value": "Restock {0} stock {1}"
+    },
+    {
+      "key": "order.item_sold_feedback",
+      "value": "1個販売 · 残り {0}"
+    },
+    {
+      "key": "order.complete_feedback",
+      "value": "注文完了 +{0}"
+    },
+    {
+      "key": "milestone.order_1.name",
+      "value": "最初の注文を完了"
+    },
+    {
+      "key": "milestone.order_1",
+      "value": "目標：最初の注文を完了 ({0}/1)・報酬 {1}"
+    },
+    {
+      "key": "milestone.hint.order_3",
+      "value": "自動販売を続け、止まった商品を補充しよう。"
+    },
+    {
+      "key": "settings.test_title",
+      "value": "最初の3分チェック"
+    },
+    {
+      "key": "settings.test_done",
+      "value": "完了"
+    },
+    {
+      "key": "settings.test_pending",
+      "value": "未完了"
+    },
+    {
+      "key": "settings.test_report",
+      "value": "注文 {0} 件・補充 {1} 回\n最初の価格アップグレード：{2}\n自動販売間隔：{3} 秒\n現在の目標：{4}"
     }
   ]
 }

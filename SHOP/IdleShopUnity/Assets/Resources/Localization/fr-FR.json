@@ -375,6 +375,10 @@
       "value": "{0} réapprovisionné x{1}."
     },
     {
+      "key": "log.restocked_order_ready",
+      "value": "{0} x{1} réapprovisionné. La commande peut reprendre."
+    },
+    {
       "key": "log.restocked_all",
       "value": "{0} articles réapprovisionnés."
     },
@@ -408,15 +412,15 @@
     },
     {
       "key": "settings.reset_title",
-      "value": "Outils de test"
+      "value": "Test nouveau joueur"
     },
     {
       "key": "settings.reset_body",
-      "value": "Efface la sauvegarde actuelle et redémarre au jour un. La langue reste inchangée."
+      "value": "Efface la sauvegarde et redémarre au jour 1 avec la première commande. La langue reste inchangée. Sert à retester les 3 premières minutes."
     },
     {
       "key": "action.reset_save",
-      "value": "Réinitialiser"
+      "value": "Relancer le début"
     },
     {
       "key": "log.save_reset",
@@ -736,7 +740,7 @@
     },
     {
       "key": "milestone.order_3",
-      "value": "Goal: complete 3 customer orders ({0}/3) · Reward {1}"
+      "value": "Objectif : terminer 3 commandes client ({0}/3) · Récompense {1}"
     },
     {
       "key": "staff.merchandiser.automation",
@@ -752,7 +756,7 @@
     },
     {
       "key": "action.restock_order",
-      "value": "Stock commande"
+      "value": "Réassort actuel"
     },
     {
       "key": "action.restock_order_detail",
@@ -785,6 +789,114 @@
     {
       "key": "order.focus_blocked",
       "value": "Réassort d’abord : {0} manque de {1}"
+    },
+    {
+      "key": "order.current_short",
+      "value": "Commande · {0}"
+    },
+    {
+      "key": "order.progress",
+      "value": "Order progress {0}/{1}"
+    },
+    {
+      "key": "order.item_status",
+      "value": "Stock {0} · +{1}"
+    },
+    {
+      "key": "order.item_missing",
+      "value": "Manque {0}"
+    },
+    {
+      "key": "order.item_selected",
+      "value": "Actif"
+    },
+    {
+      "key": "log.focus_product",
+      "value": "Priorité à {0}."
+    },
+    {
+      "key": "recommend.restock_focus",
+      "value": "Conseil : réassort {0} {1}"
+    },
+    {
+      "key": "order.step_selling",
+      "value": "Vente : {0} x{1} · stock {2}"
+    },
+    {
+      "key": "order.step_blocked",
+      "value": "Bloqué : il manque {1} {0}"
+    },
+    {
+      "key": "order.next_checkout",
+      "value": "Suite : encaisser 1 {0} pour {1}"
+    },
+    {
+      "key": "order.next_restock",
+      "value": "Suite : réassort {0} x{1} · {2}"
+    },
+    {
+      "key": "order.next_wait_cash",
+      "value": "Suite : attendre les ventes, manque {0}"
+    },
+    {
+      "key": "order.item_ready",
+      "value": "Vendable {0}/{1} · +{2}"
+    },
+    {
+      "key": "order.item_low",
+      "value": "Stock {0}/{1}, réassort bientôt"
+    },
+    {
+      "key": "order.item_progress",
+      "value": "Done {0}/Need {1}"
+    },
+    {
+      "key": "order.item_done",
+      "value": "Done"
+    },
+    {
+      "key": "action.restock_current_missing",
+      "value": "Restock {0} {1}"
+    },
+    {
+      "key": "action.restock_current_stock",
+      "value": "Restock {0} stock {1}"
+    },
+    {
+      "key": "order.item_sold_feedback",
+      "value": "1 vendu · reste {0}"
+    },
+    {
+      "key": "order.complete_feedback",
+      "value": "Commande terminée +{0}"
+    },
+    {
+      "key": "milestone.order_1.name",
+      "value": "Terminer 1 commande"
+    },
+    {
+      "key": "milestone.order_1",
+      "value": "Objectif : terminer la première commande ({0}/1) · Récompense {1}"
+    },
+    {
+      "key": "milestone.hint.order_3",
+      "value": "Continue les ventes auto ; réassortis cet article si ça bloque."
+    },
+    {
+      "key": "settings.test_title",
+      "value": "Contrôle des 3 premières minutes"
+    },
+    {
+      "key": "settings.test_done",
+      "value": "Terminé"
+    },
+    {
+      "key": "settings.test_pending",
+      "value": "En attente"
+    },
+    {
+      "key": "settings.test_report",
+      "value": "Commandes {0} · Réassorts {1}\nPremière amélioration de prix : {2}\nIntervalle vente auto : {3} s\nObjectif actuel : {4}"
     }
   ]
 }
