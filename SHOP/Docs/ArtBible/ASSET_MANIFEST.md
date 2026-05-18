@@ -14,22 +14,23 @@ Status values:
 
 | Asset | Path | Status | Notes |
 | --- | --- | --- | --- |
-| Customer_Female_A_Base.png | `Assets/Art/MVP30/Characters/Customer/Base/` | planned | Primary customer identity. |
-| Staff_Cashier_A_Base.png | `Assets/Art/MVP30/Characters/Staff/Cashier/Base/` | planned | Cashier identity. |
-| Shelf_Master.png | `Assets/Art/MVP30/Scene/Shelf/Base/` | planned | Source for full/low/empty states. |
-| OrderTicket_Master.png | `Assets/Art/MVP30/UI/Orders/` | planned | Source for order ticket states. |
+| Customer_Female_A_Base.png | `Assets/Art/MVP30/Characters/Customer/Base/` | approved | Short bob hair, cream cardigan, coral top, teal skirt, brown bag and shoes. |
+| Staff_Cashier_A_Base.png | `Assets/Art/MVP30/Characters/Staff/Cashier/Base/` | approved | Female cashier with cream shirt, warm orange apron, deep green lower outfit, brown shoes. |
+| Shelf_Master.png | `Assets/Art/MVP30/Scene/Shelf/Base/` | approved | Warm wood shelf with green decorative trim, source for stock states. |
+| OrderTicket_Master.png | `Assets/Art/MVP30/UI/Orders/` | approved | Green framed hanging order ticket with clear center safe area. |
 
 ## Runtime Assets
 
 | Asset | Path | Status | Gameplay State |
 | --- | --- | --- | --- |
-| customer_enter_01.png | `Characters/Customer/Enter/` | planned | New customer enters. |
-| customer_idle_01.png | `Characters/Customer/Idle/` | planned | Customer waiting. |
-| customer_pay_01.png | `Characters/Customer/Pay/` | planned | Sale in progress. |
-| customer_happy_01.png | `Characters/Customer/Happy/` | planned | Order complete. |
-| customer_leave_01.png | `Characters/Customer/Leave/` | planned | Customer exits. |
-| staff_cashier_idle_01.png | `Characters/Staff/Cashier/Idle/` | planned | Cashier idle. |
-| staff_cashier_work_01.png | `Characters/Staff/Cashier/Work/` | planned | Checkout action. |
+| customer_enter_01.png | `Characters/Customer/Enter/` | integrated | New customer enters. |
+| customer_idle_01.png | `Characters/Customer/Idle/` | integrated | Customer waiting. |
+| customer_pay_01.png | `Characters/Customer/Pay/` | integrated | Sale in progress. |
+| customer_happy_01.png | `Characters/Customer/Happy/` | integrated | Order complete. |
+| customer_leave_01.png | `Characters/Customer/Leave/` | integrated | Customer exits. |
+| staff_cashier_idle_01.png | `Characters/Staff/Cashier/Idle/` | integrated | Cashier idle. |
+| staff_cashier_work_01.png | `Characters/Staff/Cashier/Work/` | integrated | Checkout action. |
+| staff_cashier_success_01.png | `Characters/Staff/Cashier/Work/` | integrated | Order complete confirmation. |
 | shelf_full_01.png | `Scene/Shelf/States/` | planned | Stock healthy. |
 | shelf_low_01.png | `Scene/Shelf/States/` | planned | Stock low. |
 | shelf_empty_01.png | `Scene/Shelf/States/` | planned | Missing stock. |
@@ -46,7 +47,9 @@ Status values:
 - Same outline thickness.
 - Same lighting direction.
 - Same canvas size within the set.
-- Transparent background where required.
+- Real PNG alpha channel where required.
+- No gray/white checkerboard, white card, gray canvas, or fake transparent background baked into the image.
+- No white/gray pixels inside internal cutout spaces such as between legs, arm gaps, bag strap gaps, or hair gaps.
 - Readable at phone UI size.
 - Filename matches manifest.
 - Unity import type is Sprite.

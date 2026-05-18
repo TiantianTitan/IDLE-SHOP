@@ -151,6 +151,7 @@ public sealed class IdleShopGame : MonoBehaviour
     private const int Mvp23FxRestockSuccessRing = 30;
     private const int Mvp23FxUpgradeSuccess = 31;
     private const int Mvp23CustomerLeave = 32;
+    private const int Mvp30StaffCashierSuccess = 33;
     private readonly ProductDef[] products =
     {
         new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 12f, 1.35f, 1, 12, 2, new Color(0.94f, 0.48f, 0.32f)),
@@ -2750,7 +2751,11 @@ public sealed class IdleShopGame : MonoBehaviour
             sceneStaffMotion.localScale = Vector3.one * staffPulse;
             if (sceneStaffImage != null)
             {
-                sceneStaffImage.sprite = FirstSprite(saleBurst > 0f ? Mvp23Sprite(Mvp23StaffCashierWork) : Mvp23Sprite(Mvp23StaffCashierIdle), StaffSprite(0), customerSprite);
+                sceneStaffImage.sprite = FirstSprite(
+                    orderCompleteBurst > 0f ? Mvp23Sprite(Mvp30StaffCashierSuccess) : null,
+                    saleBurst > 0f ? Mvp23Sprite(Mvp23StaffCashierWork) : Mvp23Sprite(Mvp23StaffCashierIdle),
+                    StaffSprite(0),
+                    customerSprite);
             }
         }
 

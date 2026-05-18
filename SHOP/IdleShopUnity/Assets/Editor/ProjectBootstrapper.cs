@@ -12,6 +12,8 @@ public static class ProjectBootstrapper
     private const string ApkPath = "Builds/Android/PocketShop-debug.apk";
     private const string LocalizationPath = "Assets/Resources/Localization";
     private const string ArtPath = "Assets/Art";
+    private const string Mvp23Path = "Assets/Art/MVP23";
+    private const string Mvp30Path = "Assets/Art/MVP30";
     private const string SaveKey = "PocketShop.Unity.Save.V1";
 
     [Serializable]
@@ -74,42 +76,7 @@ public static class ProjectBootstrapper
                 LoadSprite($"{ArtPath}/Staff/zhou_purchaser.png"),
                 LoadSprite($"{ArtPath}/Staff/anna_manager.png")
             },
-            new[]
-            {
-                LoadSprite($"{ArtPath}/MVP23/scene_shop_interior_base.png"),
-                LoadSprite($"{ArtPath}/MVP23/scene_cashier_counter.png"),
-                LoadSprite($"{ArtPath}/MVP23/scene_product_shelf_full.png"),
-                LoadSprite($"{ArtPath}/MVP23/scene_product_shelf_low.png"),
-                LoadSprite($"{ArtPath}/MVP23/scene_product_shelf_empty.png"),
-                LoadFirstSprite($"{ArtPath}/MVP23/customer_enter_01.png", $"{ArtPath}/MVP23/npc_customer_walk_01.png"),
-                LoadFirstSprite($"{ArtPath}/MVP23/customer_enter_01.png", $"{ArtPath}/MVP23/npc_customer_walk_02.png"),
-                LoadFirstSprite($"{ArtPath}/MVP23/customer_waiting_01.png", $"{ArtPath}/MVP23/npc_customer_idle.png"),
-                LoadSprite($"{ArtPath}/MVP23/npc_customer_pay.png"),
-                LoadFirstSprite($"{ArtPath}/MVP23/customer_happy_01.png", $"{ArtPath}/MVP23/npc_customer_leave_happy.png"),
-                LoadSprite($"{ArtPath}/MVP23/npc_customer_disappointed.png"),
-                LoadSprite($"{ArtPath}/MVP23/npc_staff_cashier_idle.png"),
-                LoadSprite($"{ArtPath}/MVP23/npc_staff_cashier_work.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_coin_pop.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_restock_spark.png"),
-                LoadSprite($"{ArtPath}/MVP23/ui_order_ticket.png"),
-                LoadSprite($"{ArtPath}/MVP23/ui_order_item_slot.png"),
-                LoadSprite($"{ArtPath}/MVP23/ui_stock_warning_badge.png"),
-                LoadSprite($"{ArtPath}/MVP23/ui_current_item_frame.png"),
-                LoadSprite($"{ArtPath}/MVP23/icon_checkout_one.png"),
-                LoadSprite($"{ArtPath}/MVP23/icon_restock_item.png"),
-                LoadSprite($"{ArtPath}/MVP23/icon_upgrade_product.png"),
-                LoadSprite($"{ArtPath}/MVP23/scene_empty_shelf_overlay.png"),
-                LoadFirstSprite($"{ArtPath}/MVP23/ui_order_complete_stamp.png", $"{ArtPath}/MVP23/fx_order_complete_stamp.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_low_stock_pulse.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_customer_waiting_bubble.png"),
-                LoadSprite($"{ArtPath}/MVP23/ui_scene_floor_shadow.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_order_complete_glow.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_item_selected_glow.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_cash_float.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_restock_success_ring.png"),
-                LoadSprite($"{ArtPath}/MVP23/fx_upgrade_success.png"),
-                LoadFirstSprite($"{ArtPath}/MVP23/customer_leave_01.png", $"{ArtPath}/MVP23/npc_customer_leave_happy.png")
-            },
+            LoadMvp30PreparedArtSprites(),
             LoadFont("Assets/Fonts/NotoSansCJK-Regular.ttc"),
             LoadFont("Assets/Fonts/NotoNaskhArabic-Regular.ttf"));
 
@@ -130,6 +97,88 @@ public static class ProjectBootstrapper
 
         EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
         AssetDatabase.SaveAssets();
+    }
+
+    private static Sprite[] LoadMvp23ArtSprites()
+    {
+        return new[]
+        {
+            LoadSprite($"{Mvp23Path}/scene_shop_interior_base.png"),
+            LoadSprite($"{Mvp23Path}/scene_cashier_counter.png"),
+            LoadSprite($"{Mvp23Path}/scene_product_shelf_full.png"),
+            LoadSprite($"{Mvp23Path}/scene_product_shelf_low.png"),
+            LoadSprite($"{Mvp23Path}/scene_product_shelf_empty.png"),
+            LoadFirstSprite($"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_01.png"),
+            LoadFirstSprite($"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_02.png"),
+            LoadFirstSprite($"{Mvp23Path}/customer_waiting_01.png", $"{Mvp23Path}/npc_customer_idle.png"),
+            LoadSprite($"{Mvp23Path}/npc_customer_pay.png"),
+            LoadFirstSprite($"{Mvp23Path}/customer_happy_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
+            LoadSprite($"{Mvp23Path}/npc_customer_disappointed.png"),
+            LoadSprite($"{Mvp23Path}/npc_staff_cashier_idle.png"),
+            LoadSprite($"{Mvp23Path}/npc_staff_cashier_work.png"),
+            LoadSprite($"{Mvp23Path}/fx_coin_pop.png"),
+            LoadSprite($"{Mvp23Path}/fx_restock_spark.png"),
+            LoadSprite($"{Mvp23Path}/ui_order_ticket.png"),
+            LoadSprite($"{Mvp23Path}/ui_order_item_slot.png"),
+            LoadSprite($"{Mvp23Path}/ui_stock_warning_badge.png"),
+            LoadSprite($"{Mvp23Path}/ui_current_item_frame.png"),
+            LoadSprite($"{Mvp23Path}/icon_checkout_one.png"),
+            LoadSprite($"{Mvp23Path}/icon_restock_item.png"),
+            LoadSprite($"{Mvp23Path}/icon_upgrade_product.png"),
+            LoadSprite($"{Mvp23Path}/scene_empty_shelf_overlay.png"),
+            LoadFirstSprite($"{Mvp23Path}/ui_order_complete_stamp.png", $"{Mvp23Path}/fx_order_complete_stamp.png"),
+            LoadSprite($"{Mvp23Path}/fx_low_stock_pulse.png"),
+            LoadSprite($"{Mvp23Path}/fx_customer_waiting_bubble.png"),
+            LoadSprite($"{Mvp23Path}/ui_scene_floor_shadow.png"),
+            LoadSprite($"{Mvp23Path}/fx_order_complete_glow.png"),
+            LoadSprite($"{Mvp23Path}/fx_item_selected_glow.png"),
+            LoadSprite($"{Mvp23Path}/fx_cash_float.png"),
+            LoadSprite($"{Mvp23Path}/fx_restock_success_ring.png"),
+            LoadSprite($"{Mvp23Path}/fx_upgrade_success.png"),
+            LoadFirstSprite($"{Mvp23Path}/customer_leave_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
+            LoadSprite($"{Mvp23Path}/npc_staff_cashier_work.png")
+        };
+    }
+
+    private static Sprite[] LoadMvp30PreparedArtSprites()
+    {
+        return new[]
+        {
+            LoadSprite($"{Mvp23Path}/scene_shop_interior_base.png"),
+            LoadSprite($"{Mvp23Path}/scene_cashier_counter.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_full_01.png", $"{Mvp23Path}/scene_product_shelf_full.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_low_01.png", $"{Mvp23Path}/scene_product_shelf_low.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_empty_01.png", $"{Mvp23Path}/scene_product_shelf_empty.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png", $"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_01.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png", $"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_02.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Idle/customer_idle_01.png", $"{Mvp23Path}/customer_waiting_01.png", $"{Mvp23Path}/npc_customer_idle.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Pay/customer_pay_01.png", $"{Mvp23Path}/npc_customer_pay.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Happy/customer_happy_01.png", $"{Mvp23Path}/customer_happy_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
+            LoadSprite($"{Mvp23Path}/npc_customer_disappointed.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Staff/Cashier/Idle/staff_cashier_idle_01.png", $"{Mvp23Path}/npc_staff_cashier_idle.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", $"{Mvp23Path}/npc_staff_cashier_work.png"),
+            LoadFirstSprite($"{Mvp30Path}/FX/fx_cash_float.png", $"{Mvp23Path}/fx_cash_float.png", $"{Mvp23Path}/fx_coin_pop.png"),
+            LoadFirstSprite($"{Mvp30Path}/FX/fx_restock_success_ring.png", $"{Mvp23Path}/fx_restock_success_ring.png", $"{Mvp23Path}/fx_restock_spark.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_order_ticket.png", $"{Mvp23Path}/ui_order_ticket.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_order_item_slot.png", $"{Mvp23Path}/ui_order_item_slot.png"),
+            LoadSprite($"{Mvp23Path}/ui_stock_warning_badge.png"),
+            LoadSprite($"{Mvp23Path}/ui_current_item_frame.png"),
+            LoadSprite($"{Mvp23Path}/icon_checkout_one.png"),
+            LoadSprite($"{Mvp23Path}/icon_restock_item.png"),
+            LoadSprite($"{Mvp23Path}/icon_upgrade_product.png"),
+            LoadSprite($"{Mvp23Path}/scene_empty_shelf_overlay.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_order_complete_stamp.png", $"{Mvp23Path}/ui_order_complete_stamp.png", $"{Mvp23Path}/fx_order_complete_stamp.png"),
+            LoadSprite($"{Mvp23Path}/fx_low_stock_pulse.png"),
+            LoadSprite($"{Mvp23Path}/fx_customer_waiting_bubble.png"),
+            LoadSprite($"{Mvp23Path}/ui_scene_floor_shadow.png"),
+            LoadFirstSprite($"{Mvp30Path}/FX/fx_order_complete_glow.png", $"{Mvp23Path}/fx_order_complete_glow.png"),
+            LoadFirstSprite($"{Mvp30Path}/FX/fx_item_selected_glow.png", $"{Mvp23Path}/fx_item_selected_glow.png"),
+            LoadFirstSprite($"{Mvp30Path}/FX/fx_cash_float.png", $"{Mvp23Path}/fx_cash_float.png"),
+            LoadFirstSprite($"{Mvp30Path}/FX/fx_restock_success_ring.png", $"{Mvp23Path}/fx_restock_success_ring.png"),
+            LoadFirstSprite($"{Mvp30Path}/FX/fx_upgrade_success.png", $"{Mvp23Path}/fx_upgrade_success.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Leave/customer_leave_01.png", $"{Mvp23Path}/customer_leave_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_success_01.png", $"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", $"{Mvp23Path}/npc_staff_cashier_work.png")
+        };
     }
 
     [MenuItem("Pocket Shop/Build Android Debug APK")]

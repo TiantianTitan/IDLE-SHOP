@@ -27,7 +27,9 @@
 - Outline: 4px soft dark brown.
 - Lighting: warm top-left light.
 - Shadow: soft oval shadow only, never hard cast shadows.
-- Background: transparent PNG.
+- Background: real alpha-transparent PNG.
+- Do not include a gray/white checkerboard, white card, gray canvas, or fake transparency pattern inside the image.
+- Internal negative spaces such as between legs, arm gaps, bag strap gaps, hair gaps, and clothing gaps must also be alpha-transparent.
 - Keep proportions, face, hair, clothing, color, and outline identical across states.
 
 ## UI Rules
@@ -41,7 +43,8 @@
 
 ## FX Rules
 
-- FX must be transparent PNG.
+- FX must be real alpha-transparent PNG.
+- Do not include checkerboard or solid-color backgrounds.
 - FX should read at 128px and 256px.
 - FX should not hide product or order text.
 - Use short-lived visual intent:

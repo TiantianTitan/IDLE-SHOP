@@ -27,7 +27,7 @@ Batch: MVP30 Customer Set
 Reference master: Customer_Female_A_Base.png
 Style bible: SHOP/Docs/ArtBible/STYLE_GUIDE.md
 Output size: 512x512
-Background: transparent
+Background: real alpha-transparent PNG, no checkerboard background
 
 Generate:
 1. customer_enter_01.png
@@ -40,6 +40,8 @@ Consistency requirements:
 - Same identity, outfit, colors, outline, lighting, proportions.
 - Only action changes.
 - Side/slight 3/4 side view.
+- Real alpha-transparent PNG.
+- No gray/white checkerboard pattern or fake transparent background.
 ```
 
 ## Handoff Format from ChatGPT to Codex
