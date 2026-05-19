@@ -58,12 +58,12 @@ public static class ProjectBootstrapper
             LoadSprite($"{ArtPath}/UI/upgrade.png"),
             new[]
             {
-                LoadSprite($"{ArtPath}/Products/rice_ball.png"),
-                LoadSprite($"{ArtPath}/Products/sparkling_water.png"),
+                LoadFirstSprite($"{Mvp30Path}/Products/product_onigiri_01.png", $"{ArtPath}/Products/rice_ball.png"),
+                LoadFirstSprite($"{Mvp30Path}/Products/product_tea_01.png", $"{ArtPath}/Products/sparkling_water.png"),
                 LoadSprite($"{ArtPath}/Products/bread.png"),
                 LoadSprite($"{ArtPath}/Products/coffee.png"),
-                LoadSprite($"{ArtPath}/Products/lunch_box.png"),
-                LoadSprite($"{ArtPath}/Products/dessert.png"),
+                LoadFirstSprite($"{Mvp30Path}/Products/product_bento_01.png", $"{ArtPath}/Products/lunch_box.png"),
+                LoadFirstSprite($"{Mvp30Path}/Products/product_dessert_01.png", $"{ArtPath}/Products/dessert.png"),
                 LoadSprite($"{ArtPath}/Products/flower.png"),
                 LoadSprite($"{ArtPath}/Products/gift_box.png")
             },

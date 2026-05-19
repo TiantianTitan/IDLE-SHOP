@@ -15,6 +15,23 @@ This table defines the MVP 3.0 runtime sprite order. Unity setup now uses the pr
 
 This order is prepared for `ProjectBootstrapper`.
 
+## Product Sprite Array
+
+This array is passed separately into `IdleShopGame.ConfigureArt`.
+
+| Index | Runtime Product | MVP30 path | Fallback |
+| ---: | --- | --- | --- |
+| 0 | rice_ball | `Assets/Art/MVP30/Products/product_onigiri_01.png` | integrated; fallback `Assets/Art/Products/rice_ball.png` |
+| 1 | beverage | `Assets/Art/MVP30/Products/product_tea_01.png` | integrated; fallback `Assets/Art/Products/sparkling_water.png` |
+| 2 | bread | TBD | `Assets/Art/Products/bread.png` |
+| 3 | coffee | TBD | `Assets/Art/Products/coffee.png` |
+| 4 | lunch_box | `Assets/Art/MVP30/Products/product_bento_01.png` | integrated; fallback `Assets/Art/Products/lunch_box.png` |
+| 5 | dessert | `Assets/Art/MVP30/Products/product_dessert_01.png` | integrated; fallback `Assets/Art/Products/dessert.png` |
+| 6 | flower | TBD | `Assets/Art/Products/flower.png` |
+| 7 | gift_box | TBD | `Assets/Art/Products/gift_box.png` |
+
+## MVP Art Sprite Order
+
 | Index | Key | MVP30 path | Fallback |
 | ---: | --- | --- | --- |
 | 0 | scene_shop_interior | TBD | `Assets/Art/MVP23/scene_shop_interior_base.png` |

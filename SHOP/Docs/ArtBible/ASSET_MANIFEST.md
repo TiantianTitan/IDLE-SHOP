@@ -45,6 +45,10 @@ Status values:
 | fx_cash_float.png | `FX/` | integrated | Cash pop backing. |
 | fx_restock_success_ring.png | `FX/` | integrated | Restock success ring. |
 | fx_upgrade_success.png | `FX/` | integrated | Upgrade success burst. |
+| product_onigiri_01.png | `Products/` | integrated | Rice ball product sprite. |
+| product_tea_01.png | `Products/` | integrated | Beverage product sprite. |
+| product_bento_01.png | `Products/` | integrated | Bento/lunch box product sprite. |
+| product_dessert_01.png | `Products/` | integrated | Dessert product sprite. |
 
 ## Acceptance Checklist
 
