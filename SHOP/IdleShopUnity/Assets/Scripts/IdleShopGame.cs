@@ -152,6 +152,7 @@ public sealed class IdleShopGame : MonoBehaviour
     private const int Mvp23FxUpgradeSuccess = 31;
     private const int Mvp23CustomerLeave = 32;
     private const int Mvp30StaffCashierSuccess = 33;
+    private const int Mvp30ShelfRestocked = 34;
     private readonly ProductDef[] products =
     {
         new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 12f, 1.35f, 1, 12, 2, new Color(0.94f, 0.48f, 0.32f)),
@@ -2953,6 +2954,7 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         Sprite shelfStateSprite = FirstSprite(
+            restockPulseTimer > 0f ? Mvp23Sprite(Mvp30ShelfRestocked) : null,
             !hasSellableStock && !showingOrderComplete ? Mvp23Sprite(Mvp23ShelfEmpty) : lowStock ? Mvp23Sprite(Mvp23ShelfLow) : Mvp23Sprite(Mvp23ShelfFull),
             shelfSprite);
         Sprite counterStateSprite = FirstSprite(Mvp23Sprite(Mvp23CashierCounter), counterSprite);

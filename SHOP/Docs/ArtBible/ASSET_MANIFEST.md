@@ -31,9 +31,14 @@ Status values:
 | staff_cashier_idle_01.png | `Characters/Staff/Cashier/Idle/` | integrated | Cashier idle. |
 | staff_cashier_work_01.png | `Characters/Staff/Cashier/Work/` | integrated | Checkout action. |
 | staff_cashier_success_01.png | `Characters/Staff/Cashier/Work/` | integrated | Order complete confirmation. |
-| shelf_full_01.png | `Scene/Shelf/States/` | planned | Stock healthy. |
-| shelf_low_01.png | `Scene/Shelf/States/` | planned | Stock low. |
-| shelf_empty_01.png | `Scene/Shelf/States/` | planned | Missing stock. |
+| shelf_full_01.png | `Scene/Shelf/States/` | integrated | Stock healthy. |
+| shelf_low_01.png | `Scene/Shelf/States/` | integrated | Stock low. |
+| shelf_empty_01.png | `Scene/Shelf/States/` | integrated | Missing stock. |
+| shelf_restocked_01.png | `Scene/Shelf/States/` | integrated | Short restock success state. |
+| ui_order_ticket.png | `UI/Orders/` | integrated | Current order card background. |
+| ui_order_item_slot.png | `UI/Orders/` | integrated | Order item row background. |
+| ui_current_item_frame.png | `UI/Orders/` | integrated | Selected order item frame. |
+| ui_stock_warning_badge.png | `UI/Orders/` | integrated | Missing stock warning badge. |
 | ui_order_complete_stamp.png | `UI/Orders/` | integrated | Completion stamp. |
 | fx_order_complete_glow.png | `FX/` | integrated | Completion glow. |
 | fx_item_selected_glow.png | `FX/` | integrated | Selected item glow. |
@@ -47,8 +52,9 @@ Status values:
 - Same outline thickness.
 - Same lighting direction.
 - Same canvas size within the set.
+- Intended for Unity Hub / Unity Editor sprite import.
 - Real PNG alpha channel where required.
-- No gray/white checkerboard, white card, gray canvas, or fake transparent background baked into the image.
+- No gray/white checkerboard, pure black background, pure white background, white card, gray canvas, colored backdrop, or fake transparent background baked into the image.
 - No white/gray pixels inside internal cutout spaces such as between legs, arm gaps, bag strap gaps, or hair gaps.
 - Readable at phone UI size.
 - Filename matches manifest.

@@ -22,13 +22,14 @@
 
 ## Character Rules
 
+- Character art is imported into Unity Hub / Unity Editor as sprites.
 - Head-to-body ratio: `1 : 1.8`.
 - View: side or slight 3/4 side, facing the counter direction.
 - Outline: 4px soft dark brown.
 - Lighting: warm top-left light.
 - Shadow: soft oval shadow only, never hard cast shadows.
 - Background: real alpha-transparent PNG.
-- Do not include a gray/white checkerboard, white card, gray canvas, or fake transparency pattern inside the image.
+- Do not include any background pixels: no gray/white checkerboard, pure black background, pure white background, white card, gray canvas, colored backdrop, or fake transparency pattern inside the image.
 - Internal negative spaces such as between legs, arm gaps, bag strap gaps, hair gaps, and clothing gaps must also be alpha-transparent.
 - Keep proportions, face, hair, clothing, color, and outline identical across states.
 
@@ -43,8 +44,9 @@
 
 ## FX Rules
 
+- FX art is imported into Unity Hub / Unity Editor as sprites.
 - FX must be real alpha-transparent PNG.
-- Do not include checkerboard or solid-color backgrounds.
+- Do not include checkerboard, pure black, pure white, gray, colored, or any other solid-color backgrounds.
 - FX should read at 128px and 256px.
 - FX should not hide product or order text.
 - Use short-lived visual intent:

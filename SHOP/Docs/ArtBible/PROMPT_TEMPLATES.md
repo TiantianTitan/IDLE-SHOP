@@ -8,6 +8,7 @@ Use these prompts with ChatGPT image generation or another image model. Always a
 Based on [MASTER_ASSET_NAME], generate [OUTPUT_FILE_NAME].
 
 Requirements:
+- This is a Unity game sprite for Unity Hub / Unity Editor import, not a presentation image.
 - Keep the exact same character identity.
 - Keep the same hair, face, outfit, color palette, proportions, outline, and lighting.
 - Only change the pose/action.
@@ -18,7 +19,7 @@ Requirements:
 - Warm top-left lighting.
 - Soft oval ground shadow only if needed.
 - Real alpha-transparent background.
-- Do not draw a gray/white checkerboard pattern, white box, gray canvas, or fake transparent background.
+- Do not draw any background pixels: no gray/white checkerboard, pure black background, pure white background, white box, gray canvas, colored backdrop, or fake transparent background.
 - Internal negative spaces such as between legs, arm gaps, bag strap gaps, hair gaps, and clothing gaps must also be alpha-transparent.
 - No text, no watermark.
 
@@ -28,7 +29,8 @@ Action:
 Output:
 - PNG
 - Real transparent alpha channel
-- No checkerboard background pixels
+- No background pixels at all
+- No checkerboard, black, white, gray, or colored background pixels
 - No white or gray pixels in internal cutout spaces
 - Same canvas size as the master asset
 ```
@@ -39,6 +41,7 @@ Output:
 Based on Customer_Female_A_Base.png, generate customer_pay_01.png.
 
 Requirements:
+- This is a Unity game sprite for Unity Hub / Unity Editor import, not a presentation image.
 - Keep the exact same character identity.
 - Keep the same hair, face, outfit, color palette, proportions, outline, and lighting.
 - Only change the pose/action.
@@ -48,7 +51,7 @@ Requirements:
 - 4px soft dark brown outline.
 - Warm top-left lighting.
 - Real alpha-transparent background.
-- Do not draw a gray/white checkerboard pattern, white box, gray canvas, or fake transparent background.
+- Do not draw any background pixels: no gray/white checkerboard, pure black background, pure white background, white box, gray canvas, colored backdrop, or fake transparent background.
 - Internal negative spaces such as between legs, arm gaps, bag strap gaps, hair gaps, and clothing gaps must also be alpha-transparent.
 - No text, no watermark.
 
@@ -60,7 +63,8 @@ Action:
 Output:
 - PNG
 - Real transparent alpha channel
-- No checkerboard background pixels
+- No background pixels at all
+- No checkerboard, black, white, gray, or colored background pixels
 - No white or gray pixels in internal cutout spaces
 - Same canvas size as Customer_Female_A_Base.png
 ```
@@ -71,8 +75,9 @@ Output:
 Generate [OUTPUT_FILE_NAME] for a cozy mobile idle shop game.
 
 Requirements:
+- This is a Unity game sprite for Unity Hub / Unity Editor import, not a presentation image.
 - Real alpha-transparent PNG.
-- Do not draw a gray/white checkerboard pattern, white box, gray canvas, or fake transparent background.
+- Do not draw any background pixels: no gray/white checkerboard, pure black background, pure white background, white box, gray canvas, colored backdrop, or fake transparent background.
 - Clean readable silhouette.
 - Warm polished casual game style.
 - No text, no watermark.

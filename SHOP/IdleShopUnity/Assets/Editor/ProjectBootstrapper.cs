@@ -136,7 +136,8 @@ public static class ProjectBootstrapper
             LoadSprite($"{Mvp23Path}/fx_restock_success_ring.png"),
             LoadSprite($"{Mvp23Path}/fx_upgrade_success.png"),
             LoadFirstSprite($"{Mvp23Path}/customer_leave_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
-            LoadSprite($"{Mvp23Path}/npc_staff_cashier_work.png")
+            LoadSprite($"{Mvp23Path}/npc_staff_cashier_work.png"),
+            LoadSprite($"{Mvp23Path}/scene_product_shelf_full.png")
         };
     }
 
@@ -161,8 +162,8 @@ public static class ProjectBootstrapper
             LoadFirstSprite($"{Mvp30Path}/FX/fx_restock_success_ring.png", $"{Mvp23Path}/fx_restock_success_ring.png", $"{Mvp23Path}/fx_restock_spark.png"),
             LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_order_ticket.png", $"{Mvp23Path}/ui_order_ticket.png"),
             LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_order_item_slot.png", $"{Mvp23Path}/ui_order_item_slot.png"),
-            LoadSprite($"{Mvp23Path}/ui_stock_warning_badge.png"),
-            LoadSprite($"{Mvp23Path}/ui_current_item_frame.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_stock_warning_badge.png", $"{Mvp23Path}/ui_stock_warning_badge.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_current_item_frame.png", $"{Mvp23Path}/ui_current_item_frame.png"),
             LoadSprite($"{Mvp23Path}/icon_checkout_one.png"),
             LoadSprite($"{Mvp23Path}/icon_restock_item.png"),
             LoadSprite($"{Mvp23Path}/icon_upgrade_product.png"),
@@ -177,7 +178,8 @@ public static class ProjectBootstrapper
             LoadFirstSprite($"{Mvp30Path}/FX/fx_restock_success_ring.png", $"{Mvp23Path}/fx_restock_success_ring.png"),
             LoadFirstSprite($"{Mvp30Path}/FX/fx_upgrade_success.png", $"{Mvp23Path}/fx_upgrade_success.png"),
             LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Leave/customer_leave_01.png", $"{Mvp23Path}/customer_leave_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
-            LoadFirstSprite($"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_success_01.png", $"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", $"{Mvp23Path}/npc_staff_cashier_work.png")
+            LoadFirstSprite($"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_success_01.png", $"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", $"{Mvp23Path}/npc_staff_cashier_work.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_restocked_01.png", $"{Mvp30Path}/Scene/Shelf/States/shelf_full_01.png", $"{Mvp23Path}/scene_product_shelf_full.png")
         };
     }
 
@@ -366,6 +368,18 @@ public static class ProjectBootstrapper
 
     private static int MaxTextureSizeFor(string path)
     {
+        if (path.Contains("/UI/Orders/ui_order_ticket.png"))
+        {
+            return 1024;
+        }
+
+        if (path.Contains("/UI/Orders/ui_order_item_slot.png") ||
+            path.Contains("/UI/Orders/ui_current_item_frame.png") ||
+            path.Contains("/UI/Orders/ui_order_complete_stamp.png"))
+        {
+            return 512;
+        }
+
         if (path.Contains("/UI/"))
         {
             return 256;

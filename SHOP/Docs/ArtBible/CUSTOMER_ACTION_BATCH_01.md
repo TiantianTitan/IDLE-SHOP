@@ -17,8 +17,9 @@ Do not generate new character directions. Every output must preserve the approve
 - Cozy mobile idle shop game style.
 - Warm top-left lighting.
 - 4px soft dark brown outline.
+- This is a Unity game sprite for Unity Hub / Unity Editor import, not a presentation image.
 - Real alpha-transparent background.
-- No gray/white checkerboard pattern, white box, gray canvas, or fake transparent background.
+- No background pixels at all: no gray/white checkerboard pattern, pure black background, pure white background, white box, gray canvas, colored backdrop, or fake transparent background.
 - Internal negative spaces such as between legs, arm gaps, bag strap gaps, hair gaps, and clothing gaps must also be alpha-transparent.
 - Same canvas size as the master asset.
 
@@ -45,13 +46,14 @@ Generate only these files:
 5. customer_leave_01.png
 
 Requirements:
+- This is a Unity game sprite for Unity Hub / Unity Editor import, not a presentation image.
 - Keep the exact same character identity.
 - Keep the same short brown bob hair, cream cardigan, coral top, teal skirt, brown shoulder bag, and brown shoes.
 - Keep the same head-to-body ratio, outline thickness, color palette, and warm top-left lighting.
 - Only change the pose/action.
 - Side or slight 3/4 side view, facing the cashier counter direction.
 - Real alpha-transparent background.
-- Do not draw a gray/white checkerboard pattern, white box, gray canvas, or fake transparent background.
+- Do not draw any background pixels: no gray/white checkerboard, pure black background, pure white background, white box, gray canvas, colored backdrop, or fake transparent background.
 - Internal negative spaces such as between legs, arm gaps, bag strap gaps, hair gaps, and clothing gaps must also be alpha-transparent.
 - No text, no watermark.
 - Same canvas size as Customer_Female_A_Base.png.
@@ -67,7 +69,8 @@ Do not change hairstyle, clothing, colors, face, proportions, or lighting.
 - Cardigan, top, skirt, bag, and shoes match the master.
 - Canvas size matches the master.
 - Real PNG alpha channel exists.
-- No checkerboard background pixels.
+- No background pixels exist.
+- No checkerboard, black, white, gray, or colored background pixels.
 - No white or gray pixels in internal cutout spaces such as between legs, arm gaps, bag strap gaps, or hair gaps.
 - Character remains readable at 128px.
 - Each action reads clearly without changing identity.

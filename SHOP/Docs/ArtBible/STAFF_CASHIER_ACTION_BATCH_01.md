@@ -16,8 +16,9 @@ Do not generate new character directions. Every output must preserve the approve
 - Cozy mobile idle shop game style.
 - Warm top-left lighting.
 - 4px soft dark brown outline.
+- This is a Unity game sprite for Unity Hub / Unity Editor import, not a presentation image.
 - Real alpha-transparent background.
-- No gray/white checkerboard pattern, white box, gray canvas, or fake transparent background.
+- No background pixels at all: no gray/white checkerboard pattern, pure black background, pure white background, white box, gray canvas, colored backdrop, or fake transparent background.
 - Internal negative spaces such as arm gaps, apron gaps, hair gaps, and clothing gaps must also be alpha-transparent.
 - Same canvas size as the master asset.
 
@@ -34,7 +35,8 @@ Do not generate new character directions. Every output must preserve the approve
 - Hair bun, shirt, apron, lower outfit, and shoes match the master.
 - Canvas size matches the master.
 - Real PNG alpha channel exists.
-- No checkerboard background pixels.
+- No background pixels exist.
+- No checkerboard, black, white, gray, or colored background pixels.
 - No white or gray pixels in internal cutout spaces such as arm gaps, apron gaps, or hair gaps.
 - Character remains readable at 128px.
 - Each action reads clearly without changing identity.
