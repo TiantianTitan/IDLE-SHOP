@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -116,6 +119,8 @@ public sealed class IdleShopGame : MonoBehaviour
     private const float UpgradeGoalRatio = 0.70f;
     private const float StaffGoalRatio = 0.70f;
     private const float OrderCompleteDelaySeconds = 0.9f;
+    private const float CustomerEnterDurationSeconds = 1.55f;
+    private const float CustomerLeaveDurationSeconds = 1.20f;
     private const int StaffRecommendationMinSold = 30;
     private const int MilestoneCount = 5;
     private const int Mvp23SceneInterior = 0;
@@ -154,6 +159,10 @@ public sealed class IdleShopGame : MonoBehaviour
     private const int Mvp30StaffCashierSuccess = 33;
     private const int Mvp30ShelfRestocked = 34;
     private const int Mvp30IconOrder = 35;
+    private const int Mvp30CustomerWalk01 = 36;
+    private const int Mvp30CustomerWalk02 = 37;
+    private const int Mvp30CustomerWalk03 = 38;
+    private const int Mvp30CustomerWalk04 = 39;
     private readonly ProductDef[] products =
     {
         new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 12f, 1.35f, 1, 12, 2, new Color(0.94f, 0.48f, 0.32f)),
@@ -282,12 +291,217 @@ public sealed class IdleShopGame : MonoBehaviour
         arabicFont = rtlFont;
     }
 
+#if UNITY_EDITOR
+    private void EnsureEditorMvp30ArtConfigured()
+    {
+        EnsureEditorMvp30SpriteImports();
+
+        productSprites = new[]
+        {
+            EditorFirstSprite("Assets/Art/MVP30/Products/product_onigiri_01.png", "Assets/Art/Products/rice_ball.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Products/product_tea_01.png", "Assets/Art/Products/sparkling_water.png"),
+            EditorSprite("Assets/Art/Products/bread.png"),
+            EditorSprite("Assets/Art/Products/coffee.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Products/product_bento_01.png", "Assets/Art/Products/lunch_box.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Products/product_dessert_01.png", "Assets/Art/Products/dessert.png"),
+            EditorSprite("Assets/Art/Products/flower.png"),
+            EditorSprite("Assets/Art/Products/gift_box.png")
+        };
+
+        mvp23Sprites = new[]
+        {
+            EditorFirstSprite("Assets/Art/MVP30/Scene/Interior/scene_shop_interior_base.png", "Assets/Art/MVP23/scene_shop_interior_base.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Scene/Counter/scene_cashier_counter.png", "Assets/Art/MVP23/scene_cashier_counter.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Scene/Shelf/States/shelf_full_01.png", "Assets/Art/MVP23/scene_product_shelf_full.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Scene/Shelf/States/shelf_low_01.png", "Assets/Art/MVP23/scene_product_shelf_low.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Scene/Shelf/States/shelf_empty_01.png", "Assets/Art/MVP23/scene_product_shelf_empty.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_01.png", "Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png", "Assets/Art/MVP23/customer_enter_01.png", "Assets/Art/MVP23/npc_customer_walk_01.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_03.png", "Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png", "Assets/Art/MVP23/customer_enter_01.png", "Assets/Art/MVP23/npc_customer_walk_02.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Idle/customer_idle_01.png", "Assets/Art/MVP23/customer_waiting_01.png", "Assets/Art/MVP23/npc_customer_idle.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Pay/customer_pay_01.png", "Assets/Art/MVP23/npc_customer_pay.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Happy/customer_happy_01.png", "Assets/Art/MVP23/customer_happy_01.png", "Assets/Art/MVP23/npc_customer_leave_happy.png"),
+            EditorSprite("Assets/Art/MVP23/npc_customer_disappointed.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Staff/Cashier/Idle/staff_cashier_idle_01.png", "Assets/Art/MVP23/npc_staff_cashier_idle.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", "Assets/Art/MVP23/npc_staff_cashier_work.png"),
+            EditorFirstSprite("Assets/Art/MVP30/FX/fx_cash_float.png", "Assets/Art/MVP23/fx_cash_float.png", "Assets/Art/MVP23/fx_coin_pop.png"),
+            EditorFirstSprite("Assets/Art/MVP30/FX/fx_restock_success_ring.png", "Assets/Art/MVP23/fx_restock_success_ring.png", "Assets/Art/MVP23/fx_restock_spark.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Orders/ui_order_ticket.png", "Assets/Art/MVP23/ui_order_ticket.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Orders/ui_order_item_slot.png", "Assets/Art/MVP23/ui_order_item_slot.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Orders/ui_stock_warning_badge.png", "Assets/Art/MVP23/ui_stock_warning_badge.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Orders/ui_current_item_frame.png", "Assets/Art/MVP23/ui_current_item_frame.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Icons/icon_checkout_one.png", "Assets/Art/MVP23/icon_checkout_one.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Icons/icon_restock_item.png", "Assets/Art/MVP23/icon_restock_item.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Icons/icon_upgrade_product.png", "Assets/Art/MVP23/icon_upgrade_product.png"),
+            EditorSprite("Assets/Art/MVP23/scene_empty_shelf_overlay.png"),
+            EditorFirstSprite("Assets/Art/MVP30/UI/Orders/ui_order_complete_stamp.png", "Assets/Art/MVP23/ui_order_complete_stamp.png", "Assets/Art/MVP23/fx_order_complete_stamp.png"),
+            EditorSprite("Assets/Art/MVP23/fx_low_stock_pulse.png"),
+            EditorSprite("Assets/Art/MVP23/fx_customer_waiting_bubble.png"),
+            EditorSprite("Assets/Art/MVP23/ui_scene_floor_shadow.png"),
+            EditorFirstSprite("Assets/Art/MVP30/FX/fx_order_complete_glow.png", "Assets/Art/MVP23/fx_order_complete_glow.png"),
+            EditorFirstSprite("Assets/Art/MVP30/FX/fx_item_selected_glow.png", "Assets/Art/MVP23/fx_item_selected_glow.png"),
+            EditorFirstSprite("Assets/Art/MVP30/FX/fx_cash_float.png", "Assets/Art/MVP23/fx_cash_float.png"),
+            EditorFirstSprite("Assets/Art/MVP30/FX/fx_restock_success_ring.png", "Assets/Art/MVP23/fx_restock_success_ring.png"),
+            EditorFirstSprite("Assets/Art/MVP30/FX/fx_upgrade_success.png", "Assets/Art/MVP23/fx_upgrade_success.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Leave/customer_leave_01.png", "Assets/Art/MVP23/customer_leave_01.png", "Assets/Art/MVP23/npc_customer_leave_happy.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_success_01.png", "Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", "Assets/Art/MVP23/npc_staff_cashier_work.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Scene/Shelf/States/shelf_restocked_01.png", "Assets/Art/MVP30/Scene/Shelf/States/shelf_full_01.png", "Assets/Art/MVP23/scene_product_shelf_full.png"),
+            EditorSprite("Assets/Art/MVP30/UI/Icons/icon_order.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_01.png", "Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_02.png", "Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_03.png", "Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png"),
+            EditorFirstSprite("Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_04.png", "Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png")
+        };
+
+        if (staffSprites == null || staffSprites.Length == 0 || staffSprites[0] == null)
+        {
+            staffSprites = new[]
+            {
+                EditorFirstSprite("Assets/Art/MVP30/Characters/Staff/Cashier/Idle/staff_cashier_idle_01.png", "Assets/Art/Staff/kobayashi_cashier.png", "Assets/Art/Staff/cashier.png")
+            };
+        }
+
+        Debug.Log("MVP3.0 editor art auto-configured from Assets/Art/MVP30.");
+    }
+
+    private static void EnsureEditorMvp30SpriteImports()
+    {
+        string[] paths =
+        {
+            "Assets/Art/MVP30/Scene/Interior/scene_shop_interior_base.png",
+            "Assets/Art/MVP30/Scene/Counter/scene_cashier_counter.png",
+            "Assets/Art/MVP30/Scene/Shelf/States/shelf_full_01.png",
+            "Assets/Art/MVP30/Scene/Shelf/States/shelf_low_01.png",
+            "Assets/Art/MVP30/Scene/Shelf/States/shelf_empty_01.png",
+            "Assets/Art/MVP30/Scene/Shelf/States/shelf_restocked_01.png",
+            "Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png",
+            "Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_01.png",
+            "Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_02.png",
+            "Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_03.png",
+            "Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_04.png",
+            "Assets/Art/MVP30/Characters/Customer/Idle/customer_idle_01.png",
+            "Assets/Art/MVP30/Characters/Customer/Pay/customer_pay_01.png",
+            "Assets/Art/MVP30/Characters/Customer/Happy/customer_happy_01.png",
+            "Assets/Art/MVP30/Characters/Customer/Leave/customer_leave_01.png",
+            "Assets/Art/MVP30/Characters/Staff/Cashier/Idle/staff_cashier_idle_01.png",
+            "Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_work_01.png",
+            "Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_success_01.png",
+            "Assets/Art/MVP30/Products/product_onigiri_01.png",
+            "Assets/Art/MVP30/Products/product_tea_01.png",
+            "Assets/Art/MVP30/Products/product_bento_01.png",
+            "Assets/Art/MVP30/Products/product_dessert_01.png",
+            "Assets/Art/MVP30/UI/Orders/ui_order_ticket.png",
+            "Assets/Art/MVP30/UI/Orders/ui_order_item_slot.png",
+            "Assets/Art/MVP30/UI/Orders/ui_stock_warning_badge.png",
+            "Assets/Art/MVP30/UI/Orders/ui_current_item_frame.png",
+            "Assets/Art/MVP30/UI/Orders/ui_order_complete_stamp.png",
+            "Assets/Art/MVP30/UI/Icons/icon_checkout_one.png",
+            "Assets/Art/MVP30/UI/Icons/icon_restock_item.png",
+            "Assets/Art/MVP30/UI/Icons/icon_upgrade_product.png",
+            "Assets/Art/MVP30/UI/Icons/icon_order.png",
+            "Assets/Art/MVP30/FX/fx_order_complete_glow.png",
+            "Assets/Art/MVP30/FX/fx_item_selected_glow.png",
+            "Assets/Art/MVP30/FX/fx_cash_float.png",
+            "Assets/Art/MVP30/FX/fx_restock_success_ring.png",
+            "Assets/Art/MVP30/FX/fx_upgrade_success.png"
+        };
+
+        for (int i = 0; i < paths.Length; i++)
+        {
+            EnsureEditorSpriteImport(paths[i]);
+        }
+    }
+
+    private static void EnsureEditorSpriteImport(string path)
+    {
+        TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null)
+        {
+            return;
+        }
+
+        bool dirty = false;
+        if (importer.textureType != TextureImporterType.Sprite)
+        {
+            importer.textureType = TextureImporterType.Sprite;
+            dirty = true;
+        }
+
+        if (importer.spriteImportMode != SpriteImportMode.Single)
+        {
+            importer.spriteImportMode = SpriteImportMode.Single;
+            dirty = true;
+        }
+
+        if (importer.mipmapEnabled)
+        {
+            importer.mipmapEnabled = false;
+            dirty = true;
+        }
+
+        if (!importer.alphaIsTransparency)
+        {
+            importer.alphaIsTransparency = true;
+            dirty = true;
+        }
+
+        int maxSize = EditorSpriteMaxTextureSize(path);
+        if (importer.maxTextureSize != maxSize)
+        {
+            importer.maxTextureSize = maxSize;
+            dirty = true;
+        }
+
+        if (dirty)
+        {
+            importer.SaveAndReimport();
+        }
+    }
+
+    private static int EditorSpriteMaxTextureSize(string path)
+    {
+        if (path.Contains("/Scene/Interior/") || path.Contains("/Scene/Counter/"))
+        {
+            return 2048;
+        }
+
+        if (path.Contains("/Characters/"))
+        {
+            return 1024;
+        }
+
+        return 512;
+    }
+
+    private static Sprite EditorSprite(string path)
+    {
+        return AssetDatabase.LoadAssetAtPath<Sprite>(path);
+    }
+
+    private static Sprite EditorFirstSprite(params string[] paths)
+    {
+        for (int i = 0; i < paths.Length; i++)
+        {
+            Sprite sprite = EditorSprite(paths[i]);
+            if (sprite != null)
+            {
+                return sprite;
+            }
+        }
+
+        Debug.LogWarning($"Optional editor art asset not found: {string.Join(" or ", paths)}");
+        return null;
+    }
+#endif
+
     private void Awake()
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
         try
         {
+#if UNITY_EDITOR
+            EnsureEditorMvp30ArtConfigured();
+#endif
             LocalizationManager.EnsureLoaded();
             Load();
             CatchUpOffline();
@@ -328,7 +542,7 @@ public sealed class IdleShopGame : MonoBehaviour
             {
                 pendingOrderCompletion = false;
                 GenerateCurrentOrder();
-                newOrderFlashTimer = 0.55f;
+                newOrderFlashTimer = CustomerEnterDurationSeconds;
                 RenderAll();
             }
         }
@@ -947,6 +1161,7 @@ public sealed class IdleShopGame : MonoBehaviour
         if (CurrentOrderItemCount() <= 0 || !CurrentOrderUsesUnlockedProducts())
         {
             GenerateCurrentOrder();
+            newOrderFlashTimer = CustomerEnterDurationSeconds;
         }
     }
 
@@ -2189,6 +2404,22 @@ public sealed class IdleShopGame : MonoBehaviour
         return mvp23Sprites != null && index >= 0 && index < mvp23Sprites.Length ? mvp23Sprites[index] : null;
     }
 
+    private Sprite CustomerWalkSprite(float time)
+    {
+        int frame = Mathf.FloorToInt(time * 6f) % 4;
+        switch (frame)
+        {
+            case 0:
+                return FirstSprite(Mvp23Sprite(Mvp30CustomerWalk01), Mvp23Sprite(Mvp23CustomerWalk01), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+            case 1:
+                return FirstSprite(Mvp23Sprite(Mvp30CustomerWalk02), Mvp23Sprite(Mvp23CustomerWalk02), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+            case 2:
+                return FirstSprite(Mvp23Sprite(Mvp30CustomerWalk03), Mvp23Sprite(Mvp23CustomerWalk01), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+            default:
+                return FirstSprite(Mvp23Sprite(Mvp30CustomerWalk04), Mvp23Sprite(Mvp23CustomerWalk02), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+        }
+    }
+
     private static Sprite FirstSprite(params Sprite[] sprites)
     {
         for (int i = 0; i < sprites.Length; i++)
@@ -2661,8 +2892,8 @@ public sealed class IdleShopGame : MonoBehaviour
         float saleBurst = Mathf.Clamp01(salePopTimer / 0.45f);
         float restockBurst = Mathf.Clamp01(restockPulseTimer / 0.65f);
         float upgradeBurst = Mathf.Clamp01(upgradePulseTimer / 0.75f);
-        float orderCompleteBurst = Mathf.Clamp01(orderCompleteTimer / 1.05f);
-        float newOrderBurst = Mathf.Clamp01(newOrderFlashTimer / 0.55f);
+        float orderCompleteBurst = Mathf.Clamp01(orderCompleteTimer / CustomerLeaveDurationSeconds);
+        float newOrderBurst = Mathf.Clamp01(newOrderFlashTimer / CustomerEnterDurationSeconds);
         float selectBurst = Mathf.Clamp01(orderSelectPulseTimer / 0.42f);
         float productSaleBurst = recentSoldProductIndex == CurrentOrderDisplayProductIndex() ? saleBurst : 0f;
         float productRestockBurst = recentRestockProductIndex == CurrentOrderDisplayProductIndex() ? restockBurst : 0f;
@@ -2706,44 +2937,73 @@ public sealed class IdleShopGame : MonoBehaviour
         {
             bool showingOrderComplete = pendingOrderCompletion || (orderCompleteTimer > 0f && !string.IsNullOrEmpty(orderCompleteMessage));
             bool canServe = HasSellableStock() || showingOrderComplete;
-            float width = wideLayout ? 0.12f : 0.15f;
-            float height = wideLayout ? 0.24f : 0.28f;
-            float baseY = wideLayout ? 0.28f : 0.26f;
-            float progress = showingOrderComplete ? 1f : canServe ? displayedAutoSaleProgress : 0.28f + Mathf.Sin(time * 1.7f) * 0.015f;
-            float x = Mathf.Lerp(0.08f, 0.68f, Mathf.SmoothStep(0f, 1f, progress));
+            float width = wideLayout ? 0.15f : 0.19f;
+            float height = wideLayout ? 0.30f : 0.36f;
+            float baseY = wideLayout ? 0.15f : 0.11f;
+            float enteringProgress = 1f - newOrderBurst;
+            float leavingProgress = 1f - orderCompleteBurst;
+            bool entering = newOrderBurst > 0f && canServe && !showingOrderComplete;
+            bool leaving = showingOrderComplete;
+            bool paying = saleBurst > 0f && canServe && !showingOrderComplete;
+            float waitStepPhase = Mathf.Repeat(time, 3.4f);
+            bool waitingStep = canServe && !showingOrderComplete && !entering && !paying && waitStepPhase < 0.75f;
+            bool walking = entering || leaving || waitingStep;
+            float x = canServe ? 0.54f : 0.30f;
+            if (entering)
+            {
+                x = Mathf.Lerp(0.14f, 0.54f, Mathf.SmoothStep(0f, 1f, enteringProgress));
+            }
+            else if (waitingStep)
+            {
+                float step = Mathf.Sin((waitStepPhase / 0.75f) * Mathf.PI * 2f);
+                x += step * 0.006f;
+            }
             if (showingOrderComplete)
             {
-                x += (1f - orderCompleteBurst) * 0.10f;
+                x = Mathf.Lerp(0.54f, 0.82f, Mathf.SmoothStep(0f, 1f, leavingProgress));
             }
-            else if (newOrderBurst > 0f && canServe)
-            {
-                x -= newOrderBurst * 0.08f;
-            }
+
             SetSceneRect(sceneCustomerMotion, x, baseY, width, height);
+            float walkStretch = walking ? Mathf.Sin(time * 10f) * 0.006f : 0f;
+            float idleStretch = walking ? 0f : Mathf.Sin(time * 1.7f) * 0.006f;
+            bool faceRight = entering || leaving || paying || canServe;
+            sceneCustomerMotion.localScale = new Vector3(faceRight ? 1f + walkStretch : -1f - walkStretch, 1f - walkStretch * 0.55f + idleStretch, 1f);
+            sceneCustomerMotion.localRotation = Quaternion.Euler(0f, 0f, walking ? 0f : Mathf.Sin(time * 1.6f) * 0.35f);
 
             if (sceneCustomerImage != null)
             {
                 Sprite sprite = null;
-                if (showingOrderComplete)
+                if (leaving)
                 {
-                    sprite = FirstSprite(orderCompleteBurst < 0.45f ? Mvp23Sprite(Mvp23CustomerLeave) : null, Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerPay), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                    sprite = leavingProgress > 0.22f
+                        ? CustomerWalkSprite(time)
+                        : FirstSprite(Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
                 }
                 else if (!canServe)
                 {
                     sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerDisappointed), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
                 }
-                else if (saleBurst > 0f)
+                else if (paying)
                 {
                     sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerPay), Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
                 }
+                else if (entering)
+                {
+                    sprite = CustomerWalkSprite(time);
+                }
+                else if (waitingStep)
+                {
+                    sprite = CustomerWalkSprite(time);
+                }
                 else
                 {
-                    bool walkFrame = Mathf.FloorToInt(time * 5f) % 2 == 0;
-                    sprite = FirstSprite(walkFrame ? Mvp23Sprite(Mvp23CustomerWalk01) : Mvp23Sprite(Mvp23CustomerWalk02), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                    sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerIdle), Mvp23Sprite(Mvp23CustomerWalk01), customerSprite);
                 }
 
                 sceneCustomerImage.sprite = sprite;
-                sceneCustomerImage.color = canServe ? new Color(1f, 1f, 1f, 1f - newOrderBurst * 0.28f) : new Color(0.86f, 0.86f, 0.86f, 0.92f);
+                float enterAlpha = entering ? Mathf.Clamp01(0.40f + enteringProgress * 0.60f) : 1f;
+                float leaveAlpha = leaving ? Mathf.Clamp01(1f - leavingProgress * 0.52f) : 1f;
+                sceneCustomerImage.color = canServe ? new Color(1f, 1f, 1f, Mathf.Min(enterAlpha, leaveAlpha)) : new Color(0.86f, 0.86f, 0.86f, 0.92f);
             }
         }
 
@@ -2864,6 +3124,22 @@ public sealed class IdleShopGame : MonoBehaviour
         rect.offsetMax = Vector2.zero;
     }
 
+    private RectTransform CreateSceneSprite(string name, RectTransform parent, Sprite sprite, Color fallbackColor, float minX, float minY, float maxX, float maxY)
+    {
+        RectTransform rect = CreateImagePanel(name, parent, sprite, fallbackColor, true);
+        rect.anchorMin = new Vector2(minX, minY);
+        rect.anchorMax = new Vector2(maxX, maxY);
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        Image image = rect.GetComponent<Image>();
+        if (image != null)
+        {
+            image.raycastTarget = false;
+        }
+
+        return rect;
+    }
+
     private void RenderTab()
     {
         stageCashText = null!;
@@ -2937,18 +3213,42 @@ public sealed class IdleShopGame : MonoBehaviour
         bool lowStock = hasSellableStock && LowestUnlockedStockRatio() <= LowStockRatio;
 
         RectTransform stage = CreatePanel("GameStage", contentRoot, new Color(0.16f, 0.36f, 0.32f));
-        stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 560f : shortPortrait ? 720f : 780f;
+        stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 500f : shortPortrait ? 560f : 620f;
 
-        RectTransform stageArt = CreateImagePanel("ShopFront", stage, FirstSprite(Mvp23Sprite(Mvp23SceneInterior), shopFrontSprite), new Color(0.18f, 0.32f, 0.30f), false);
+        RectTransform sceneWall = CreatePanel("SceneWall", stage, new Color(0.96f, 0.83f, 0.58f, 1f));
+        AnchorFill(sceneWall, 0f, 0f, 0f, 0f);
+
+        RectTransform stageArt = CreateImagePanel("ShopFront", stage, FirstSprite(Mvp23Sprite(Mvp23SceneInterior), shopFrontSprite), Color.clear, false);
         AnchorFill(stageArt, 0f, 0f, 0f, 0f);
+        Image stageArtImage = stageArt.GetComponent<Image>();
+        if (stageArtImage != null)
+        {
+            stageArtImage.color = Color.white;
+            stageArtImage.raycastTarget = false;
+        }
 
-        RectTransform shade = CreatePanel("StageShade", stage, new Color(0.02f, 0.08f, 0.07f, 0.36f));
-        AnchorFill(shade, 0f, 0f, 0f, 0f);
+        RectTransform rearShelfBand = CreatePanel("SceneBackWallBand", stage, new Color(0.44f, 0.30f, 0.18f, 0.32f));
+        rearShelfBand.anchorMin = new Vector2(0.04f, 0.56f);
+        rearShelfBand.anchorMax = new Vector2(0.96f, 0.88f);
+        rearShelfBand.offsetMin = Vector2.zero;
+        rearShelfBand.offsetMax = Vector2.zero;
+
+        RectTransform floor = CreatePanel("SceneFloor", stage, new Color(0.72f, 0.48f, 0.28f, 0.96f));
+        floor.anchorMin = new Vector2(0f, 0f);
+        floor.anchorMax = new Vector2(1f, 0.34f);
+        floor.offsetMin = Vector2.zero;
+        floor.offsetMax = Vector2.zero;
+
+        RectTransform walkLane = CreatePanel("SceneWalkLane", stage, new Color(0.94f, 0.73f, 0.42f, 0.48f));
+        walkLane.anchorMin = new Vector2(0.04f, 0.08f);
+        walkLane.anchorMax = new Vector2(0.96f, 0.23f);
+        walkLane.offsetMin = Vector2.zero;
+        walkLane.offsetMax = Vector2.zero;
 
         if (!hasSellableStock && !showingOrderComplete && Mvp23Sprite(Mvp23SceneEmptyShelfOverlay) != null)
         {
             RectTransform emptyOverlay = CreateImagePanel("EmptyShelfOverlay", stage, Mvp23Sprite(Mvp23SceneEmptyShelfOverlay), Color.clear, false);
-            emptyOverlay.anchorMin = new Vector2(0.04f, 0.28f);
+            emptyOverlay.anchorMin = new Vector2(0.04f, 0.30f);
             emptyOverlay.anchorMax = new Vector2(0.96f, 0.86f);
             emptyOverlay.offsetMin = Vector2.zero;
             emptyOverlay.offsetMax = Vector2.zero;
@@ -2961,37 +3261,73 @@ public sealed class IdleShopGame : MonoBehaviour
         Sprite counterStateSprite = FirstSprite(Mvp23Sprite(Mvp23CashierCounter), counterSprite);
         if (shelfStateSprite != null || counterStateSprite != null)
         {
-            RectTransform overlay = CreateRect("ShopOverlay", stage);
-            overlay.anchorMin = new Vector2(0.05f, 0.43f);
-            overlay.anchorMax = new Vector2(0.95f, 0.88f);
-            overlay.offsetMin = Vector2.zero;
-            overlay.offsetMax = Vector2.zero;
-            HorizontalLayoutGroup overlayLayout = overlay.gameObject.AddComponent<HorizontalLayoutGroup>();
-            overlayLayout.spacing = 16f;
-            overlayLayout.childControlWidth = true;
-            overlayLayout.childControlHeight = true;
-            overlayLayout.childForceExpandWidth = true;
-            overlayLayout.childForceExpandHeight = true;
-            CreateImagePanel("ShelfArt", overlay, shelfStateSprite, new Color(0.62f, 0.42f, 0.24f, 0.32f));
-            CreateImagePanel("CounterArt", overlay, counterStateSprite, new Color(0.22f, 0.38f, 0.34f, 0.32f));
+            RectTransform shelfArt = CreateImagePanel("ShelfArt", stage, shelfStateSprite, Color.clear, true);
+            shelfArt.anchorMin = new Vector2(0.06f, 0.31f);
+            shelfArt.anchorMax = new Vector2(0.48f, 0.82f);
+            shelfArt.offsetMin = Vector2.zero;
+            shelfArt.offsetMax = Vector2.zero;
+            Image shelfImage = shelfArt.GetComponent<Image>();
+            if (shelfImage != null)
+            {
+                shelfImage.raycastTarget = false;
+            }
+
+            CreateSceneSprite("ShelfOnigiri", stage, ProductSprite(0), Color.clear, 0.16f, 0.52f, 0.25f, 0.66f);
+            CreateSceneSprite("ShelfTea", stage, ProductSprite(1), Color.clear, 0.27f, 0.52f, 0.36f, 0.66f);
+            CreateSceneSprite("ShelfBento", stage, ProductSprite(4), Color.clear, 0.16f, 0.36f, 0.25f, 0.50f);
+            CreateSceneSprite("ShelfDessert", stage, ProductSprite(5), Color.clear, 0.27f, 0.36f, 0.36f, 0.50f);
+
+            if (counterStateSprite != null)
+            {
+                RectTransform counterArt = CreateImagePanel("CounterArt", stage, counterStateSprite, Color.clear, true);
+                counterArt.anchorMin = new Vector2(0.46f, 0.12f);
+                counterArt.anchorMax = new Vector2(0.98f, 0.58f);
+                counterArt.offsetMin = Vector2.zero;
+                counterArt.offsetMax = Vector2.zero;
+                Image counterImage = counterArt.GetComponent<Image>();
+                if (counterImage != null)
+                {
+                    counterImage.raycastTarget = false;
+                }
+            }
+            else
+            {
+                RectTransform counterBase = CreatePanel("SceneCounterBase", stage, new Color(0.48f, 0.29f, 0.16f, 0.98f));
+                counterBase.anchorMin = new Vector2(0.54f, 0.20f);
+                counterBase.anchorMax = new Vector2(0.92f, 0.48f);
+                counterBase.offsetMin = Vector2.zero;
+                counterBase.offsetMax = Vector2.zero;
+
+                RectTransform counterTop = CreatePanel("SceneCounterTop", stage, new Color(0.78f, 0.55f, 0.31f, 0.98f));
+                counterTop.anchorMin = new Vector2(0.50f, 0.43f);
+                counterTop.anchorMax = new Vector2(0.94f, 0.55f);
+                counterTop.offsetMin = Vector2.zero;
+                counterTop.offsetMax = Vector2.zero;
+
+                RectTransform register = CreatePanel("SceneRegister", stage, new Color(0.95f, 0.82f, 0.58f, 0.98f));
+                register.anchorMin = new Vector2(0.70f, 0.54f);
+                register.anchorMax = new Vector2(0.84f, 0.70f);
+                register.offsetMin = Vector2.zero;
+                register.offsetMax = Vector2.zero;
+            }
         }
 
         RectTransform customerPoint = CreatePanel("CustomerPulse", stage, new Color(0.95f, 0.78f, 0.32f, 0.16f));
-        customerPoint.anchorMin = new Vector2(0.08f, 0.38f);
-        customerPoint.anchorMax = new Vector2(0.20f, 0.54f);
+        customerPoint.anchorMin = new Vector2(0.08f, 0.12f);
+        customerPoint.anchorMax = new Vector2(0.20f, 0.32f);
         customerPoint.offsetMin = Vector2.zero;
         customerPoint.offsetMax = Vector2.zero;
         sceneCustomerGlow = customerPoint.GetComponent<Image>();
 
         RectTransform cashierPoint = CreatePanel("CashierPulse", stage, new Color(0.94f, 0.65f, 0.20f, 0.18f));
-        cashierPoint.anchorMin = new Vector2(0.74f, 0.42f);
-        cashierPoint.anchorMax = new Vector2(0.90f, 0.62f);
+        cashierPoint.anchorMin = new Vector2(0.74f, 0.18f);
+        cashierPoint.anchorMax = new Vector2(0.90f, 0.42f);
         cashierPoint.offsetMin = Vector2.zero;
         cashierPoint.offsetMax = Vector2.zero;
         sceneCashierGlow = cashierPoint.GetComponent<Image>();
 
         RectTransform customerActor = CreateRect("SceneCustomer", stage);
-        SetSceneRect(customerActor, showingOrderComplete ? 0.68f : hasSellableStock ? Mathf.Lerp(0.08f, 0.68f, Mathf.Clamp01(data.queue)) : 0.28f, wideLayout ? 0.46f : 0.44f, wideLayout ? 0.12f : 0.15f, wideLayout ? 0.22f : 0.25f);
+        SetSceneRect(customerActor, showingOrderComplete ? 0.68f : hasSellableStock ? Mathf.Lerp(0.08f, 0.68f, Mathf.Clamp01(data.queue)) : 0.28f, wideLayout ? 0.21f : 0.18f, wideLayout ? 0.12f : 0.15f, wideLayout ? 0.24f : 0.28f);
         sceneCustomerMotion = customerActor;
         if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
         {
@@ -3019,7 +3355,7 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         RectTransform staffActor = CreateRect("SceneCashierStaff", stage);
-        SetSceneRect(staffActor, wideLayout ? 0.72f : 0.70f, wideLayout ? 0.49f : 0.47f, wideLayout ? 0.13f : 0.16f, wideLayout ? 0.23f : 0.26f);
+        SetSceneRect(staffActor, wideLayout ? 0.72f : 0.70f, wideLayout ? 0.24f : 0.21f, wideLayout ? 0.13f : 0.16f, wideLayout ? 0.25f : 0.29f);
         sceneStaffMotion = staffActor;
         if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
         {
@@ -3037,8 +3373,8 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         RectTransform productIcon = CreatePanel("SceneProduct", stage, products[primaryIndex].Accent);
-        productIcon.anchorMin = new Vector2(0.08f, 0.56f);
-        productIcon.anchorMax = new Vector2(0.24f, 0.78f);
+        productIcon.anchorMin = new Vector2(0.08f, 0.50f);
+        productIcon.anchorMax = new Vector2(0.24f, 0.76f);
         productIcon.offsetMin = Vector2.zero;
         productIcon.offsetMax = Vector2.zero;
         sceneProductMotion = productIcon;
@@ -3090,8 +3426,8 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         RectTransform productFocusLabel = CreatePanel("SceneFocusLabel", stage, new Color(0.05f, 0.10f, 0.08f, 0.82f));
-        productFocusLabel.anchorMin = new Vector2(0.06f, 0.48f);
-        productFocusLabel.anchorMax = new Vector2(0.34f, 0.55f);
+        productFocusLabel.anchorMin = new Vector2(0.06f, 0.40f);
+        productFocusLabel.anchorMax = new Vector2(0.34f, 0.48f);
         productFocusLabel.offsetMin = Vector2.zero;
         productFocusLabel.offsetMax = Vector2.zero;
         Text productFocusText = CreateText("Label", productFocusLabel, $"{T("order.item_selected")} · {ProductName(primaryIndex)}", wideLayout ? 19 : shortPortrait ? 23 : 26, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
@@ -3112,8 +3448,8 @@ public sealed class IdleShopGame : MonoBehaviour
         if (restockFxSprite != null)
         {
             RectTransform restockFx = CreateImagePanel("RestockSparkFx", stage, restockFxSprite, Color.clear, true);
-            restockFx.anchorMin = new Vector2(0.12f, 0.56f);
-            restockFx.anchorMax = new Vector2(0.32f, 0.82f);
+            restockFx.anchorMin = new Vector2(0.12f, 0.48f);
+            restockFx.anchorMax = new Vector2(0.32f, 0.78f);
             restockFx.offsetMin = Vector2.zero;
             restockFx.offsetMax = Vector2.zero;
             sceneRestockFxMotion = restockFx;
@@ -3125,8 +3461,8 @@ public sealed class IdleShopGame : MonoBehaviour
         if (upgradeFxSprite != null && upgradePulseTimer > 0f)
         {
             RectTransform upgradeFx = CreateImagePanel("UpgradeSuccessFx", stage, upgradeFxSprite, Color.clear, true);
-            upgradeFx.anchorMin = new Vector2(0.04f, 0.50f);
-            upgradeFx.anchorMax = new Vector2(0.34f, 0.84f);
+            upgradeFx.anchorMin = new Vector2(0.04f, 0.42f);
+            upgradeFx.anchorMax = new Vector2(0.34f, 0.80f);
             upgradeFx.offsetMin = Vector2.zero;
             upgradeFx.offsetMax = Vector2.zero;
             Image upgradeFxImage = upgradeFx.GetComponent<Image>();
@@ -3174,11 +3510,10 @@ public sealed class IdleShopGame : MonoBehaviour
             saleIcon.gameObject.SetActive(salePopTimer > 0f && !string.IsNullOrEmpty(salePopMessage));
         }
 
-        RectTransform orderCard = CreateImagePanel("CurrentOrder", stage, Mvp23Sprite(Mvp23UiOrderTicket), new Color(1f, 0.97f, 0.88f, 0.94f), false);
-        orderCard.anchorMin = new Vector2(0.05f, 0.04f);
-        orderCard.anchorMax = new Vector2(0.95f, 0.34f);
-        orderCard.offsetMin = Vector2.zero;
-        orderCard.offsetMax = Vector2.zero;
+        RectTransform orderCard = CreateImagePanel("CurrentOrder", contentRoot, Mvp23Sprite(Mvp23UiOrderTicket), new Color(1f, 0.97f, 0.88f, 0.94f), false);
+        LayoutElement orderCardLayout = orderCard.gameObject.AddComponent<LayoutElement>();
+        orderCardLayout.preferredHeight = wideLayout ? 210f : shortPortrait ? 238f : 260f;
+        orderCardLayout.flexibleHeight = 0f;
         if (orderCompleteTimer > 0f)
         {
             orderCard.gameObject.AddComponent<UIFlashTint>().Configure(honey, orderCompleteTimer);

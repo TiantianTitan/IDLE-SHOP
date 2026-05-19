@@ -103,8 +103,8 @@ public static class ProjectBootstrapper
     {
         return new[]
         {
-            LoadSprite($"{Mvp23Path}/scene_shop_interior_base.png"),
-            LoadSprite($"{Mvp23Path}/scene_cashier_counter.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Interior/scene_shop_interior_base.png", $"{Mvp23Path}/scene_shop_interior_base.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Counter/scene_cashier_counter.png", $"{Mvp23Path}/scene_cashier_counter.png"),
             LoadSprite($"{Mvp23Path}/scene_product_shelf_full.png"),
             LoadSprite($"{Mvp23Path}/scene_product_shelf_low.png"),
             LoadSprite($"{Mvp23Path}/scene_product_shelf_empty.png"),
@@ -145,13 +145,13 @@ public static class ProjectBootstrapper
     {
         return new[]
         {
-            LoadSprite($"{Mvp23Path}/scene_shop_interior_base.png"),
-            LoadSprite($"{Mvp23Path}/scene_cashier_counter.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Interior/scene_shop_interior_base.png", $"{Mvp23Path}/scene_shop_interior_base.png"),
+            LoadFirstSprite($"{Mvp30Path}/Scene/Counter/scene_cashier_counter.png", $"{Mvp23Path}/scene_cashier_counter.png"),
             LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_full_01.png", $"{Mvp23Path}/scene_product_shelf_full.png"),
             LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_low_01.png", $"{Mvp23Path}/scene_product_shelf_low.png"),
             LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_empty_01.png", $"{Mvp23Path}/scene_product_shelf_empty.png"),
-            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png", $"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_01.png"),
-            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png", $"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_02.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Walk/customer_walk_01.png", $"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png", $"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_01.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Walk/customer_walk_03.png", $"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png", $"{Mvp23Path}/customer_enter_01.png", $"{Mvp23Path}/npc_customer_walk_02.png"),
             LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Idle/customer_idle_01.png", $"{Mvp23Path}/customer_waiting_01.png", $"{Mvp23Path}/npc_customer_idle.png"),
             LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Pay/customer_pay_01.png", $"{Mvp23Path}/npc_customer_pay.png"),
             LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Happy/customer_happy_01.png", $"{Mvp23Path}/customer_happy_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
@@ -164,9 +164,9 @@ public static class ProjectBootstrapper
             LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_order_item_slot.png", $"{Mvp23Path}/ui_order_item_slot.png"),
             LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_stock_warning_badge.png", $"{Mvp23Path}/ui_stock_warning_badge.png"),
             LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_current_item_frame.png", $"{Mvp23Path}/ui_current_item_frame.png"),
-            LoadSprite($"{Mvp23Path}/icon_checkout_one.png"),
-            LoadSprite($"{Mvp23Path}/icon_restock_item.png"),
-            LoadSprite($"{Mvp23Path}/icon_upgrade_product.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Icons/icon_checkout_one.png", $"{Mvp23Path}/icon_checkout_one.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Icons/icon_restock_item.png", $"{Mvp23Path}/icon_restock_item.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Icons/icon_upgrade_product.png", $"{Mvp23Path}/icon_upgrade_product.png"),
             LoadSprite($"{Mvp23Path}/scene_empty_shelf_overlay.png"),
             LoadFirstSprite($"{Mvp30Path}/UI/Orders/ui_order_complete_stamp.png", $"{Mvp23Path}/ui_order_complete_stamp.png", $"{Mvp23Path}/fx_order_complete_stamp.png"),
             LoadSprite($"{Mvp23Path}/fx_low_stock_pulse.png"),
@@ -180,7 +180,11 @@ public static class ProjectBootstrapper
             LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Leave/customer_leave_01.png", $"{Mvp23Path}/customer_leave_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
             LoadFirstSprite($"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_success_01.png", $"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", $"{Mvp23Path}/npc_staff_cashier_work.png"),
             LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_restocked_01.png", $"{Mvp30Path}/Scene/Shelf/States/shelf_full_01.png", $"{Mvp23Path}/scene_product_shelf_full.png"),
-            LoadSprite($"{Mvp30Path}/UI/Icons/icon_order.png")
+            LoadSprite($"{Mvp30Path}/UI/Icons/icon_order.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Walk/customer_walk_01.png", $"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Walk/customer_walk_02.png", $"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Walk/customer_walk_03.png", $"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png"),
+            LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Walk/customer_walk_04.png", $"{Mvp30Path}/Characters/Customer/Enter/customer_enter_01.png")
         };
     }
 
@@ -386,9 +390,19 @@ public static class ProjectBootstrapper
             return 512;
         }
 
+        if (path.Contains("/Scene/Interior/") || path.Contains("/Scene/Counter/"))
+        {
+            return 2048;
+        }
+
         if (path.Contains("/UI/"))
         {
             return 256;
+        }
+
+        if (path.Contains("/Characters/"))
+        {
+            return 1024;
         }
 
         if (path.Contains("/Products/") || path.Contains("/Staff/"))

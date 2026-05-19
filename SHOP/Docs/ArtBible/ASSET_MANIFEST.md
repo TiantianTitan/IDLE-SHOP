@@ -24,6 +24,10 @@ Status values:
 | Asset | Path | Status | Gameplay State |
 | --- | --- | --- | --- |
 | customer_enter_01.png | `Characters/Customer/Enter/` | integrated | New customer enters. |
+| customer_walk_01.png | `Characters/Customer/Walk/` | integrated | Walk cycle frame 1. |
+| customer_walk_02.png | `Characters/Customer/Walk/` | integrated | Walk cycle frame 2. |
+| customer_walk_03.png | `Characters/Customer/Walk/` | integrated | Walk cycle frame 3. |
+| customer_walk_04.png | `Characters/Customer/Walk/` | integrated | Walk cycle frame 4. |
 | customer_idle_01.png | `Characters/Customer/Idle/` | integrated | Customer waiting. |
 | customer_pay_01.png | `Characters/Customer/Pay/` | integrated | Sale in progress. |
 | customer_happy_01.png | `Characters/Customer/Happy/` | integrated | Order complete. |
@@ -53,6 +57,8 @@ Status values:
 | icon_restock_item.png | `UI/Icons/` | integrated | Restock current item action icon. |
 | icon_upgrade_product.png | `UI/Icons/` | integrated | Product upgrade action icon. |
 | icon_order.png | `UI/Icons/` | integrated | Current order/order entry icon. |
+| scene_shop_interior_base.png | `Scene/Interior/` | integrated | Main shop stage background. |
+| scene_cashier_counter.png | `Scene/Counter/` | integrated | Standalone cashier counter layer. |
 
 ## Acceptance Checklist
 

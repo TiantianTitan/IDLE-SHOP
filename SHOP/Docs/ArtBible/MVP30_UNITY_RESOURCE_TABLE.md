@@ -34,13 +34,13 @@ This array is passed separately into `IdleShopGame.ConfigureArt`.
 
 | Index | Key | MVP30 path | Fallback |
 | ---: | --- | --- | --- |
-| 0 | scene_shop_interior | TBD | `Assets/Art/MVP23/scene_shop_interior_base.png` |
-| 1 | cashier_counter | TBD | `Assets/Art/MVP23/scene_cashier_counter.png` |
+| 0 | scene_shop_interior | `Assets/Art/MVP30/Scene/Interior/scene_shop_interior_base.png` | integrated; fallback `Assets/Art/MVP23/scene_shop_interior_base.png` |
+| 1 | cashier_counter | `Assets/Art/MVP30/Scene/Counter/scene_cashier_counter.png` | integrated; fallback `Assets/Art/MVP23/scene_cashier_counter.png` |
 | 2 | shelf_full | `Assets/Art/MVP30/Scene/Shelf/States/shelf_full_01.png` | integrated; fallback `Assets/Art/MVP23/scene_product_shelf_full.png` |
 | 3 | shelf_low | `Assets/Art/MVP30/Scene/Shelf/States/shelf_low_01.png` | integrated; fallback `Assets/Art/MVP23/scene_product_shelf_low.png` |
 | 4 | shelf_empty | `Assets/Art/MVP30/Scene/Shelf/States/shelf_empty_01.png` | integrated; fallback `Assets/Art/MVP23/scene_product_shelf_empty.png` |
-| 5 | customer_enter_a | `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` | integrated; fallback `Assets/Art/MVP23/customer_enter_01.png` |
-| 6 | customer_enter_b | `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` | integrated; fallback `Assets/Art/MVP23/npc_customer_walk_02.png` |
+| 5 | customer_walk_legacy_a | `Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_01.png` | integrated; fallback `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` |
+| 6 | customer_walk_legacy_b | `Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_03.png` | integrated; fallback `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` |
 | 7 | customer_idle | `Assets/Art/MVP30/Characters/Customer/Idle/customer_idle_01.png` | integrated; fallback `Assets/Art/MVP23/customer_waiting_01.png` |
 | 8 | customer_pay | `Assets/Art/MVP30/Characters/Customer/Pay/customer_pay_01.png` | integrated; fallback `Assets/Art/MVP23/npc_customer_pay.png` |
 | 9 | customer_happy | `Assets/Art/MVP30/Characters/Customer/Happy/customer_happy_01.png` | integrated; fallback `Assets/Art/MVP23/customer_happy_01.png` |
@@ -70,3 +70,7 @@ This array is passed separately into `IdleShopGame.ConfigureArt`.
 | 33 | staff_cashier_success | `Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_success_01.png` | integrated; fallback `Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_work_01.png` |
 | 34 | shelf_restocked | `Assets/Art/MVP30/Scene/Shelf/States/shelf_restocked_01.png` | integrated; fallback `Assets/Art/MVP30/Scene/Shelf/States/shelf_full_01.png` |
 | 35 | icon_order | `Assets/Art/MVP30/UI/Icons/icon_order.png` | integrated; current order title icon |
+| 36 | customer_walk_01 | `Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_01.png` | integrated; fallback `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` |
+| 37 | customer_walk_02 | `Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_02.png` | integrated; fallback `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` |
+| 38 | customer_walk_03 | `Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_03.png` | integrated; fallback `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` |
+| 39 | customer_walk_04 | `Assets/Art/MVP30/Characters/Customer/Walk/customer_walk_04.png` | integrated; fallback `Assets/Art/MVP30/Characters/Customer/Enter/customer_enter_01.png` |
