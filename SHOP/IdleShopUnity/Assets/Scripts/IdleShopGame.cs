@@ -153,6 +153,7 @@ public sealed class IdleShopGame : MonoBehaviour
     private const int Mvp23CustomerLeave = 32;
     private const int Mvp30StaffCashierSuccess = 33;
     private const int Mvp30ShelfRestocked = 34;
+    private const int Mvp30IconOrder = 35;
     private readonly ProductDef[] products =
     {
         new ProductDef("product.rice_ball.name", "product.rice_ball.subtitle", 6f, 12f, 1.35f, 1, 12, 2, new Color(0.94f, 0.48f, 0.32f)),
@@ -2936,7 +2937,7 @@ public sealed class IdleShopGame : MonoBehaviour
         bool lowStock = hasSellableStock && LowestUnlockedStockRatio() <= LowStockRatio;
 
         RectTransform stage = CreatePanel("GameStage", contentRoot, new Color(0.16f, 0.36f, 0.32f));
-        stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 520f : shortPortrait ? 620f : 680f;
+        stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 560f : shortPortrait ? 720f : 780f;
 
         RectTransform stageArt = CreateImagePanel("ShopFront", stage, FirstSprite(Mvp23Sprite(Mvp23SceneInterior), shopFrontSprite), new Color(0.18f, 0.32f, 0.30f), false);
         AnchorFill(stageArt, 0f, 0f, 0f, 0f);
@@ -2961,8 +2962,8 @@ public sealed class IdleShopGame : MonoBehaviour
         if (shelfStateSprite != null || counterStateSprite != null)
         {
             RectTransform overlay = CreateRect("ShopOverlay", stage);
-            overlay.anchorMin = new Vector2(0.05f, 0.36f);
-            overlay.anchorMax = new Vector2(0.95f, 0.84f);
+            overlay.anchorMin = new Vector2(0.05f, 0.43f);
+            overlay.anchorMax = new Vector2(0.95f, 0.88f);
             overlay.offsetMin = Vector2.zero;
             overlay.offsetMax = Vector2.zero;
             HorizontalLayoutGroup overlayLayout = overlay.gameObject.AddComponent<HorizontalLayoutGroup>();
@@ -2976,21 +2977,21 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         RectTransform customerPoint = CreatePanel("CustomerPulse", stage, new Color(0.95f, 0.78f, 0.32f, 0.16f));
-        customerPoint.anchorMin = new Vector2(0.08f, 0.20f);
-        customerPoint.anchorMax = new Vector2(0.20f, 0.36f);
+        customerPoint.anchorMin = new Vector2(0.08f, 0.38f);
+        customerPoint.anchorMax = new Vector2(0.20f, 0.54f);
         customerPoint.offsetMin = Vector2.zero;
         customerPoint.offsetMax = Vector2.zero;
         sceneCustomerGlow = customerPoint.GetComponent<Image>();
 
         RectTransform cashierPoint = CreatePanel("CashierPulse", stage, new Color(0.94f, 0.65f, 0.20f, 0.18f));
-        cashierPoint.anchorMin = new Vector2(0.74f, 0.24f);
-        cashierPoint.anchorMax = new Vector2(0.90f, 0.44f);
+        cashierPoint.anchorMin = new Vector2(0.74f, 0.42f);
+        cashierPoint.anchorMax = new Vector2(0.90f, 0.62f);
         cashierPoint.offsetMin = Vector2.zero;
         cashierPoint.offsetMax = Vector2.zero;
         sceneCashierGlow = cashierPoint.GetComponent<Image>();
 
         RectTransform customerActor = CreateRect("SceneCustomer", stage);
-        SetSceneRect(customerActor, showingOrderComplete ? 0.68f : hasSellableStock ? Mathf.Lerp(0.08f, 0.68f, Mathf.Clamp01(data.queue)) : 0.28f, wideLayout ? 0.28f : 0.26f, wideLayout ? 0.12f : 0.15f, wideLayout ? 0.24f : 0.28f);
+        SetSceneRect(customerActor, showingOrderComplete ? 0.68f : hasSellableStock ? Mathf.Lerp(0.08f, 0.68f, Mathf.Clamp01(data.queue)) : 0.28f, wideLayout ? 0.46f : 0.44f, wideLayout ? 0.12f : 0.15f, wideLayout ? 0.22f : 0.25f);
         sceneCustomerMotion = customerActor;
         if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
         {
@@ -3018,7 +3019,7 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         RectTransform staffActor = CreateRect("SceneCashierStaff", stage);
-        SetSceneRect(staffActor, wideLayout ? 0.72f : 0.70f, wideLayout ? 0.31f : 0.29f, wideLayout ? 0.13f : 0.16f, wideLayout ? 0.25f : 0.29f);
+        SetSceneRect(staffActor, wideLayout ? 0.72f : 0.70f, wideLayout ? 0.49f : 0.47f, wideLayout ? 0.13f : 0.16f, wideLayout ? 0.23f : 0.26f);
         sceneStaffMotion = staffActor;
         if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
         {
@@ -3036,8 +3037,8 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         RectTransform productIcon = CreatePanel("SceneProduct", stage, products[primaryIndex].Accent);
-        productIcon.anchorMin = new Vector2(0.08f, 0.42f);
-        productIcon.anchorMax = new Vector2(0.24f, 0.68f);
+        productIcon.anchorMin = new Vector2(0.08f, 0.56f);
+        productIcon.anchorMax = new Vector2(0.24f, 0.78f);
         productIcon.offsetMin = Vector2.zero;
         productIcon.offsetMax = Vector2.zero;
         sceneProductMotion = productIcon;
@@ -3089,8 +3090,8 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         RectTransform productFocusLabel = CreatePanel("SceneFocusLabel", stage, new Color(0.05f, 0.10f, 0.08f, 0.82f));
-        productFocusLabel.anchorMin = new Vector2(0.06f, 0.34f);
-        productFocusLabel.anchorMax = new Vector2(0.34f, 0.41f);
+        productFocusLabel.anchorMin = new Vector2(0.06f, 0.48f);
+        productFocusLabel.anchorMax = new Vector2(0.34f, 0.55f);
         productFocusLabel.offsetMin = Vector2.zero;
         productFocusLabel.offsetMax = Vector2.zero;
         Text productFocusText = CreateText("Label", productFocusLabel, $"{T("order.item_selected")} · {ProductName(primaryIndex)}", wideLayout ? 19 : shortPortrait ? 23 : 26, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
@@ -3111,8 +3112,8 @@ public sealed class IdleShopGame : MonoBehaviour
         if (restockFxSprite != null)
         {
             RectTransform restockFx = CreateImagePanel("RestockSparkFx", stage, restockFxSprite, Color.clear, true);
-            restockFx.anchorMin = new Vector2(0.12f, 0.44f);
-            restockFx.anchorMax = new Vector2(0.32f, 0.72f);
+            restockFx.anchorMin = new Vector2(0.12f, 0.56f);
+            restockFx.anchorMax = new Vector2(0.32f, 0.82f);
             restockFx.offsetMin = Vector2.zero;
             restockFx.offsetMax = Vector2.zero;
             sceneRestockFxMotion = restockFx;
@@ -3124,8 +3125,8 @@ public sealed class IdleShopGame : MonoBehaviour
         if (upgradeFxSprite != null && upgradePulseTimer > 0f)
         {
             RectTransform upgradeFx = CreateImagePanel("UpgradeSuccessFx", stage, upgradeFxSprite, Color.clear, true);
-            upgradeFx.anchorMin = new Vector2(0.04f, 0.34f);
-            upgradeFx.anchorMax = new Vector2(0.34f, 0.74f);
+            upgradeFx.anchorMin = new Vector2(0.04f, 0.50f);
+            upgradeFx.anchorMax = new Vector2(0.34f, 0.84f);
             upgradeFx.offsetMin = Vector2.zero;
             upgradeFx.offsetMax = Vector2.zero;
             Image upgradeFxImage = upgradeFx.GetComponent<Image>();
@@ -3175,7 +3176,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
         RectTransform orderCard = CreateImagePanel("CurrentOrder", stage, Mvp23Sprite(Mvp23UiOrderTicket), new Color(1f, 0.97f, 0.88f, 0.94f), false);
         orderCard.anchorMin = new Vector2(0.05f, 0.04f);
-        orderCard.anchorMax = new Vector2(0.95f, 0.42f);
+        orderCard.anchorMax = new Vector2(0.95f, 0.34f);
         orderCard.offsetMin = Vector2.zero;
         orderCard.offsetMax = Vector2.zero;
         if (orderCompleteTimer > 0f)
@@ -3211,10 +3212,31 @@ public sealed class IdleShopGame : MonoBehaviour
         orderLayout.childForceExpandWidth = true;
         orderLayout.childForceExpandHeight = false;
         string orderTitleText = showingOrderComplete ? orderCompleteMessage : F("order.current_short", Money(CurrentOrderInitialValue()));
-        Text orderTitle = CreateText("OrderTitle", orderCard, orderTitleText, wideLayout ? 27 : shortPortrait ? 31 : 35, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+
+        RectTransform orderHeader = CreateRect("OrderHeader", orderCard);
+        LayoutElement headerLayout = orderHeader.gameObject.AddComponent<LayoutElement>();
+        headerLayout.preferredHeight = wideLayout ? 28f : shortPortrait ? 32f : 36f;
+        headerLayout.flexibleHeight = 0f;
+        HorizontalLayoutGroup headerGroup = orderHeader.gameObject.AddComponent<HorizontalLayoutGroup>();
+        headerGroup.spacing = wideLayout ? 7f : 9f;
+        headerGroup.childAlignment = TextAnchor.MiddleLeft;
+        headerGroup.childControlWidth = true;
+        headerGroup.childControlHeight = true;
+        headerGroup.childForceExpandWidth = false;
+        headerGroup.childForceExpandHeight = false;
+        if (Mvp23Sprite(Mvp30IconOrder) != null)
+        {
+            RectTransform orderIcon = CreateImagePanel("OrderIcon", orderHeader, Mvp23Sprite(Mvp30IconOrder), Color.clear, true);
+            LayoutElement orderIconLayout = orderIcon.gameObject.AddComponent<LayoutElement>();
+            orderIconLayout.preferredWidth = wideLayout ? 26f : shortPortrait ? 30f : 34f;
+            orderIconLayout.flexibleWidth = 0f;
+        }
+
+        Text orderTitle = CreateText("OrderTitle", orderHeader, orderTitleText, wideLayout ? 25 : shortPortrait ? 28 : 31, FontStyle.Bold, pine, TextAnchor.MiddleLeft);
+        orderTitle.gameObject.AddComponent<LayoutElement>().flexibleWidth = 1f;
         orderTitle.resizeTextForBestFit = true;
-        orderTitle.resizeTextMinSize = wideLayout ? 17 : 21;
-        orderTitle.resizeTextMaxSize = wideLayout ? 27 : shortPortrait ? 31 : 35;
+        orderTitle.resizeTextMinSize = wideLayout ? 16 : 19;
+        orderTitle.resizeTextMaxSize = wideLayout ? 25 : shortPortrait ? 28 : 31;
         int completedItems = showingOrderComplete ? 0 : CurrentOrderCompletedItemCount();
         int requiredItems = showingOrderComplete ? Mathf.Max(1, CurrentOrderInitialItemCount()) : Mathf.Max(1, CurrentOrderInitialItemCount());
         Text orderProgressText = CreateText("OrderProgressText", orderCard, F("order.progress", completedItems, requiredItems), wideLayout ? 16 : shortPortrait ? 19 : 21, FontStyle.Bold, blue, TextAnchor.MiddleLeft);
@@ -3223,17 +3245,17 @@ public sealed class IdleShopGame : MonoBehaviour
         orderProgressText.resizeTextMaxSize = wideLayout ? 16 : shortPortrait ? 19 : 21;
         CreateCurrentOrderItemGrid(orderCard, primaryIndex);
         string orderFocusText = showingOrderComplete ? (string.IsNullOrEmpty(orderCompleteTitle) ? T("order.waiting") : orderCompleteTitle) : CurrentOrderStepText();
-        Text orderFocus = CreateText("OrderFocus", orderCard, orderFocusText, wideLayout ? 23 : shortPortrait ? 27 : 30, FontStyle.Bold, hasSellableStock ? products[primaryIndex].Accent : showingOrderComplete ? honey : coral, TextAnchor.MiddleLeft);
+        Text orderFocus = CreateText("OrderFocus", orderCard, orderFocusText, wideLayout ? 20 : shortPortrait ? 23 : 25, FontStyle.Bold, hasSellableStock ? products[primaryIndex].Accent : showingOrderComplete ? honey : coral, TextAnchor.MiddleLeft);
         orderFocus.resizeTextForBestFit = true;
-        orderFocus.resizeTextMinSize = wideLayout ? 16 : 19;
-        orderFocus.resizeTextMaxSize = wideLayout ? 23 : shortPortrait ? 27 : 30;
+        orderFocus.resizeTextMinSize = wideLayout ? 14 : 16;
+        orderFocus.resizeTextMaxSize = wideLayout ? 20 : shortPortrait ? 23 : 25;
         string orderStateText = showingOrderComplete ? T("order.waiting") : CurrentOrderNextStepText();
-        Text orderState = CreateText("OrderState", orderCard, orderStateText, wideLayout ? 22 : shortPortrait ? 25 : 28, FontStyle.Bold, hasSellableStock ? coral : blue, TextAnchor.MiddleLeft);
+        Text orderState = CreateText("OrderState", orderCard, orderStateText, wideLayout ? 19 : shortPortrait ? 21 : 23, FontStyle.Bold, hasSellableStock ? coral : blue, TextAnchor.MiddleLeft);
         orderState.resizeTextForBestFit = true;
-        orderState.resizeTextMinSize = wideLayout ? 15 : 18;
-        orderState.resizeTextMaxSize = wideLayout ? 22 : shortPortrait ? 25 : 28;
-        CreateProgress(orderCard, showingOrderComplete ? 0f : CurrentOrderCompletionProgress(), blue, wideLayout ? 12f : 15f);
-        autoSaleFill = CreateProgress(orderCard, showingOrderComplete ? 0f : data.queue, coral, wideLayout ? 13f : 16f);
+        orderState.resizeTextMinSize = wideLayout ? 13 : 15;
+        orderState.resizeTextMaxSize = wideLayout ? 19 : shortPortrait ? 21 : 23;
+        CreateProgress(orderCard, showingOrderComplete ? 0f : CurrentOrderCompletionProgress(), blue, wideLayout ? 9f : 11f);
+        autoSaleFill = CreateProgress(orderCard, showingOrderComplete ? 0f : data.queue, coral, wideLayout ? 10f : 12f);
 
         if (orderCompleteTimer > 0f && !string.IsNullOrEmpty(orderCompleteMessage))
         {
@@ -3528,14 +3550,14 @@ public sealed class IdleShopGame : MonoBehaviour
         bool shortPortrait = IsShortPortraitScreen();
         RectTransform grid = CreateRect("OrderItems", parent);
         LayoutElement gridLayoutElement = grid.gameObject.AddComponent<LayoutElement>();
-        gridLayoutElement.preferredHeight = wideLayout ? 108f : shortPortrait ? 124f : 138f;
+        gridLayoutElement.preferredHeight = wideLayout ? 82f : shortPortrait ? 94f : 104f;
         gridLayoutElement.flexibleHeight = 0f;
 
         GridLayoutGroup gridLayout = grid.gameObject.AddComponent<GridLayoutGroup>();
         gridLayout.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         gridLayout.constraintCount = 2;
-        gridLayout.spacing = wideLayout ? new Vector2(8f, 6f) : new Vector2(10f, 8f);
-        gridLayout.cellSize = wideLayout ? new Vector2(248f, 50f) : shortPortrait ? new Vector2(286f, 58f) : new Vector2(312f, 64f);
+        gridLayout.spacing = wideLayout ? new Vector2(8f, 5f) : new Vector2(10f, 6f);
+        gridLayout.cellSize = wideLayout ? new Vector2(248f, 38f) : shortPortrait ? new Vector2(286f, 44f) : new Vector2(312f, 48f);
 
         for (int i = 0; i < products.Length; i++)
         {

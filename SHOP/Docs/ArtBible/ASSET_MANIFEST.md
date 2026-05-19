@@ -49,6 +49,10 @@ Status values:
 | product_tea_01.png | `Products/` | integrated | Beverage product sprite. |
 | product_bento_01.png | `Products/` | integrated | Bento/lunch box product sprite. |
 | product_dessert_01.png | `Products/` | integrated | Dessert product sprite. |
+| icon_checkout_one.png | `UI/Icons/` | integrated | Checkout one item action icon. |
+| icon_restock_item.png | `UI/Icons/` | integrated | Restock current item action icon. |
+| icon_upgrade_product.png | `UI/Icons/` | integrated | Product upgrade action icon. |
+| icon_order.png | `UI/Icons/` | integrated | Current order/order entry icon. |
 
 ## Acceptance Checklist
 

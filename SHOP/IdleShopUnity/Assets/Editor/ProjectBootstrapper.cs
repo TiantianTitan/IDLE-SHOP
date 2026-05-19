@@ -122,9 +122,9 @@ public static class ProjectBootstrapper
             LoadSprite($"{Mvp23Path}/ui_order_item_slot.png"),
             LoadSprite($"{Mvp23Path}/ui_stock_warning_badge.png"),
             LoadSprite($"{Mvp23Path}/ui_current_item_frame.png"),
-            LoadSprite($"{Mvp23Path}/icon_checkout_one.png"),
-            LoadSprite($"{Mvp23Path}/icon_restock_item.png"),
-            LoadSprite($"{Mvp23Path}/icon_upgrade_product.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Icons/icon_checkout_one.png", $"{Mvp23Path}/icon_checkout_one.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Icons/icon_restock_item.png", $"{Mvp23Path}/icon_restock_item.png"),
+            LoadFirstSprite($"{Mvp30Path}/UI/Icons/icon_upgrade_product.png", $"{Mvp23Path}/icon_upgrade_product.png"),
             LoadSprite($"{Mvp23Path}/scene_empty_shelf_overlay.png"),
             LoadFirstSprite($"{Mvp23Path}/ui_order_complete_stamp.png", $"{Mvp23Path}/fx_order_complete_stamp.png"),
             LoadSprite($"{Mvp23Path}/fx_low_stock_pulse.png"),
@@ -179,7 +179,8 @@ public static class ProjectBootstrapper
             LoadFirstSprite($"{Mvp30Path}/FX/fx_upgrade_success.png", $"{Mvp23Path}/fx_upgrade_success.png"),
             LoadFirstSprite($"{Mvp30Path}/Characters/Customer/Leave/customer_leave_01.png", $"{Mvp23Path}/customer_leave_01.png", $"{Mvp23Path}/npc_customer_leave_happy.png"),
             LoadFirstSprite($"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_success_01.png", $"{Mvp30Path}/Characters/Staff/Cashier/Work/staff_cashier_work_01.png", $"{Mvp23Path}/npc_staff_cashier_work.png"),
-            LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_restocked_01.png", $"{Mvp30Path}/Scene/Shelf/States/shelf_full_01.png", $"{Mvp23Path}/scene_product_shelf_full.png")
+            LoadFirstSprite($"{Mvp30Path}/Scene/Shelf/States/shelf_restocked_01.png", $"{Mvp30Path}/Scene/Shelf/States/shelf_full_01.png", $"{Mvp23Path}/scene_product_shelf_full.png"),
+            LoadSprite($"{Mvp30Path}/UI/Icons/icon_order.png")
         };
     }
 
@@ -376,6 +377,11 @@ public static class ProjectBootstrapper
         if (path.Contains("/UI/Orders/ui_order_item_slot.png") ||
             path.Contains("/UI/Orders/ui_current_item_frame.png") ||
             path.Contains("/UI/Orders/ui_order_complete_stamp.png"))
+        {
+            return 512;
+        }
+
+        if (path.Contains("/UI/Icons/"))
         {
             return 512;
         }

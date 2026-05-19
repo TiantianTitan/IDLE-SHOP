@@ -53,9 +53,9 @@ This array is passed separately into `IdleShopGame.ConfigureArt`.
 | 16 | ui_order_item_slot | `Assets/Art/MVP30/UI/Orders/ui_order_item_slot.png` | integrated; fallback `Assets/Art/MVP23/ui_order_item_slot.png` |
 | 17 | ui_stock_warning_badge | `Assets/Art/MVP30/UI/Orders/ui_stock_warning_badge.png` | integrated; fallback `Assets/Art/MVP23/ui_stock_warning_badge.png` |
 | 18 | ui_current_item_frame | `Assets/Art/MVP30/UI/Orders/ui_current_item_frame.png` | integrated; fallback `Assets/Art/MVP23/ui_current_item_frame.png` |
-| 19 | icon_checkout_one | TBD | `Assets/Art/MVP23/icon_checkout_one.png` |
-| 20 | icon_restock_item | TBD | `Assets/Art/MVP23/icon_restock_item.png` |
-| 21 | icon_upgrade_product | TBD | `Assets/Art/MVP23/icon_upgrade_product.png` |
+| 19 | icon_checkout_one | `Assets/Art/MVP30/UI/Icons/icon_checkout_one.png` | integrated; fallback `Assets/Art/MVP23/icon_checkout_one.png` |
+| 20 | icon_restock_item | `Assets/Art/MVP30/UI/Icons/icon_restock_item.png` | integrated; fallback `Assets/Art/MVP23/icon_restock_item.png` |
+| 21 | icon_upgrade_product | `Assets/Art/MVP30/UI/Icons/icon_upgrade_product.png` | integrated; fallback `Assets/Art/MVP23/icon_upgrade_product.png` |
 | 22 | scene_empty_shelf_overlay | TBD | `Assets/Art/MVP23/scene_empty_shelf_overlay.png` |
 | 23 | ui_order_complete_stamp | `Assets/Art/MVP30/UI/Orders/ui_order_complete_stamp.png` | integrated; fallback `Assets/Art/MVP23/ui_order_complete_stamp.png` |
 | 24 | fx_low_stock_pulse | TBD | `Assets/Art/MVP23/fx_low_stock_pulse.png` |
@@ -69,3 +69,4 @@ This array is passed separately into `IdleShopGame.ConfigureArt`.
 | 32 | customer_leave | `Assets/Art/MVP30/Characters/Customer/Leave/customer_leave_01.png` | integrated; fallback `Assets/Art/MVP23/customer_leave_01.png` |
 | 33 | staff_cashier_success | `Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_success_01.png` | integrated; fallback `Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_work_01.png` |
 | 34 | shelf_restocked | `Assets/Art/MVP30/Scene/Shelf/States/shelf_restocked_01.png` | integrated; fallback `Assets/Art/MVP30/Scene/Shelf/States/shelf_full_01.png` |
+| 35 | icon_order | `Assets/Art/MVP30/UI/Icons/icon_order.png` | integrated; current order title icon |
