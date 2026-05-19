@@ -19,6 +19,15 @@ public sealed class IdleShopGame : MonoBehaviour
         Settings
     }
 
+    private enum CustomerSceneState
+    {
+        Entering,
+        Waiting,
+        Paying,
+        Blocked,
+        HappyLeaving
+    }
+
     [Serializable]
     private sealed class ProductDef
     {
@@ -118,8 +127,8 @@ public sealed class IdleShopGame : MonoBehaviour
     private const float LowStockRatio = 0.20f;
     private const float UpgradeGoalRatio = 0.70f;
     private const float StaffGoalRatio = 0.70f;
-    private const float CustomerEnterDurationSeconds = 4.25f;
-    private const float CustomerLeaveDurationSeconds = 4.00f;
+    private const float CustomerEnterDurationSeconds = 5.50f;
+    private const float CustomerLeaveDurationSeconds = 4.80f;
     private const int StaffRecommendationMinSold = 30;
     private const int MilestoneCount = 5;
     private const int Mvp23SceneInterior = 0;
@@ -242,12 +251,14 @@ public sealed class IdleShopGame : MonoBehaviour
     private RectTransform sceneCustomerMotion = null!;
     private RectTransform sceneStaffMotion = null!;
     private RectTransform sceneRestockFxMotion = null!;
+    private RectTransform sceneCheckoutItemMotion = null!;
     private Image salePopIconImage = null!;
     private Image sceneProductImage = null!;
     private Outline sceneProductOutline = null!;
     private Image sceneCustomerImage = null!;
     private Image sceneStaffImage = null!;
     private Image sceneRestockFxImage = null!;
+    private Image sceneCheckoutItemImage = null!;
     private Image sceneCashierGlow = null!;
     private Image sceneCustomerGlow = null!;
     private Text offlineText = null!;
@@ -2540,7 +2551,7 @@ public sealed class IdleShopGame : MonoBehaviour
 
     private Sprite CustomerWalkSprite(float time)
     {
-        int frame = Mathf.FloorToInt(time * 6f) % 4;
+        int frame = Mathf.FloorToInt(time * 4f) % 4;
         switch (frame)
         {
             case 0:
@@ -2552,6 +2563,26 @@ public sealed class IdleShopGame : MonoBehaviour
             default:
                 return FirstSprite(Mvp23Sprite(Mvp30CustomerWalk04), Mvp23Sprite(Mvp23CustomerWalk02), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
         }
+    }
+
+    private CustomerSceneState CurrentCustomerSceneState(bool showingOrderComplete, bool hasSellableStock, bool paying, bool entering)
+    {
+        if (showingOrderComplete)
+        {
+            return CustomerSceneState.HappyLeaving;
+        }
+
+        if (entering)
+        {
+            return CustomerSceneState.Entering;
+        }
+
+        if (paying)
+        {
+            return CustomerSceneState.Paying;
+        }
+
+        return hasSellableStock ? CustomerSceneState.Waiting : CustomerSceneState.Blocked;
     }
 
     private static Sprite FirstSprite(params Sprite[] sprites)
@@ -3070,94 +3101,133 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
+        if (sceneCheckoutItemMotion != null && sceneCheckoutItemImage != null)
+        {
+            bool showCheckoutItem = salePopTimer > 0f && recentSoldProductIndex >= 0;
+            if (sceneCheckoutItemMotion.gameObject.activeSelf != showCheckoutItem)
+            {
+                sceneCheckoutItemMotion.gameObject.SetActive(showCheckoutItem);
+            }
+
+            if (showCheckoutItem)
+            {
+                SceneCustomerRect(out float customerWidth, out float checkoutCustomerHeight, out float customerBaseY);
+                float progress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(1f - salePopTimer / 1.15f));
+                float startX = SceneCustomerCounterX() + customerWidth * 0.44f;
+                float endX = wideLayout ? 0.66f : 0.64f;
+                float arc = Mathf.Sin(progress * Mathf.PI) * 0.035f;
+                float x = Mathf.Lerp(startX, endX, progress);
+                float y = customerBaseY + Mathf.Lerp(0.17f, 0.21f, progress) + arc;
+                float size = Mathf.Min(wideLayout ? 0.060f : 0.072f, checkoutCustomerHeight * 0.22f);
+                SetSceneRect(sceneCheckoutItemMotion, x, y, size, size);
+                sceneCheckoutItemMotion.localScale = Vector3.one;
+                sceneCheckoutItemImage.color = new Color(1f, 1f, 1f, Mathf.Clamp01(1f - progress * 0.22f));
+            }
+        }
+
         if (sceneCustomerMotion != null)
         {
             bool showingOrderComplete = pendingOrderCompletion || (orderCompleteTimer > 0f && !string.IsNullOrEmpty(orderCompleteMessage));
-            bool canServe = HasSellableStock() || showingOrderComplete;
-            float width = wideLayout ? 0.13f : 0.16f;
-            float height = wideLayout ? 0.27f : 0.31f;
-            float baseY = wideLayout ? 0.14f : 0.11f;
-            float exitY = wideLayout ? 0.04f : 0.03f;
-            float doorX = wideLayout ? -0.02f : -0.01f;
-            float counterX = wideLayout ? 0.56f : 0.57f;
-            float exitStartX = wideLayout ? 0.76f : 0.75f;
+            bool hasSellableStock = HasSellableStock();
+            bool canServe = hasSellableStock || showingOrderComplete;
+            SceneCustomerRect(out float width, out float height, out float baseY);
+            float exitY = wideLayout ? 0.03f : 0.025f;
+            float doorX = SceneCustomerDoorX();
+            float entryX = SceneCustomerEntryX();
+            float counterX = SceneCustomerCounterX();
+            float shelfX = SceneCustomerShelfX();
+            float exitStartX = wideLayout ? 0.74f : 0.73f;
             float enteringProgress = 1f - newOrderBurst;
             float leavingProgress = 1f - orderCompleteBurst;
-            bool entering = newOrderBurst > 0f && canServe && !showingOrderComplete;
-            bool leaving = showingOrderComplete;
+            bool entering = newOrderBurst > 0f && !showingOrderComplete;
             bool paying = saleBurst > 0f && canServe && !showingOrderComplete;
-            float x = canServe ? counterX : 0.16f;
+            CustomerSceneState sceneState = CurrentCustomerSceneState(showingOrderComplete, hasSellableStock, paying, entering);
+            float x = sceneState == CustomerSceneState.Blocked ? shelfX : counterX;
             float y = baseY;
-            if (entering)
+            bool movingSprite = false;
+            bool faceRight = true;
+            switch (sceneState)
             {
-                x = Mathf.Lerp(doorX, counterX, Mathf.SmoothStep(0f, 1f, enteringProgress));
-            }
-            else if (leaving)
-            {
-                if (leavingProgress < 0.18f)
-                {
+                case CustomerSceneState.Entering:
+                    x = Mathf.Lerp(entryX, counterX, Mathf.SmoothStep(0f, 1f, enteringProgress));
+                    movingSprite = true;
+                    faceRight = true;
+                    break;
+                case CustomerSceneState.HappyLeaving:
+                    if (leavingProgress < 0.22f)
+                    {
+                        x = counterX;
+                        y = baseY;
+                        faceRight = true;
+                    }
+                    else if (leavingProgress < 0.40f)
+                    {
+                        float dropProgress = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.22f, 0.40f, leavingProgress));
+                        x = Mathf.Lerp(counterX, exitStartX, dropProgress);
+                        y = Mathf.Lerp(baseY, exitY, dropProgress);
+                        faceRight = true;
+                        movingSprite = true;
+                    }
+                    else
+                    {
+                        x = Mathf.Lerp(exitStartX, doorX, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.40f, 1f, leavingProgress)));
+                        y = exitY;
+                        faceRight = false;
+                        movingSprite = true;
+                    }
+                    break;
+                case CustomerSceneState.Blocked:
+                    x = shelfX;
+                    faceRight = true;
+                    break;
+                case CustomerSceneState.Paying:
+                case CustomerSceneState.Waiting:
+                default:
                     x = counterX;
-                    y = baseY;
-                }
-                else if (leavingProgress < 0.36f)
-                {
-                    float dropProgress = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.18f, 0.36f, leavingProgress));
-                    x = Mathf.Lerp(counterX, exitStartX, dropProgress);
-                    y = Mathf.Lerp(baseY, exitY, dropProgress);
-                }
-                else
-                {
-                    x = Mathf.Lerp(exitStartX, doorX, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.36f, 1f, leavingProgress)));
-                    y = exitY;
-                }
+                    faceRight = true;
+                    break;
             }
 
             SetSceneRect(sceneCustomerMotion, x, y, width, height);
-            bool faceRight = !leaving || leavingProgress < 0.18f;
             sceneCustomerMotion.localScale = new Vector3(faceRight ? 1f : -1f, 1f, 1f);
             sceneCustomerMotion.localRotation = Quaternion.identity;
 
             if (sceneCustomerImage != null)
             {
                 Sprite sprite = null;
-                bool movingSprite = false;
-                if (leaving)
+                switch (sceneState)
                 {
-                    movingSprite = leavingProgress > 0.20f;
-                    sprite = leavingProgress > 0.20f
-                        ? FirstSprite(CustomerWalkSprite(time), Mvp23Sprite(Mvp23CustomerLeave), Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite)
-                        : FirstSprite(Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
-                }
-                else if (!canServe)
-                {
-                    sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerDisappointed), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
-                }
-                else if (paying)
-                {
-                    sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerPay), Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
-                }
-                else if (entering)
-                {
-                    movingSprite = true;
-                    sprite = CustomerWalkSprite(time);
-                }
-                else
-                {
-                    sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerIdle), Mvp23Sprite(Mvp23CustomerWalk01), customerSprite);
+                    case CustomerSceneState.HappyLeaving:
+                        sprite = movingSprite
+                            ? FirstSprite(CustomerWalkSprite(time), Mvp23Sprite(Mvp23CustomerLeave), Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite)
+                            : FirstSprite(Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                        break;
+                    case CustomerSceneState.Blocked:
+                        sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerDisappointed), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                        break;
+                    case CustomerSceneState.Paying:
+                        sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerPay), Mvp23Sprite(Mvp23CustomerHappy), Mvp23Sprite(Mvp23CustomerIdle), customerSprite);
+                        break;
+                    case CustomerSceneState.Entering:
+                        sprite = CustomerWalkSprite(time);
+                        break;
+                    case CustomerSceneState.Waiting:
+                    default:
+                        sprite = FirstSprite(Mvp23Sprite(Mvp23CustomerIdle), Mvp23Sprite(Mvp23CustomerWalk01), customerSprite);
+                        break;
                 }
 
                 sceneCustomerImage.sprite = sprite;
-                ConfigureCustomerArtFrame(sceneCustomerImage.rectTransform, movingSprite);
+                ConfigureCustomerArtFrame(sceneCustomerImage.rectTransform);
                 float enterAlpha = entering ? Mathf.Clamp01(0.40f + enteringProgress * 0.60f) : 1f;
-                float leaveAlpha = leaving ? Mathf.Clamp01(1f - Mathf.InverseLerp(0.78f, 1f, leavingProgress) * 0.48f) : 1f;
+                float leaveAlpha = sceneState == CustomerSceneState.HappyLeaving ? Mathf.Clamp01(1f - Mathf.InverseLerp(0.82f, 1f, leavingProgress) * 0.48f) : 1f;
                 sceneCustomerImage.color = canServe ? new Color(1f, 1f, 1f, Mathf.Min(enterAlpha, leaveAlpha)) : new Color(0.86f, 0.86f, 0.86f, 0.92f);
             }
         }
 
         if (sceneStaffMotion != null)
         {
-            float staffPulse = 1f + saleBurst * 0.06f + Mathf.Sin(time * 2.4f) * 0.008f;
-            sceneStaffMotion.localScale = new Vector3(-staffPulse, staffPulse, 1f);
+            sceneStaffMotion.localScale = new Vector3(-1f, 1f, 1f);
             if (sceneStaffImage != null)
             {
                 sceneStaffImage.sprite = FirstSprite(
@@ -3170,17 +3240,29 @@ public sealed class IdleShopGame : MonoBehaviour
 
         if (sceneCashierGlow != null)
         {
-            float alpha = 0.18f + Mathf.Sin(time * 5.0f) * 0.06f + saleBurst * 0.28f + upgradeBurst * 0.14f;
+            float alpha = Mathf.Clamp01(saleBurst * 0.22f + upgradeBurst * 0.14f);
+            bool visible = alpha > 0.01f;
+            if (sceneCashierGlow.gameObject.activeSelf != visible)
+            {
+                sceneCashierGlow.gameObject.SetActive(visible);
+            }
+
             Color color = sceneCashierGlow.color;
-            color.a = Mathf.Clamp01(alpha);
+            color.a = alpha;
             sceneCashierGlow.color = color;
         }
 
         if (sceneCustomerGlow != null)
         {
-            float alpha = 0.14f + Mathf.Sin(time * 4.1f + 1.3f) * 0.05f + saleBurst * 0.22f + restockBurst * 0.16f;
+            float alpha = Mathf.Clamp01(saleBurst * 0.10f + restockBurst * 0.16f);
+            bool visible = alpha > 0.01f;
+            if (sceneCustomerGlow.gameObject.activeSelf != visible)
+            {
+                sceneCustomerGlow.gameObject.SetActive(visible);
+            }
+
             Color color = sceneCustomerGlow.color;
-            color.a = Mathf.Clamp01(alpha);
+            color.a = alpha;
             sceneCustomerGlow.color = color;
         }
     }
@@ -3271,24 +3353,15 @@ public sealed class IdleShopGame : MonoBehaviour
         rect.offsetMax = Vector2.zero;
     }
 
-    private static void ConfigureCustomerArtFrame(RectTransform rect, bool movingSprite)
+    private static void ConfigureCustomerArtFrame(RectTransform rect)
     {
         if (rect == null)
         {
             return;
         }
 
-        if (movingSprite)
-        {
-            rect.anchorMin = new Vector2(-0.28f, -0.10f);
-            rect.anchorMax = new Vector2(1.28f, 1.10f);
-        }
-        else
-        {
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-        }
-
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
     }
@@ -3351,6 +3424,81 @@ public sealed class IdleShopGame : MonoBehaviour
                 maxX = 0.25f;
                 maxY = 0.66f;
                 return;
+        }
+    }
+
+    private void SceneCustomerRect(out float width, out float height, out float baseY)
+    {
+        width = wideLayout ? 0.15f : 0.18f;
+        height = wideLayout ? 0.31f : 0.34f;
+        baseY = wideLayout ? 0.12f : 0.10f;
+    }
+
+    private float SceneCustomerCounterX()
+    {
+        return wideLayout ? 0.44f : 0.42f;
+    }
+
+    private float SceneCustomerShelfX()
+    {
+        return wideLayout ? 0.16f : 0.14f;
+    }
+
+    private float SceneCustomerDoorX()
+    {
+        return wideLayout ? -0.17f : -0.18f;
+    }
+
+    private float SceneQueueX(int index)
+    {
+        if (index <= 0)
+        {
+            return wideLayout ? 0.10f : 0.08f;
+        }
+
+        return wideLayout ? 0.25f : 0.24f;
+    }
+
+    private float SceneCustomerEntryX()
+    {
+        return data.completedOrders > 0 ? SceneQueueX(0) : SceneCustomerDoorX();
+    }
+
+    private static void DisableImageRaycast(RectTransform rect)
+    {
+        Image image = rect != null ? rect.GetComponent<Image>() : null;
+        if (image != null)
+        {
+            image.raycastTarget = false;
+        }
+    }
+
+    private void CreateSceneQueuedCustomers(RectTransform actorLayer, Sprite customerSpriteForQueue, bool showQueue)
+    {
+        if (!showQueue || customerSpriteForQueue == null)
+        {
+            return;
+        }
+
+        SceneCustomerRect(out float width, out float height, out float baseY);
+        int queueCount = data.completedOrders >= 6 ? 2 : 1;
+        for (int i = 0; i < queueCount; i++)
+        {
+            RectTransform queuedCustomer = CreateRect($"SceneQueuedCustomer{i + 1}", actorLayer);
+            SetSceneRect(queuedCustomer, SceneQueueX(i), baseY, width, height);
+            queuedCustomer.localScale = Vector3.one;
+
+            if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
+            {
+                RectTransform shadow = CreateImagePanel("QueueShadow", queuedCustomer, Mvp23Sprite(Mvp23SceneFloorShadow), Color.clear, false);
+                shadow.anchorMin = new Vector2(0.10f, 0f);
+                shadow.anchorMax = new Vector2(0.90f, 0.18f);
+                shadow.offsetMin = Vector2.zero;
+                shadow.offsetMax = Vector2.zero;
+            }
+
+            Image queuedImage = CreateImage("QueueCustomerArt", queuedCustomer, customerSpriteForQueue, true);
+            queuedImage.color = new Color(1f, 1f, 1f, i == 0 ? 0.78f : 0.58f);
         }
     }
 
@@ -3418,12 +3566,14 @@ public sealed class IdleShopGame : MonoBehaviour
         sceneCustomerMotion = null!;
         sceneStaffMotion = null!;
         sceneRestockFxMotion = null!;
+        sceneCheckoutItemMotion = null!;
         salePopIconImage = null!;
         sceneProductImage = null!;
         sceneProductOutline = null!;
         sceneCustomerImage = null!;
         sceneStaffImage = null!;
         sceneRestockFxImage = null!;
+        sceneCheckoutItemImage = null!;
         sceneCashierGlow = null!;
         sceneCustomerGlow = null!;
         Clear(contentRoot);
@@ -3478,10 +3628,27 @@ public sealed class IdleShopGame : MonoBehaviour
         RectTransform stage = CreatePanel("GameStage", contentRoot, new Color(0.16f, 0.36f, 0.32f));
         stage.gameObject.AddComponent<LayoutElement>().preferredHeight = wideLayout ? 540f : shortPortrait ? 650f : 710f;
 
-        RectTransform sceneWall = CreatePanel("SceneWall", stage, new Color(0.96f, 0.83f, 0.58f, 1f));
-        AnchorFill(sceneWall, 0f, 0f, 0f, 0f);
+        RectTransform backgroundLayer = CreateRect("SceneLayerBackground", stage);
+        AnchorFill(backgroundLayer, 0f, 0f, 0f, 0f);
+        RectTransform stockLayer = CreateRect("SceneLayerStock", stage);
+        AnchorFill(stockLayer, 0f, 0f, 0f, 0f);
+        RectTransform actorLayer = CreateRect("SceneLayerActors", stage);
+        AnchorFill(actorLayer, 0f, 0f, 0f, 0f);
+        RectTransform foregroundLayer = CreateRect("SceneLayerForeground", stage);
+        AnchorFill(foregroundLayer, 0f, 0f, 0f, 0f);
+        RectTransform fxLayer = CreateRect("SceneLayerFx", stage);
+        AnchorFill(fxLayer, 0f, 0f, 0f, 0f);
+        backgroundLayer.SetSiblingIndex(0);
+        stockLayer.SetSiblingIndex(1);
+        actorLayer.SetSiblingIndex(2);
+        foregroundLayer.SetSiblingIndex(3);
+        fxLayer.SetSiblingIndex(4);
 
-        RectTransform stageArt = CreateImagePanel("ShopFront", stage, FirstSprite(Mvp23Sprite(Mvp23SceneInterior), shopFrontSprite), Color.clear, false);
+        RectTransform sceneWall = CreatePanel("SceneWall", backgroundLayer, new Color(0.96f, 0.83f, 0.58f, 1f));
+        AnchorFill(sceneWall, 0f, 0f, 0f, 0f);
+        DisableImageRaycast(sceneWall);
+
+        RectTransform stageArt = CreateImagePanel("ShopFront", backgroundLayer, FirstSprite(Mvp23Sprite(Mvp23SceneInterior), shopFrontSprite), Color.clear, false);
         AnchorFill(stageArt, 0f, 0f, 0f, 0f);
         Image stageArtImage = stageArt.GetComponent<Image>();
         if (stageArtImage != null)
@@ -3490,27 +3657,30 @@ public sealed class IdleShopGame : MonoBehaviour
             stageArtImage.raycastTarget = false;
         }
 
-        RectTransform rearShelfBand = CreatePanel("SceneBackWallBand", stage, new Color(0.44f, 0.30f, 0.18f, 0.32f));
+        RectTransform rearShelfBand = CreatePanel("SceneBackWallBand", backgroundLayer, new Color(0.44f, 0.30f, 0.18f, 0.32f));
         rearShelfBand.anchorMin = new Vector2(0.04f, 0.56f);
         rearShelfBand.anchorMax = new Vector2(0.96f, 0.88f);
         rearShelfBand.offsetMin = Vector2.zero;
         rearShelfBand.offsetMax = Vector2.zero;
+        DisableImageRaycast(rearShelfBand);
 
-        RectTransform floor = CreatePanel("SceneFloor", stage, new Color(0.72f, 0.48f, 0.28f, 0.96f));
+        RectTransform floor = CreatePanel("SceneFloor", backgroundLayer, new Color(0.72f, 0.48f, 0.28f, 0.96f));
         floor.anchorMin = new Vector2(0f, 0f);
         floor.anchorMax = new Vector2(1f, 0.34f);
         floor.offsetMin = Vector2.zero;
         floor.offsetMax = Vector2.zero;
+        DisableImageRaycast(floor);
 
-        RectTransform walkLane = CreatePanel("SceneWalkLane", stage, new Color(0.94f, 0.73f, 0.42f, 0.48f));
+        RectTransform walkLane = CreatePanel("SceneWalkLane", backgroundLayer, new Color(0.94f, 0.73f, 0.42f, 0.08f));
         walkLane.anchorMin = new Vector2(0.04f, 0.08f);
         walkLane.anchorMax = new Vector2(0.96f, 0.23f);
         walkLane.offsetMin = Vector2.zero;
         walkLane.offsetMax = Vector2.zero;
+        DisableImageRaycast(walkLane);
 
         if (!hasSellableStock && !showingOrderComplete && Mvp23Sprite(Mvp23SceneEmptyShelfOverlay) != null)
         {
-            RectTransform emptyOverlay = CreateImagePanel("EmptyShelfOverlay", stage, Mvp23Sprite(Mvp23SceneEmptyShelfOverlay), Color.clear, false);
+            RectTransform emptyOverlay = CreateImagePanel("EmptyShelfOverlay", backgroundLayer, Mvp23Sprite(Mvp23SceneEmptyShelfOverlay), Color.clear, false);
             emptyOverlay.anchorMin = new Vector2(0.04f, 0.30f);
             emptyOverlay.anchorMax = new Vector2(0.96f, 0.86f);
             emptyOverlay.offsetMin = Vector2.zero;
@@ -3524,7 +3694,7 @@ public sealed class IdleShopGame : MonoBehaviour
         Sprite counterStateSprite = FirstSprite(Mvp23Sprite(Mvp23CashierCounter), counterSprite);
         if (shelfStateSprite != null || counterStateSprite != null)
         {
-            RectTransform shelfArt = CreateImagePanel("ShelfArt", stage, shelfStateSprite, Color.clear, true);
+            RectTransform shelfArt = CreateImagePanel("ShelfArt", stockLayer, shelfStateSprite, Color.clear, true);
             shelfArt.anchorMin = new Vector2(0.06f, 0.31f);
             shelfArt.anchorMax = new Vector2(0.48f, 0.82f);
             shelfArt.offsetMin = Vector2.zero;
@@ -3535,11 +3705,11 @@ public sealed class IdleShopGame : MonoBehaviour
                 shelfImage.raycastTarget = false;
             }
 
-            CreateSceneShelfProducts(stage);
+            CreateSceneShelfProducts(stockLayer);
 
             if (counterStateSprite != null)
             {
-                RectTransform counterArt = CreateImagePanel("CounterArt", stage, counterStateSprite, Color.clear, true);
+                RectTransform counterArt = CreateImagePanel("CounterArt", stockLayer, counterStateSprite, Color.clear, true);
                 counterArt.anchorMin = new Vector2(0.46f, 0.12f);
                 counterArt.anchorMax = new Vector2(0.98f, 0.58f);
                 counterArt.offsetMin = Vector2.zero;
@@ -3553,19 +3723,19 @@ public sealed class IdleShopGame : MonoBehaviour
             }
             else
             {
-                RectTransform counterBase = CreatePanel("SceneCounterBase", stage, new Color(0.48f, 0.29f, 0.16f, 0.98f));
+                RectTransform counterBase = CreatePanel("SceneCounterBase", stockLayer, new Color(0.48f, 0.29f, 0.16f, 0.98f));
                 counterBase.anchorMin = new Vector2(0.54f, 0.20f);
                 counterBase.anchorMax = new Vector2(0.92f, 0.48f);
                 counterBase.offsetMin = Vector2.zero;
                 counterBase.offsetMax = Vector2.zero;
 
-                RectTransform counterTop = CreatePanel("SceneCounterTop", stage, new Color(0.78f, 0.55f, 0.31f, 0.98f));
+                RectTransform counterTop = CreatePanel("SceneCounterTop", stockLayer, new Color(0.78f, 0.55f, 0.31f, 0.98f));
                 counterTop.anchorMin = new Vector2(0.50f, 0.43f);
                 counterTop.anchorMax = new Vector2(0.94f, 0.55f);
                 counterTop.offsetMin = Vector2.zero;
                 counterTop.offsetMax = Vector2.zero;
 
-                RectTransform register = CreatePanel("SceneRegister", stage, new Color(0.95f, 0.82f, 0.58f, 0.98f));
+                RectTransform register = CreatePanel("SceneRegister", stockLayer, new Color(0.95f, 0.82f, 0.58f, 0.98f));
                 register.anchorMin = new Vector2(0.70f, 0.54f);
                 register.anchorMax = new Vector2(0.84f, 0.70f);
                 register.offsetMin = Vector2.zero;
@@ -3573,22 +3743,33 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
-        RectTransform customerPoint = CreatePanel("CustomerPulse", stage, new Color(0.95f, 0.78f, 0.32f, 0.16f));
-        customerPoint.anchorMin = new Vector2(0.08f, 0.12f);
-        customerPoint.anchorMax = new Vector2(0.20f, 0.32f);
+        RectTransform customerPoint = CreatePanel("CustomerPulse", fxLayer, new Color(0.95f, 0.78f, 0.32f, 0f));
+        customerPoint.anchorMin = new Vector2(0.42f, 0.12f);
+        customerPoint.anchorMax = new Vector2(0.62f, 0.44f);
         customerPoint.offsetMin = Vector2.zero;
         customerPoint.offsetMax = Vector2.zero;
         sceneCustomerGlow = customerPoint.GetComponent<Image>();
+        sceneCustomerGlow.raycastTarget = false;
+        customerPoint.gameObject.SetActive(false);
 
-        RectTransform cashierPoint = CreatePanel("CashierPulse", stage, new Color(0.94f, 0.65f, 0.20f, 0.18f));
-        cashierPoint.anchorMin = new Vector2(0.74f, 0.18f);
-        cashierPoint.anchorMax = new Vector2(0.90f, 0.42f);
+        RectTransform cashierPoint = CreatePanel("CashierPulse", fxLayer, new Color(0.94f, 0.65f, 0.20f, 0f));
+        cashierPoint.anchorMin = new Vector2(0.68f, 0.16f);
+        cashierPoint.anchorMax = new Vector2(0.88f, 0.48f);
         cashierPoint.offsetMin = Vector2.zero;
         cashierPoint.offsetMax = Vector2.zero;
         sceneCashierGlow = cashierPoint.GetComponent<Image>();
+        sceneCashierGlow.raycastTarget = false;
+        cashierPoint.gameObject.SetActive(false);
 
-        RectTransform customerActor = CreateRect("SceneCustomer", stage);
-        SetSceneRect(customerActor, showingOrderComplete ? (wideLayout ? 0.56f : 0.57f) : hasSellableStock ? (wideLayout ? 0.56f : 0.57f) : 0.16f, wideLayout ? 0.14f : 0.11f, wideLayout ? 0.13f : 0.16f, wideLayout ? 0.27f : 0.31f);
+        Sprite customerActorSprite = FirstSprite(showingOrderComplete ? Mvp23Sprite(Mvp23CustomerHappy) : hasSellableStock ? Mvp23Sprite(Mvp23CustomerIdle) : Mvp23Sprite(Mvp23CustomerDisappointed), customerSprite);
+        CreateSceneQueuedCustomers(actorLayer, FirstSprite(Mvp23Sprite(Mvp23CustomerIdle), customerSprite), hasSellableStock && !showingOrderComplete && newOrderFlashTimer <= 0.01f);
+
+        SceneCustomerRect(out float customerWidth, out float customerHeight, out float customerBaseY);
+        float renderCustomerX = newOrderFlashTimer > 0f && !showingOrderComplete
+            ? SceneCustomerEntryX()
+            : showingOrderComplete || hasSellableStock ? SceneCustomerCounterX() : SceneCustomerShelfX();
+        RectTransform customerActor = CreateRect("SceneCustomer", actorLayer);
+        SetSceneRect(customerActor, renderCustomerX, customerBaseY, customerWidth, customerHeight);
         sceneCustomerMotion = customerActor;
         if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
         {
@@ -3599,7 +3780,6 @@ public sealed class IdleShopGame : MonoBehaviour
             customerShadow.offsetMax = Vector2.zero;
         }
 
-        Sprite customerActorSprite = FirstSprite(showingOrderComplete ? Mvp23Sprite(Mvp23CustomerHappy) : hasSellableStock ? Mvp23Sprite(Mvp23CustomerIdle) : Mvp23Sprite(Mvp23CustomerDisappointed), customerSprite);
         if (customerActorSprite != null)
         {
             sceneCustomerImage = CreateImage("CustomerArt", customerActor, customerActorSprite, true);
@@ -3615,8 +3795,9 @@ public sealed class IdleShopGame : MonoBehaviour
             waitingBubble.offsetMax = Vector2.zero;
         }
 
-        RectTransform staffActor = CreateRect("SceneCashierStaff", stage);
-        SetSceneRect(staffActor, wideLayout ? 0.72f : 0.70f, wideLayout ? 0.24f : 0.21f, wideLayout ? 0.13f : 0.16f, wideLayout ? 0.25f : 0.29f);
+        RectTransform staffActor = CreateRect("SceneCashierStaff", actorLayer);
+        SetSceneRect(staffActor, wideLayout ? 0.68f : 0.67f, wideLayout ? 0.18f : 0.16f, wideLayout ? 0.15f : 0.18f, wideLayout ? 0.31f : 0.34f);
+        staffActor.localScale = new Vector3(-1f, 1f, 1f);
         sceneStaffMotion = staffActor;
         if (Mvp23Sprite(Mvp23SceneFloorShadow) != null)
         {
@@ -3634,7 +3815,7 @@ public sealed class IdleShopGame : MonoBehaviour
         }
 
         SceneProductRect(primaryIndex, out float productMinX, out float productMinY, out float productMaxX, out float productMaxY);
-        RectTransform productIcon = CreateRect("SceneProductFocus", stage);
+        RectTransform productIcon = CreateRect("SceneProductFocus", fxLayer);
         productIcon.anchorMin = new Vector2(Mathf.Max(0.02f, productMinX - 0.025f), Mathf.Max(0.06f, productMinY - 0.035f));
         productIcon.anchorMax = new Vector2(Mathf.Min(0.98f, productMaxX + 0.025f), Mathf.Min(0.92f, productMaxY + 0.035f));
         productIcon.offsetMin = Vector2.zero;
@@ -3668,7 +3849,7 @@ public sealed class IdleShopGame : MonoBehaviour
         Sprite restockFxSprite = FirstSprite(Mvp23Sprite(Mvp23FxRestockSuccessRing), Mvp23Sprite(Mvp23FxRestockSpark));
         if (restockFxSprite != null)
         {
-            RectTransform restockFx = CreateImagePanel("RestockSparkFx", stage, restockFxSprite, Color.clear, true);
+            RectTransform restockFx = CreateImagePanel("RestockSparkFx", fxLayer, restockFxSprite, Color.clear, true);
             restockFx.anchorMin = new Vector2(Mathf.Max(0.02f, productMinX - 0.07f), Mathf.Max(0.04f, productMinY - 0.08f));
             restockFx.anchorMax = new Vector2(Mathf.Min(0.98f, productMaxX + 0.07f), Mathf.Min(0.96f, productMaxY + 0.08f));
             restockFx.offsetMin = Vector2.zero;
@@ -3681,7 +3862,7 @@ public sealed class IdleShopGame : MonoBehaviour
         Sprite upgradeFxSprite = Mvp23Sprite(Mvp23FxUpgradeSuccess);
         if (upgradeFxSprite != null && upgradePulseTimer > 0f)
         {
-            RectTransform upgradeFx = CreateImagePanel("UpgradeSuccessFx", stage, upgradeFxSprite, Color.clear, true);
+            RectTransform upgradeFx = CreateImagePanel("UpgradeSuccessFx", fxLayer, upgradeFxSprite, Color.clear, true);
             upgradeFx.anchorMin = new Vector2(Mathf.Max(0.02f, productMinX - 0.09f), Mathf.Max(0.04f, productMinY - 0.10f));
             upgradeFx.anchorMax = new Vector2(Mathf.Min(0.98f, productMaxX + 0.09f), Mathf.Min(0.96f, productMaxY + 0.10f));
             upgradeFx.offsetMin = Vector2.zero;
@@ -3694,24 +3875,18 @@ public sealed class IdleShopGame : MonoBehaviour
             }
         }
 
-        if ((!hasSellableStock && !showingOrderComplete) || lowStock)
+        Sprite checkoutItemSprite = ProductSprite(recentSoldProductIndex >= 0 ? recentSoldProductIndex : primaryIndex);
+        if (checkoutItemSprite != null)
         {
-            RectTransform stockHint = CreatePanel("StockStateHint", stage, lowStock ? new Color(0.42f, 0.24f, 0.06f, 0.84f) : new Color(0.03f, 0.10f, 0.09f, 0.82f));
-            stockHint.anchorMin = new Vector2(0.08f, 0.80f);
-            stockHint.anchorMax = new Vector2(0.68f, 0.92f);
-            stockHint.offsetMin = Vector2.zero;
-            stockHint.offsetMax = Vector2.zero;
-            Text hintText = CreateText("Hint", stockHint, lowStock ? T("shop.low_stock_stage_hint") : CurrentOrderShortageText(), wideLayout ? 22 : shortPortrait ? 25 : 28, FontStyle.Bold, Color.white, TextAnchor.MiddleCenter);
-            hintText.resizeTextForBestFit = true;
-            hintText.resizeTextMinSize = wideLayout ? 13 : 16;
-            hintText.resizeTextMaxSize = wideLayout ? 22 : shortPortrait ? 25 : 28;
+            RectTransform checkoutItem = CreateRect("SceneCheckoutItem", fxLayer);
+            sceneCheckoutItemMotion = checkoutItem;
+            SetSceneRect(checkoutItem, SceneCustomerCounterX() + customerWidth * 0.44f, customerBaseY + 0.17f, wideLayout ? 0.060f : 0.072f, wideLayout ? 0.060f : 0.072f);
+            sceneCheckoutItemImage = CreateImage("Item", checkoutItem, checkoutItemSprite, true);
+            checkoutItem.gameObject.SetActive(salePopTimer > 0f && recentSoldProductIndex >= 0);
         }
 
-        customerActor.SetAsLastSibling();
-        staffActor.SetAsLastSibling();
-
         displayedAutoSaleProgress = hasSellableStock ? Mathf.Clamp01(data.queue) : 0f;
-        salePopText = CreateText("SalePop", stage, salePopMessage, wideLayout ? 42 : shortPortrait ? 48 : 54, FontStyle.Bold, honey, TextAnchor.MiddleRight);
+        salePopText = CreateText("SalePop", fxLayer, salePopMessage, wideLayout ? 42 : shortPortrait ? 48 : 54, FontStyle.Bold, honey, TextAnchor.MiddleRight);
         LayoutElement salePopLayout = salePopText.gameObject.AddComponent<LayoutElement>();
         salePopLayout.ignoreLayout = true;
         salePopRectTransform = salePopText.GetComponent<RectTransform>();
@@ -3724,7 +3899,7 @@ public sealed class IdleShopGame : MonoBehaviour
         Sprite saleIconSprite = FirstSprite(Mvp23Sprite(Mvp23FxCashFloat), Mvp23Sprite(Mvp23FxCoinPop), coinSprite);
         if (saleIconSprite != null)
         {
-            RectTransform saleIcon = CreateRect("SalePopIcon", stage);
+            RectTransform saleIcon = CreateRect("SalePopIcon", fxLayer);
             salePopIconRectTransform = saleIcon;
             saleIcon.anchorMin = new Vector2(0.40f, 0.52f);
             saleIcon.anchorMax = new Vector2(0.52f, 0.72f);
