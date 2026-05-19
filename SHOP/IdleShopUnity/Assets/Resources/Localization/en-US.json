@@ -95,6 +95,30 @@
       "value": "High-value reputation boost"
     },
     {
+      "key": "product.tier.fast",
+      "value": "Entry item · fast, low margin"
+    },
+    {
+      "key": "product.tier.profit",
+      "value": "Mid item · costly restock, higher margin"
+    },
+    {
+      "key": "product.tier.premium",
+      "value": "Premium item · rare, high payout"
+    },
+    {
+      "key": "product.tier.fast_short",
+      "value": "Fast"
+    },
+    {
+      "key": "product.tier.profit_short",
+      "value": "Profit"
+    },
+    {
+      "key": "product.tier.premium_short",
+      "value": "Premium"
+    },
+    {
       "key": "upgrade.shelf.name",
       "value": "Wooden Shelves"
     },
@@ -752,7 +776,7 @@
     },
     {
       "key": "staff.manager.automation",
-      "value": "Order value {0}% → {1}%"
+      "value": "Offline cap {0}h → {1}h"
     },
     {
       "key": "action.restock_order",

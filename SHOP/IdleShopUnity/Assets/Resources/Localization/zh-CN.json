@@ -95,6 +95,30 @@
       "value": "提升口碑的高价商品"
     },
     {
+      "key": "product.tier.fast",
+      "value": "低级商品 · 快卖低利润"
+    },
+    {
+      "key": "product.tier.profit",
+      "value": "中级商品 · 补货贵利润高"
+    },
+    {
+      "key": "product.tier.premium",
+      "value": "高级商品 · 低频高收益"
+    },
+    {
+      "key": "product.tier.fast_short",
+      "value": "快卖"
+    },
+    {
+      "key": "product.tier.profit_short",
+      "value": "高利"
+    },
+    {
+      "key": "product.tier.premium_short",
+      "value": "高级"
+    },
+    {
       "key": "upgrade.shelf.name",
       "value": "木质货架"
     },
@@ -752,7 +776,7 @@
     },
     {
       "key": "staff.manager.automation",
-      "value": "订单收益 {0}% → {1}%"
+      "value": "离线收益上限 {0}小时 → {1}小时"
     },
     {
       "key": "action.restock_order",

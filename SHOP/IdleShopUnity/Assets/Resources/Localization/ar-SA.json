@@ -752,7 +752,7 @@
     },
     {
       "key": "staff.manager.automation",
-      "value": "Order value {0}% → {1}%"
+      "value": "Offline cap {0}h → {1}h"
     },
     {
       "key": "action.restock_order",
