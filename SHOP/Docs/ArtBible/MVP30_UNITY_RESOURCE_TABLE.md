@@ -30,8 +30,8 @@ This order is prepared for `ProjectBootstrapper`.
 | 10 | customer_disappointed | TBD | `Assets/Art/MVP23/npc_customer_disappointed.png` |
 | 11 | staff_cashier_idle | `Assets/Art/MVP30/Characters/Staff/Cashier/Idle/staff_cashier_idle_01.png` | integrated; fallback `Assets/Art/MVP23/npc_staff_cashier_idle.png` |
 | 12 | staff_cashier_work | `Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_work_01.png` | integrated; fallback `Assets/Art/MVP23/npc_staff_cashier_work.png` |
-| 13 | fx_cash_float | `Assets/Art/MVP30/FX/fx_cash_float.png` | `Assets/Art/MVP23/fx_cash_float.png` |
-| 14 | fx_restock_success_ring | `Assets/Art/MVP30/FX/fx_restock_success_ring.png` | `Assets/Art/MVP23/fx_restock_success_ring.png` |
+| 13 | fx_cash_float | `Assets/Art/MVP30/FX/fx_cash_float.png` | integrated; fallback `Assets/Art/MVP23/fx_cash_float.png` |
+| 14 | fx_restock_success_ring | `Assets/Art/MVP30/FX/fx_restock_success_ring.png` | integrated; fallback `Assets/Art/MVP23/fx_restock_success_ring.png` |
 | 15 | ui_order_ticket | `Assets/Art/MVP30/UI/Orders/ui_order_ticket.png` | integrated; fallback `Assets/Art/MVP23/ui_order_ticket.png` |
 | 16 | ui_order_item_slot | `Assets/Art/MVP30/UI/Orders/ui_order_item_slot.png` | integrated; fallback `Assets/Art/MVP23/ui_order_item_slot.png` |
 | 17 | ui_stock_warning_badge | `Assets/Art/MVP30/UI/Orders/ui_stock_warning_badge.png` | integrated; fallback `Assets/Art/MVP23/ui_stock_warning_badge.png` |
@@ -44,11 +44,11 @@ This order is prepared for `ProjectBootstrapper`.
 | 24 | fx_low_stock_pulse | TBD | `Assets/Art/MVP23/fx_low_stock_pulse.png` |
 | 25 | fx_customer_waiting_bubble | TBD | `Assets/Art/MVP23/fx_customer_waiting_bubble.png` |
 | 26 | ui_scene_floor_shadow | TBD | `Assets/Art/MVP23/ui_scene_floor_shadow.png` |
-| 27 | fx_order_complete_glow | `Assets/Art/MVP30/FX/fx_order_complete_glow.png` | `Assets/Art/MVP23/fx_order_complete_glow.png` |
-| 28 | fx_item_selected_glow | `Assets/Art/MVP30/FX/fx_item_selected_glow.png` | `Assets/Art/MVP23/fx_item_selected_glow.png` |
-| 29 | fx_cash_float | `Assets/Art/MVP30/FX/fx_cash_float.png` | `Assets/Art/MVP23/fx_cash_float.png` |
-| 30 | fx_restock_success_ring | `Assets/Art/MVP30/FX/fx_restock_success_ring.png` | `Assets/Art/MVP23/fx_restock_success_ring.png` |
-| 31 | fx_upgrade_success | `Assets/Art/MVP30/FX/fx_upgrade_success.png` | `Assets/Art/MVP23/fx_upgrade_success.png` |
+| 27 | fx_order_complete_glow | `Assets/Art/MVP30/FX/fx_order_complete_glow.png` | integrated; fallback `Assets/Art/MVP23/fx_order_complete_glow.png` |
+| 28 | fx_item_selected_glow | `Assets/Art/MVP30/FX/fx_item_selected_glow.png` | integrated; fallback `Assets/Art/MVP23/fx_item_selected_glow.png` |
+| 29 | fx_cash_float | `Assets/Art/MVP30/FX/fx_cash_float.png` | integrated; fallback `Assets/Art/MVP23/fx_cash_float.png` |
+| 30 | fx_restock_success_ring | `Assets/Art/MVP30/FX/fx_restock_success_ring.png` | integrated; fallback `Assets/Art/MVP23/fx_restock_success_ring.png` |
+| 31 | fx_upgrade_success | `Assets/Art/MVP30/FX/fx_upgrade_success.png` | integrated; fallback `Assets/Art/MVP23/fx_upgrade_success.png` |
 | 32 | customer_leave | `Assets/Art/MVP30/Characters/Customer/Leave/customer_leave_01.png` | integrated; fallback `Assets/Art/MVP23/customer_leave_01.png` |
 | 33 | staff_cashier_success | `Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_success_01.png` | integrated; fallback `Assets/Art/MVP30/Characters/Staff/Cashier/Work/staff_cashier_work_01.png` |
 | 34 | shelf_restocked | `Assets/Art/MVP30/Scene/Shelf/States/shelf_restocked_01.png` | integrated; fallback `Assets/Art/MVP30/Scene/Shelf/States/shelf_full_01.png` |
